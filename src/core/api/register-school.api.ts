@@ -1,0 +1,60 @@
+import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
+import { RegisterSchool, RegisterSchoolStatus } from '../models/register-school';
+import { Colors } from '../utils/colors.helper';
+import http from './http';
+
+export interface ICreateRegisterSchoolDto extends Omit<RegisterSchool, 'registeredId' | 'status'> {}
+export interface IUpdateRegisterSchoolDto extends RegisterSchool {}
+
+const baseUrl = '/registered-schools';
+
+export const registerSchoolApi = {
+    create: async (dto: ICreateRegisterSchoolDto) => {
+        const { data } = await http.post<RegisterSchool>(`${baseUrl}`, dto);
+
+        return data;
+    },
+
+    update: async (dto: IUpdateRegisterSchoolDto) => {
+        const { data } = await http.put<RegisterSchool>(`${baseUrl}`, dto);
+
+        return data;
+    },
+    getAll: async () => {
+        const { data } = await http.get<ResponseList<RegisterSchool>>(`${baseUrl}`, {
+            params: {
+                sortOrder: 'desc',
+            },
+        });
+
+        return data.data || [];
+    },
+    getById: async (id: number) => {
+        const { data } = await http.get<BaseResponse<RegisterSchool>>(`${baseUrl}/${id}`);
+
+        return data.data;
+    },
+    delete: async (id: number) => {
+        await http.delete(`${baseUrl}/${id}`);
+    },
+    getEnumStatus: async () => {
+        return [
+            {
+                value: RegisterSchoolStatus.ACTIVE,
+                color: Colors.GREEN,
+                label: 'Active',
+                id: RegisterSchoolStatus.ACTIVE,
+                name: 'Active',
+                slug: RegisterSchoolStatus.ACTIVE,
+            },
+            {
+                value: RegisterSchoolStatus.INACTIVE,
+                color: Colors.RED,
+                label: 'Inactive',
+                id: RegisterSchoolStatus.INACTIVE,
+                name: 'Inactive',
+                slug: RegisterSchoolStatus.INACTIVE,
+            },
+        ] as EnumListItem[];
+    },
+};
