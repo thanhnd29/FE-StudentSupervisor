@@ -19,14 +19,21 @@ import { ClassGroupStatus } from '@/core/models/class-group';
 import { FilterComparator } from '@/core/models/common';
 import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 import { toastError } from '@/core/utils/api.helper';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/core/store';
+import { UserState } from '@/core/store/user';
 
-
-
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
+
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+        (state: RootState) => state.user,
+    );
+
+    console.log(schoolId);
 
     useDocumentTitle('Class Group List');
 
@@ -61,7 +68,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                     ]}
-                    queryApi={classGroupApi.getAll}
+                    queryApi={schoolId ? () => classGroupApi.getBySchool(schoolId) : classGroupApi.getAll}
                     actionColumns={(record) => {
                         return (
                             <div className="flex flex-col gap-2">

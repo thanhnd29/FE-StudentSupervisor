@@ -13,21 +13,17 @@ export const yearPackageApi = {
 
         return data;
     },
-
     update: async (id: number, dto: IUpdateYearPackageDto) => {
         const { data } = await http.put<YearPackage>(`${baseUrl}/${id}`, dto);
 
         return data;
     },
-
     approve: async (id: number) => {
         await http.put(`${baseUrl}/${id}/approve`);
     },
-
     reject: async (id: number) => {
         await http.put(`${baseUrl}/${id}/reject`);
     },
-
     getAll: async () => {
         const { data } = await http.get<ResponseList<YearPackage>>(`${baseUrl}`, {
             params: {
@@ -36,6 +32,11 @@ export const yearPackageApi = {
         });
 
         return data.data || [];
+    },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<YearPackage>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
     },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<YearPackage>>(`${baseUrl}/${id}`);

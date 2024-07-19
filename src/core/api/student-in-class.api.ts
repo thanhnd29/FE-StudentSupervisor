@@ -18,6 +18,8 @@ export const studentInClassApi = {
     update: async (dto: IUpdateStudentInClassDto) => {
         const { data } = await http.put<StudentInClass>(`${baseUrl}`, dto);
 
+        console.log(data);
+        
         return data;
     },
     getAll: async () => {
@@ -26,6 +28,11 @@ export const studentInClassApi = {
                 sortOrder: 'desc',
             },
         });
+
+        return data.data;
+    },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<StudentInClass>>(`${baseUrl}/school/${id}`);
 
         return data.data;
     },

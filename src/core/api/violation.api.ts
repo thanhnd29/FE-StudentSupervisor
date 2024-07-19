@@ -54,7 +54,6 @@ export const violationsApi = {
 
         return data;
     },
-
     createForSupervisor: async (dto: ICreateViolationStudentDto) => {
         const formData = new FormData();
 
@@ -70,27 +69,29 @@ export const violationsApi = {
 
         return data;
     },
-
     update: async (id: number, dto: IUpdateViolationDto) => {
         const { data } = await http.put<Violation>(`${baseUrl}/${id}`, dto);
 
         return data;
     },
-
     approve: async (id: number) => {
         await http.put(`${baseUrl}/${id}/approve`);
     },
-
     reject: async (id: number) => {
         await http.put(`${baseUrl}/${id}/reject`);
     },
-
     getAll: async () => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}`, {
             params: {
                 sortOrder: 'desc',
             },
         });
+
+        return data.data;
+    },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/school/${id}`);
+        console.log(data);
 
         return data.data;
     },

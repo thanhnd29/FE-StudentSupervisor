@@ -2,8 +2,8 @@ import { BaseResponse, ResponseList } from '../models/common';
 import { Discipline } from '../models/discipline';
 import http from './http';
 
-export interface ICreateDisciplineDto extends Omit<Discipline, 'disciplineId' | 'status'> {}
-export interface IUpdateDisciplineDto extends Discipline {}
+export interface ICreateDisciplineDto extends Omit<Discipline, 'disciplineId' | 'status'> { }
+export interface IUpdateDisciplineDto extends Discipline { }
 
 const baseUrl = '/disciplines';
 
@@ -31,6 +31,11 @@ export const disciplineApi = {
         } catch (error) {
             return [];
         }
+    },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/school/${id}`);
+
+        return data.data || [];
     },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<Discipline>>(`${baseUrl}/${id}`);

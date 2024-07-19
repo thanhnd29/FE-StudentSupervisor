@@ -31,7 +31,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
 
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
@@ -91,7 +91,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                     ]}
-                    queryApi={userApi.getAll}
+                    queryApi={schoolId ? () => userApi.getBySchool(schoolId) : userApi.getAll}
                     defaultOrderBy="UserId"
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
@@ -296,7 +296,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                                 (role) =>
                                                                     role.value === SystemRole.SUPERVISOR ||
                                                                     role.value === SystemRole.TEACHER ||
-                                                                    role.value === SystemRole.STUDENT_SUPERVISOR,
+                                                                    role.value === SystemRole.STUDENT_SUPERVISOR ||
+                                                                    role.value === SystemRole.PRINCIPAL,
                                                             );
                                                         }
 

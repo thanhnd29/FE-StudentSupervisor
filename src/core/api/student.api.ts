@@ -3,9 +3,9 @@ import { Student } from '../models/student';
 import { getColorWithId } from '../utils/api.helper';
 import http from './http';
 
-export interface ICreateStudentDto extends Student {}
+export interface ICreateStudentDto extends Student { }
 
-export interface IUpdateStudentDto extends Student {}
+export interface IUpdateStudentDto extends Student { }
 
 const baseUrl = '/students';
 
@@ -26,6 +26,11 @@ export const studentApi = {
                 sortOrder: 'asc',
             },
         });
+
+        return data.data;
+    },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Student>>(`${baseUrl}/school/${id}`);
 
         return data.data;
     },

@@ -35,6 +35,11 @@ export const studentSupervisorApi = {
 
         return data.data;
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<StudentSupervisor>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<StudentSupervisor>>(`${baseUrl}/${id}`);
 

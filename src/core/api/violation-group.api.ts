@@ -29,6 +29,11 @@ export const violationGroupApi = {
 
         return data.data;
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<ViolationGroup>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<ViolationGroup>>(`${baseUrl}/${id}`);
 

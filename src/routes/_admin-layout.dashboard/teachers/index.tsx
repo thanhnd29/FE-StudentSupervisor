@@ -30,10 +30,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
 
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
-
 
     useDocumentTitle('Teacher List');
 
@@ -103,7 +102,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                     ]}
-                    queryApi={teacherApi.getAll}
+                    queryApi={schoolId ? () => teacherApi.getBySchool(schoolId) : teacherApi.getAll}
                     actionColumns={(record) => {
                         return (
                             <div className="flex flex-col gap-2">

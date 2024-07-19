@@ -21,13 +21,20 @@ import { useDocumentTitle } from '@/core/hooks/useDocumentTitle';
 import { FilterComparator } from '@/core/models/common';
 import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 import { toastError } from '@/core/utils/api.helper';
+import { RootState } from '@/core/store';
+import { useSelector } from 'react-redux';
+import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
 
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+        (state: RootState) => state.user,
+    );
+    
     useDocumentTitle('Classes');
 
     return (
@@ -82,7 +89,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                     ]}
-                    queryApi={classApi.getAll}
+                    queryApi={schoolId ? () => classApi.getBySchool(schoolId) : classApi.getAll}
                     actionColumns={(record) => {
                         return (
                             <div className="flex flex-col gap-2">

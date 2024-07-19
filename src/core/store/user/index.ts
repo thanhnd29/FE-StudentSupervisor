@@ -8,6 +8,8 @@ export interface UserState {
     token: string;
     userId: number;
     schoolAdminId: number;
+    schoolId: number;
+    schoolName: string;
     roleId: number;
     roleName: number;
     code: string;
@@ -29,6 +31,8 @@ const initialState: UserState = {
     isLogin: false,
     userId: 0,
     schoolAdminId: 0,
+    schoolId: 0,
+    schoolName: '',
     roleId: 0,
     roleName: 0,
     code: '',
@@ -63,6 +67,8 @@ const reducer = createSlice({
 
             newState.userId = action.payload?.userId || action.payload?.adminId;
             newState.schoolAdminId = action.payload?.schoolAdminId;
+            newState.schoolId = action.payload?.schoolId;
+            newState.schoolName = action.payload?.schoolName;
             newState.roleId = action.payload?.roleId;
             newState.roleName = action.payload?.roleName;
             newState.code = action.payload?.code;

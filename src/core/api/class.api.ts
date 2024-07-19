@@ -3,9 +3,9 @@ import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
 import { getColorWithId } from '../utils/api.helper';
 import http from './http';
 
-export interface ICreateClassDto extends Omit<Class, 'classId'> {}
+export interface ICreateClassDto extends Omit<Class, 'classId'> { }
 
-export interface IUpdateClassDto extends Class {}
+export interface IUpdateClassDto extends Class { }
 
 const baseUrl = '/classes';
 
@@ -26,6 +26,11 @@ export const classApi = {
                 sortOrder: 'desc',
             },
         });
+
+        return data.data;
+    },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Class>>(`${baseUrl}/school/${id}`);
 
         return data.data;
     },

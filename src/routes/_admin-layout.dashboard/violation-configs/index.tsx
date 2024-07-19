@@ -19,11 +19,18 @@ import TableBuilder from '@/core/components/table/TableBuilder';
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle';
 import { FilterComparator } from '@/core/models/common';
 import { toastError } from '@/core/utils/api.helper';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/core/store';
+import { UserState } from '@/core/store/user';
 
 interface PageProps {}
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
+
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+        (state: RootState) => state.user,
+    );
 
     useDocumentTitle('Violation Configs');
 
@@ -69,7 +76,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                     ]}
-                    queryApi={violationConfigApi.getAll}
+                    queryApi={schoolId ? () => violationConfigApi.getBySchool(schoolId) : violationConfigApi.getAll}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
                             <ModalBuilder

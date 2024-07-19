@@ -24,6 +24,11 @@ export const teacherApi = {
 
         return data.data ? data.data : [];
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Teacher>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<SchoolYear>(`${baseUrl}/${id}`);
 

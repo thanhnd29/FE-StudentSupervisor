@@ -34,6 +34,11 @@ export const classGroupApi = {
 
         return data.data;
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<ClassGroup>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<ClassGroup>(`${baseUrl}/${id}`);
 

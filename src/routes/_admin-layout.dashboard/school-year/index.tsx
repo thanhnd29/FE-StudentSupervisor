@@ -20,12 +20,18 @@ import { useDocumentTitle } from '@/core/hooks/useDocumentTitle';
 import { FilterComparator } from '@/core/models/common';
 import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 import { toastError } from '@/core/utils/api.helper';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/core/store';
+import { UserState } from '@/core/store/user';
 
 interface PageProps {}
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+        (state: RootState) => state.user,
+    );
 
     useDocumentTitle('School Year List');
 
@@ -62,7 +68,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                     ]}
-                    queryApi={schoolYearApi.getAll}
+                    queryApi={schoolId ? () => schoolYearApi.getBySchool(schoolId) : schoolYearApi.getAll}
                     actionColumns={(record) => {
                         return (
                             <div className="flex flex-col gap-2">

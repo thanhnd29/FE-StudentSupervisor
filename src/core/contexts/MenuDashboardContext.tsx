@@ -100,7 +100,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             return AdminMenu;
         }
 
-        if (isSupervisor) {
+        if (isSupervisor || isTeacher) {
             return SupervisorMenu;
         }
 

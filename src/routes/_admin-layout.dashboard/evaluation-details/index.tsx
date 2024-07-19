@@ -18,9 +18,15 @@ import ModalBuilder from '@/core/components/modal/ModalBuilder';
 import TableBuilder from '@/core/components/table/TableBuilder';
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle';
 import { toastError } from '@/core/utils/api.helper';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/core/store';
+import { UserState } from '@/core/store/user';
 
 const Page = () => {
     const queryClient = useQueryClient();
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+        (state: RootState) => state.user,
+    );
 
     useDocumentTitle('Evaluation Details');
 
@@ -61,7 +67,7 @@ const Page = () => {
                             },
                         },
                     ]}
-                    queryApi={evaluationDetailApi.getAll}
+                    queryApi={schoolId ? () => evaluationDetailApi.getBySchool(schoolId) : evaluationDetailApi.getAll}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
                             <ModalBuilder

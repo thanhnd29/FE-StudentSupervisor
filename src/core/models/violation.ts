@@ -17,4 +17,12 @@ export interface Violation {
     violationTypeName: string;
     violationGroupId: number;
     violationGroupName: string;
+    status: string;
+}
+
+export enum ViolationStatus {
+    PENDING = 'PENDING',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
+    INACTIVE = 'INACTIVE',
 }

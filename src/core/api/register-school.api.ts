@@ -29,6 +29,11 @@ export const registerSchoolApi = {
 
         return data.data || [];
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<RegisterSchool>>(`${baseUrl}/school/${id}`);
+
+        return data.data || [];
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<RegisterSchool>>(`${baseUrl}/${id}`);
 

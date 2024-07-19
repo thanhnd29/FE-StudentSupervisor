@@ -3,8 +3,8 @@ import { PatrolSchedule, PatrolScheduleStatus } from '../models/patrol-schedule'
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'supervisorId' | 'teacherId' | 'from' | 'to'> {}
-export interface IUpdatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'supervisorId' | 'teacherId' | 'from' | 'to' | 'scheduleId'> {}
+export interface ICreatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'supervisorId' | 'teacherId' | 'from' | 'to'> { }
+export interface IUpdatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'supervisorId' | 'teacherId' | 'from' | 'to' | 'scheduleId'> { }
 
 const baseUrl = '/patrol-schedules';
 
@@ -26,6 +26,11 @@ export const patrolScheduleApi = {
                 sortOrder: 'desc',
             },
         });
+
+        return data.data || [];
+    },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<PatrolSchedule>>(`${baseUrl}/school/${id}`);
 
         return data.data || [];
     },

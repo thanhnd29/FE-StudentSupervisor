@@ -30,6 +30,11 @@ export const penaltyApi = {
 
         return data.data || [];
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Penalty>>(`${baseUrl}/school/${id}`);
+
+        return data.data || [];
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<Penalty>>(`${baseUrl}/${id}`);
 

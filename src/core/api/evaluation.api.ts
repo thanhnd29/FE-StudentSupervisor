@@ -31,6 +31,11 @@ export const evaluationApi = {
 
         return data.data;
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Evaluation>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<Evaluation>>(`${baseUrl}/${id}`);
 

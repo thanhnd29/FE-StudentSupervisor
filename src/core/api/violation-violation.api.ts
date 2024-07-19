@@ -33,6 +33,11 @@ export const violationConfigApi = {
 
         return data.data;
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<ViolationConfig>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<ViolationConfig>>(`${baseUrl}/${id}`);
 

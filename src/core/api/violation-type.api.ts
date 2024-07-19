@@ -30,6 +30,11 @@ export const violationTypeApi = {
 
         return data.data;
     },
+    getBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<ViolationType>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<ViolationType>>(`${baseUrl}/${id}`);
 

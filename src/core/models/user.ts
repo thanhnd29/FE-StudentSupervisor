@@ -19,6 +19,7 @@ export interface User {
     adminId: number;
     userName: string;
     schoolId: number;
+    schoolName: string;
     status: string;
 }
 
