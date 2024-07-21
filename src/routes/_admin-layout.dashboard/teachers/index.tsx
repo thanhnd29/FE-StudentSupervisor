@@ -165,7 +165,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             password: '',
                                             phone: '',
                                             schoolAdminId: SystemRole.SCHOOL_ADMIN,
-                                            schoolId: 0,
+                                            schoolId: schoolId || 0,
                                             sex: false,
                                             teacherName: '',
                                         }}

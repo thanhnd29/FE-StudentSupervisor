@@ -17,7 +17,11 @@ export const packageApi = {
     },
 
     update: async (id: number, dto: IUpdatePackageDto) => {
+        console.log(id);
+        console.log(dto);
+        
         const { data } = await http.put<Package>(`${baseUrl}/${id}`, dto);
+        console.log(data);
 
         return data;
     },

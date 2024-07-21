@@ -111,30 +111,34 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     router.push(NKRouter.violations.detail(record.violationId));
                                 }}
                             />
-                            <Button
-                                icon={<EditOutlined />}
-                                size="small"
-                                onClick={() => {
-                                    router.push(NKRouter.violations.edit(record.violationId));
-                                }}
-                            />
-                            <CTAButton
-                                ctaApi={() => violationTypeApi.delete(record.violationTypeId)}
-                                isConfirm
-                                confirmMessage="Are you sure you want to delete this violation type?"
-                                extraOnError={toastError}
-                                extraOnSuccess={() => {
-                                    queryClient.invalidateQueries({
-                                        queryKey: ['violation-types'],
-                                    });
+                            {!isSchoolAdmin && (
+                                <Button
+                                    icon={<EditOutlined />}
+                                    size="small"
+                                    onClick={() => {
+                                        router.push(NKRouter.violations.edit(record.violationId));
+                                    }}
+                                />
+                            )}
+                            {!isSchoolAdmin && (
+                                <CTAButton
+                                    ctaApi={() => violationTypeApi.delete(record.violationTypeId)}
+                                    isConfirm
+                                    confirmMessage="Are you sure you want to delete this violation type?"
+                                    extraOnError={toastError}
+                                    extraOnSuccess={() => {
+                                        queryClient.invalidateQueries({
+                                            queryKey: ['violation-types'],
+                                        });
 
-                                    toast.success('Delete violation type successfully');
-                                }}
-                            >
-                                <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
-                                    <Trash className="h-4 w-4" />
-                                </Button>
-                            </CTAButton>
+                                        toast.success('Delete violation type successfully');
+                                    }}
+                                >
+                                    <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
+                                        <Trash className="h-4 w-4" />
+                                    </Button>
+                                </CTAButton>
+                            )}
                         </div>
                     )}
                     filters={[
@@ -144,18 +148,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             name: 'violationName',
                             type: NKFormType.TEXT,
                         },
-                        {
+                        ...(!isTeacher ? [{
                             label: 'Status',
                             comparator: FilterComparator.LIKE,
                             name: 'status',
                             type: NKFormType.SELECT_API_OPTION,
-                            apiAction:
-                                async (value) => {
-                                    if (isTeacher) {
-                                        return violationsApi.getEnumStatuses;
-                                    }
-                                },
-                        },
+                            apiAction: violationsApi.getEnumStatuses,
+                        }] : []),
                     ]}
                     extraButtons={
                         <div className="flex items-center gap-3">

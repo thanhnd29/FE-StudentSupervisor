@@ -67,7 +67,6 @@ const Page = () => {
           queryClient.invalidateQueries({
             queryKey: ['account'],
           });
-          close();
           toast.success('Update account successfully');
         }}
       />
