@@ -9,3 +9,11 @@ export interface Discipline {
     status: string;
     disciplineId: number;
 }
+
+export enum DisciplineStatus {
+    PENDING = 'PENDING',
+    EXECUTING = 'EXECUTING',
+    DONE = 'DONE',
+    INACTIVE = 'INACTIVE',
+}
+

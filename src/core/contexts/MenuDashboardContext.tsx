@@ -93,6 +93,25 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
             icon: <Group className="h-4 w-4" />,
         },
+        {
+            key: 'disciplines',
+            label: 'Disciplines',
+            icon: <ShieldHalf className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.discipline.list());
+            },
+        },
+    ];
+
+    const TeacherMenu = [
+        {
+            label: 'Violations',
+            key: 'violations',
+            onClick: () => {
+                router.push(NKRouter.violations.list());
+            },
+            icon: <Group className="h-4 w-4" />,
+        },
     ];
 
     const menu = React.useMemo(() => {
@@ -100,8 +119,12 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             return AdminMenu;
         }
 
-        if (isSupervisor || isTeacher) {
+        if (isSupervisor) {
             return SupervisorMenu;
+        }
+
+        if (isTeacher) {
+            return TeacherMenu;
         }
 
         if (isSchoolAdmin) {
@@ -221,14 +244,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
                         },
                     ],
                 },
-                {
-                    key: 'disciplines',
-                    label: 'Disciplines',
-                    icon: <ShieldHalf className="h-4 w-4" />,
-                    onClick: () => {
-                        router.push(NKRouter.discipline.list());
-                    },
-                },
+                // {
+                //     key: 'disciplines',
+                //     label: 'Disciplines',
+                //     icon: <ShieldHalf className="h-4 w-4" />,
+                //     onClick: () => {
+                //         router.push(NKRouter.discipline.list());
+                //     },
+                // },
                 // {
                 //     label: 'Package',
                 //     key: 'packages',

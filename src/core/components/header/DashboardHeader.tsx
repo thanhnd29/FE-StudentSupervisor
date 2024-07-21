@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { useMutation } from '@tanstack/react-query';
 import { Button, Dropdown } from 'antd';
-import { MenuIcon } from 'lucide-react';
+import { MenuIcon, Trash } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import Cookies from 'universal-cookie';
 
@@ -11,6 +11,7 @@ import { NKRouter } from '@/core/NKRouter';
 import NKLink from '@/core/routing/components/NKLink';
 import { RootState, store } from '@/core/store';
 import { UserState, userActions } from '@/core/store/user';
+import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 
 interface DashboardHeaderProps {
     setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +19,12 @@ interface DashboardHeaderProps {
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ setCollapsed }) => {
     const userStore = useSelector<RootState, UserState>((state) => state.user);
+    const router = useNKRouter();
+    const { schoolName, code, name, phone, password, address, userId, schoolId } = useSelector<RootState, UserState>(
+        (state: RootState) => state.user,
+    );
+
+    const record = { schoolName, code, name, phone, password, address, userId, schoolId }
 
     const logoutMutation = useMutation({
         mutationFn: () => {
@@ -71,29 +78,28 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ setCollapsed }) => {
                         items: [
                             // {
                             //     type: 'item',
-                            //     label: 'Profile',
-                            //     key: 'profile',
-                            //     onClick: () => {
-                            //         router.push(NKRouter.account.profile());
-                            //     },
-                            // },
-                            // {
-                            //     type: 'item',
-                            //     label: 'Update Profile',
-                            //     key: 'update-profile',
-                            //     onClick: () => {
-                            //         router.push(NKRouter.account.updateProfile());
-                            //     },
-                            // },
-                            // {
-                            //     type: 'item',
                             //     label: 'Change Password',
                             //     key: 'change-password',
                             //     onClick: () => {
                             //         router.push(NKRouter.account.changePassword());
                             //     },
                             // },
-
+                            {
+                                type: 'item',
+                                label: 'Profile',
+                                key: 'profile',
+                                onClick: () => {
+                                    router.push(NKRouter.auth.view());
+                                },
+                            },
+                            {
+                                type: 'item',
+                                label: 'Update',
+                                key: 'update',
+                                onClick: () => {
+                                    router.push(NKRouter.auth.edit());
+                                },
+                            },
                             {
                                 type: 'item',
                                 label: 'Logout',

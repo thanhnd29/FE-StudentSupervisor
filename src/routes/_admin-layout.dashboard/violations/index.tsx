@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
 import { ViolationStatus } from '@/core/models/violation';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
@@ -86,6 +86,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
+                            key: 'status',
+                            title: 'Status',
+                            type: FieldType.BADGE_API,
+                            apiAction: violationsApi.getEnumStatuses,
+                        },
+                        {
                             key: 'violationTypeId',
                             title: 'Type',
                             type: FieldType.BADGE_API,
@@ -138,27 +144,43 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             name: 'violationName',
                             type: NKFormType.TEXT,
                         },
+                        {
+                            label: 'Status',
+                            comparator: FilterComparator.LIKE,
+                            name: 'status',
+                            type: NKFormType.SELECT_API_OPTION,
+                            apiAction:
+                                async (value) => {
+                                    if (isTeacher) {
+                                        return violationsApi.getEnumStatuses;
+                                    }
+                                },
+                        },
                     ]}
                     extraButtons={
                         <div className="flex items-center gap-3">
-                            <Button
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                onClick={() => {
-                                    router.push(NKRouter.violations.createForStudent());
-                                }}
-                            >
-                                Create Violation Student
-                            </Button>
-                            <Button
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                onClick={() => {
-                                    router.push(NKRouter.violations.createForSupervisor());
-                                }}
-                            >
-                                Create Violation Supervisor
-                            </Button>
+                            {!isSchoolAdmin && (
+                                <Button
+                                    type="primary"
+                                    icon={<PlusOutlined />}
+                                    onClick={() => {
+                                        router.push(NKRouter.violations.createForStudent());
+                                    }}
+                                >
+                                    Create Violation Student
+                                </Button>
+                            )}
+                            {!isSchoolAdmin && (
+                                <Button
+                                    type="primary"
+                                    icon={<PlusOutlined />}
+                                    onClick={() => {
+                                        router.push(NKRouter.violations.createForSupervisor());
+                                    }}
+                                >
+                                    Create Violation Supervisor
+                                </Button>
+                            )}
                         </div>
                     }
                 />

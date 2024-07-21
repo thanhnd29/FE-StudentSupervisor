@@ -1,6 +1,7 @@
 import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
-import { Violation } from '../models/violation';
+import { Violation, ViolationStatus } from '../models/violation';
 import { getColorWithId } from '../utils/api.helper';
+import { Colors } from '../utils/colors.helper';
 import http from './http';
 
 export interface ICreateViolationStudentDto {
@@ -118,6 +119,44 @@ export const violationsApi = {
         if (search) {
             return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
         }
+
+        return list;
+    },
+    getEnumStatuses: async (search?: string) => {
+        const list: EnumListItem[] = [
+            {
+                color: Colors.GREEN,
+                id: ViolationStatus.APPROVED,
+                label: 'Approved',
+                name: 'Approved',
+                slug: ViolationStatus.APPROVED,
+                value: ViolationStatus.APPROVED,
+            },
+            {
+                color: Colors.RED,
+                id: ViolationStatus.REJECTED,
+                label: 'Rejected',
+                name: 'Rejected',
+                slug: ViolationStatus.REJECTED,
+                value: ViolationStatus.REJECTED,
+            },
+            {
+                color: Colors.PURPLE,
+                id: ViolationStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: ViolationStatus.INACTIVE,
+                value: ViolationStatus.INACTIVE,
+            },
+            {
+                color: Colors.PINK,
+                id: ViolationStatus.PENDING,
+                label: 'Pending',
+                name: 'Pending',
+                slug: ViolationStatus.PENDING,
+                value: ViolationStatus.PENDING,
+            },
+        ];
 
         return list;
     },

@@ -23,8 +23,9 @@ import { toastError } from '@/core/utils/api.helper';
 import { RootState } from '@/core/store';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
+import { FilterComparator } from '@/core/models/common';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
@@ -71,9 +72,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             key: 'status',
                             title: 'Status',
                             type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return registerSchoolApi.getEnumStatus();
-                            },
+                            apiAction: disciplineApi.getEnumStatuses
                         },
                         {
                             key: 'violationId',
@@ -214,6 +213,21 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             </CTAButton>
                         </div>
                     )}
+                    filters={[
+                        {
+                            label: 'Name',
+                            comparator: FilterComparator.LIKE,
+                            name: 'name',
+                            type: NKFormType.TEXT,
+                        },
+                        {
+                            label: 'Status',
+                            comparator: FilterComparator.LIKE,
+                            name: 'status',
+                            type: NKFormType.SELECT_API_OPTION,
+                            apiAction: disciplineApi.getEnumStatuses
+                        },
+                    ]}
                     extraButtons={
                         <ModalBuilder
                             btnLabel="Create Discipline"

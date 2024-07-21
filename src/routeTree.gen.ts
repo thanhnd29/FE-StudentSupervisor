@@ -44,6 +44,8 @@ import { Route as AdminLayoutDashboardViolationsCreateSupervisorImport } from '.
 import { Route as AdminLayoutDashboardViolationsCreateStudentImport } from './routes/_admin-layout.dashboard/violations/create-student'
 import { Route as AdminLayoutDashboardHighSchoolIdImport } from './routes/_admin-layout.dashboard/high-school/$id'
 import { Route as AdminLayoutDashboardClassesIdImport } from './routes/_admin-layout.dashboard/classes/$id'
+import { Route as AdminLayoutDashboardAuthViewImport } from './routes/_admin-layout.dashboard/auth/view'
+import { Route as AdminLayoutDashboardAuthEditImport } from './routes/_admin-layout.dashboard/auth/edit'
 import { Route as AdminLayoutDashboardViolationsIdIndexImport } from './routes/_admin-layout.dashboard/violations/$id/index'
 import { Route as AdminLayoutDashboardViolationsIdEditImport } from './routes/_admin-layout.dashboard/violations/$id/edit'
 
@@ -243,6 +245,18 @@ const AdminLayoutDashboardClassesIdRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardAuthViewRoute =
+  AdminLayoutDashboardAuthViewImport.update({
+    path: '/dashboard/auth/view',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardAuthEditRoute =
+  AdminLayoutDashboardAuthEditImport.update({
+    path: '/dashboard/auth/edit',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardViolationsIdIndexRoute =
   AdminLayoutDashboardViolationsIdIndexImport.update({
     path: '/dashboard/violations/$id/',
@@ -277,6 +291,14 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/': {
       preLoaderRoute: typeof AdminLayoutDashboardIndexImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/auth/edit': {
+      preLoaderRoute: typeof AdminLayoutDashboardAuthEditImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/auth/view': {
+      preLoaderRoute: typeof AdminLayoutDashboardAuthViewImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/classes/$id': {
@@ -410,6 +432,8 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardIdRoute,
     AdminLayoutDashboardAnalyticsRoute,
     AdminLayoutDashboardIndexRoute,
+    AdminLayoutDashboardAuthEditRoute,
+    AdminLayoutDashboardAuthViewRoute,
     AdminLayoutDashboardClassesIdRoute,
     AdminLayoutDashboardHighSchoolIdRoute,
     AdminLayoutDashboardViolationsCreateStudentRoute,

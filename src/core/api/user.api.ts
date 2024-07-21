@@ -6,6 +6,7 @@ import http from './http';
 export interface ILoginUserDto extends Pick<User, 'phone' | 'password'> { }
 export interface ICreateUserDto extends Omit<User, 'userId' | 'roleName' | 'adminId' | 'userName' | 'schoolAdminId' | 'roleId' | 'status' | 'schoolName'> { }
 export interface IUpdateUserDto extends Omit<User, 'userId' | 'roleName' | 'adminId' | 'userName' | 'schoolAdminId' | 'roleId' | 'status' | 'schoolName'> { }
+export interface IUpdateAuthDto extends Omit<User, 'userId' | 'roleName' | 'adminId' | 'userName' | 'schoolAdminId' | 'roleId' | 'status' | 'schoolName' | 'schoolId' | 'code'> { }
 
 const baseUrl = '/users';
 

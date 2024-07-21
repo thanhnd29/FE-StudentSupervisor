@@ -1,5 +1,6 @@
-import { BaseResponse, ResponseList } from '../models/common';
-import { Discipline } from '../models/discipline';
+import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
+import { Discipline, DisciplineStatus } from '../models/discipline';
+import { Colors } from '../utils/colors.helper';
 import http from './http';
 
 export interface ICreateDisciplineDto extends Omit<Discipline, 'disciplineId' | 'status'> { }
@@ -44,5 +45,43 @@ export const disciplineApi = {
     },
     delete: async (id: number) => {
         await http.delete(`${baseUrl}/${id}`);
+    },
+    getEnumStatuses: async (search?: string) => {
+        const list: EnumListItem[] = [
+            {
+                color: Colors.GREEN,
+                id: DisciplineStatus.DONE,
+                label: 'Done',
+                name: 'Done',
+                slug: DisciplineStatus.DONE,
+                value: DisciplineStatus.DONE,
+            },
+            {
+                color: Colors.RED,
+                id: DisciplineStatus.EXECUTING,
+                label: 'Executing',
+                name: 'Executing',
+                slug: DisciplineStatus.EXECUTING,
+                value: DisciplineStatus.EXECUTING,
+            },
+            {
+                color: Colors.PURPLE,
+                id: DisciplineStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: DisciplineStatus.INACTIVE,
+                value: DisciplineStatus.INACTIVE,
+            },
+            {
+                color: Colors.PINK,
+                id: DisciplineStatus.PENDING,
+                label: 'Pending',
+                name: 'Pending',
+                slug: DisciplineStatus.PENDING,
+                value: DisciplineStatus.PENDING,
+            },
+        ];
+
+        return list;
     },
 };

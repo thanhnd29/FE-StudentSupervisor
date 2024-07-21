@@ -5,8 +5,9 @@ export const NKRouter = {
     },
     auth: {
         forgotPassword: () => '/auth/forgot-password',
+        view: () => '/dashboard/auth/view',
+        edit: () => '/dashboard/auth/edit'
     },
-
     user: {
         list: () => '/dashboard/user',
         create: () => '/dashboard/user/create',

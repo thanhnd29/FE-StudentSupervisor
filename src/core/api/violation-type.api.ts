@@ -63,7 +63,6 @@ export const violationTypeApi = {
 
         return list;
     },
-
     getEnumStatuses: async (search?: string) => {
         const list: EnumListItem[] = [
             {
