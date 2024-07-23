@@ -63,7 +63,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             title: 'Total Violations',
                             type: FieldType.NUMBER,
                         },
-
                         {
                             key: 'packageTypeId',
                             title: 'Type',

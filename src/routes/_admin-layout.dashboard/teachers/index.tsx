@@ -24,7 +24,7 @@ import { RootState } from '@/core/store';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
@@ -145,115 +145,210 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                     ]}
                     extraButtons={
-                        <ModalBuilder
-                            btnLabel="Create Teacher"
-                            btnProps={{
-                                type: 'primary',
-                                icon: <PlusOutlined />,
-                            }}
-                            title="Create Teacher"
-                        >
-                            {(close) => {
-                                return (
-                                    <FormBuilder
-                                        className="!p-0"
-                                        title=""
-                                        apiAction={teacherApi.create}
-                                        defaultValues={{
-                                            address: '',
-                                            code: '',
-                                            password: '',
-                                            phone: '',
-                                            schoolAdminId: SystemRole.SCHOOL_ADMIN,
-                                            schoolId: schoolId || 0,
-                                            sex: false,
-                                            teacherName: '',
-                                        }}
-                                        schema={{
-                                            address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            schoolAdminId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            teacherName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        }}
-                                        fields={[
-                                            {
-                                                name: 'teacherName',
-                                                label: 'Name',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'code',
-                                                label: 'Code',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'phone',
-                                                label: 'Phone',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'password',
-                                                label: 'Password',
-                                                type: NKFormType.PASSWORD,
-                                            },
-                                            {
-                                                name: 'address',
-                                                label: 'Address',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'schoolId',
-                                                label: 'School',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                fieldProps: {
-                                                    apiAction: highSchoolApi.getEnumSelectOptions,
+                        <>
+                            <ModalBuilder
+                                btnLabel="Create Teacher"
+                                btnProps={{
+                                    type: 'primary',
+                                    icon: <PlusOutlined />,
+                                }}
+                                title="Create Teacher"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder
+                                            className="!p-0"
+                                            title=""
+                                            apiAction={teacherApi.create}
+                                            defaultValues={{
+                                                address: '',
+                                                code: '',
+                                                password: '',
+                                                phone: '',
+                                                schoolAdminId: SystemRole.SCHOOL_ADMIN,
+                                                schoolId: schoolId || 0,
+                                                sex: false,
+                                                teacherName: '',
+                                            }}
+                                            schema={{
+                                                address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolAdminId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                teacherName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            fields={[
+                                                {
+                                                    name: 'teacherName',
+                                                    label: 'Name',
+                                                    type: NKFormType.TEXT,
                                                 },
-                                            },
-                                            {
-                                                name: 'roleId',
-                                                label: 'Role',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                fieldProps: {
-                                                    apiAction: async (value) => {
-                                                        if (isSchoolAdmin) {
-                                                            return RoleList.filter(
-                                                                (role) =>
-                                                                    role.value === SystemRole.SUPERVISOR ||
-                                                                    role.value === SystemRole.TEACHER,
-                                                            );
-                                                        }
-
-                                                        return RoleList;
+                                                {
+                                                    name: 'code',
+                                                    label: 'Code',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    name: 'phone',
+                                                    label: 'Phone',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    name: 'password',
+                                                    label: 'Password',
+                                                    type: NKFormType.PASSWORD,
+                                                },
+                                                {
+                                                    name: 'address',
+                                                    label: 'Address',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    name: 'schoolId',
+                                                    label: 'School',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: highSchoolApi.getEnumSelectOptions,
+                                                        readonly: true
                                                     },
                                                 },
-                                            },
-                                            // {
-                                            //     name: 'schoolAdminId',
-                                            //     label: 'Role',
-                                            //     type: NKFormType.SELECT_API_OPTION,
-                                            //     fieldProps: {
-                                            //         apiAction: async () => RoleList,
-                                            //     },
-                                            // },
-                                        ]}
-                                        onExtraSuccessAction={() => {
-                                            queryClient.invalidateQueries({
-                                                queryKey: ['teacher-list'],
-                                            });
+                                                // {
+                                                //     name: 'schoolAdminId',
+                                                //     label: 'Role',
+                                                //     type: NKFormType.SELECT_API_OPTION,
+                                                //     fieldProps: {
+                                                //         apiAction: async () => RoleList,
+                                                //     },
+                                                // },
+                                            ]}
+                                            onExtraSuccessAction={() => {
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['teacher-list'],
+                                                });
 
-                                            toast.success('Create teacher successfully');
+                                                toast.success('Create teacher successfully');
 
-                                            close();
-                                        }}
-                                        onExtraErrorAction={toastError}
-                                    />
-                                );
-                            }}
-                        </ModalBuilder>
+                                                close();
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                            <ModalBuilder
+                                btnLabel="Create Teacher Supervisors"
+                                btnProps={{
+                                    type: 'primary',
+                                    icon: <PlusOutlined />,
+                                }}
+                                title="Create Teacher"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder
+                                            className="!p-0"
+                                            title=""
+                                            apiAction={teacherApi.createSupervisors}
+                                            defaultValues={{
+                                                address: '',
+                                                code: '',
+                                                password: '',
+                                                phone: '',
+                                                schoolAdminId: SystemRole.SCHOOL_ADMIN,
+                                                schoolId: schoolId || 0,
+                                                sex: false,
+                                                teacherName: '',
+                                            }}
+                                            schema={{
+                                                address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolAdminId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                teacherName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            fields={[
+                                                {
+                                                    name: 'teacherName',
+                                                    label: 'Name',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    name: 'code',
+                                                    label: 'Code',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    name: 'phone',
+                                                    label: 'Phone',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    name: 'password',
+                                                    label: 'Password',
+                                                    type: NKFormType.PASSWORD,
+                                                },
+                                                {
+                                                    name: 'address',
+                                                    label: 'Address',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    name: 'schoolId',
+                                                    label: 'School',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: highSchoolApi.getEnumSelectOptions,
+                                                        readonly: true
+                                                    },
+                                                },
+                                                // {
+                                                //     name: 'roleId',
+                                                //     label: 'Role',
+                                                //     type: NKFormType.SELECT_API_OPTION,
+                                                //     fieldProps: {
+                                                //         apiAction: async (value) => {
+                                                //             if (isSchoolAdmin) {
+                                                //                 return RoleList.filter(
+                                                //                     (role) =>
+                                                //                         role.value === SystemRole.SUPERVISOR ||
+                                                //                         role.value === SystemRole.TEACHER,
+                                                //                 );
+                                                //             }
+
+                                                //             return RoleList;
+                                                //         },
+                                                //     },
+                                                // },
+                                                // {
+                                                //     name: 'schoolAdminId',
+                                                //     label: 'Role',
+                                                //     type: NKFormType.SELECT_API_OPTION,
+                                                //     fieldProps: {
+                                                //         apiAction: async () => RoleList,
+                                                //     },
+                                                // },
+                                            ]}
+                                            onExtraSuccessAction={() => {
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['teacher-list'],
+                                                });
+
+                                                toast.success('Create teacher successfully');
+
+                                                close();
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                        </>
                     }
                 />
             </div>

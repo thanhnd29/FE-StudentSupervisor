@@ -42,6 +42,7 @@ import { Route as AdminLayoutDashboardClassesIndexImport } from './routes/_admin
 import { Route as AdminLayoutDashboardClassGroupIndexImport } from './routes/_admin-layout.dashboard/class-group/index'
 import { Route as AdminLayoutDashboardViolationsCreateSupervisorImport } from './routes/_admin-layout.dashboard/violations/create-supervisor'
 import { Route as AdminLayoutDashboardViolationsCreateStudentImport } from './routes/_admin-layout.dashboard/violations/create-student'
+import { Route as AdminLayoutDashboardPackagesBuyPackagesImport } from './routes/_admin-layout.dashboard/packages/buy-packages'
 import { Route as AdminLayoutDashboardHighSchoolIdImport } from './routes/_admin-layout.dashboard/high-school/$id'
 import { Route as AdminLayoutDashboardClassesIdImport } from './routes/_admin-layout.dashboard/classes/$id'
 import { Route as AdminLayoutDashboardAuthViewImport } from './routes/_admin-layout.dashboard/auth/view'
@@ -233,6 +234,12 @@ const AdminLayoutDashboardViolationsCreateStudentRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardPackagesBuyPackagesRoute =
+  AdminLayoutDashboardPackagesBuyPackagesImport.update({
+    path: '/dashboard/packages/buy-packages',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardHighSchoolIdRoute =
   AdminLayoutDashboardHighSchoolIdImport.update({
     path: '/dashboard/high-school/$id',
@@ -307,6 +314,10 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/high-school/$id': {
       preLoaderRoute: typeof AdminLayoutDashboardHighSchoolIdImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/packages/buy-packages': {
+      preLoaderRoute: typeof AdminLayoutDashboardPackagesBuyPackagesImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/create-student': {
@@ -436,6 +447,7 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardAuthViewRoute,
     AdminLayoutDashboardClassesIdRoute,
     AdminLayoutDashboardHighSchoolIdRoute,
+    AdminLayoutDashboardPackagesBuyPackagesRoute,
     AdminLayoutDashboardViolationsCreateStudentRoute,
     AdminLayoutDashboardViolationsCreateSupervisorRoute,
     AdminLayoutDashboardClassGroupIndexRoute,

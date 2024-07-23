@@ -181,13 +181,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     label: 'Password',
                                                     type: NKFormType.PASSWORD,
                                                 },
-
                                                 {
                                                     name: 'schoolId',
                                                     label: 'School',
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
                                                         apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                        readonly: true
                                                     },
                                                 },
                                             ]}
@@ -247,18 +247,18 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Account"
+                            btnLabel="Create Principal"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Account"
+                            title="Create Principal"
                         >
                             {(close) => {
                                 return (
                                     <FormBuilder<IUpdateUserDto>
                                         className="!p-0"
-                                        apiAction={userApi.create}
+                                        apiAction={userApi.createPrincipal}
                                         fields={[
                                             {
                                                 name: 'name',
@@ -285,32 +285,33 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 label: 'Password',
                                                 type: NKFormType.PASSWORD,
                                             },
-                                            {
-                                                name: 'roleId',
-                                                label: 'Role',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                fieldProps: {
-                                                    apiAction: async (value) => {
-                                                        if (isSchoolAdmin) {
-                                                            return RoleList.filter(
-                                                                (role) =>
-                                                                    role.value === SystemRole.SUPERVISOR ||
-                                                                    role.value === SystemRole.TEACHER ||
-                                                                    role.value === SystemRole.STUDENT_SUPERVISOR ||
-                                                                    role.value === SystemRole.PRINCIPAL,
-                                                            );
-                                                        }
+                                            // {
+                                            //     name: 'roleId',
+                                            //     label: 'Role',
+                                            //     type: NKFormType.SELECT_API_OPTION,
+                                            //     fieldProps: {
+                                            //         apiAction: async (value) => {
+                                            //             if (isSchoolAdmin) {
+                                            //                 return RoleList.filter(
+                                            //                     (role) =>
+                                            //                         role.value === SystemRole.SUPERVISOR ||
+                                            //                         role.value === SystemRole.TEACHER ||
+                                            //                         role.value === SystemRole.STUDENT_SUPERVISOR ||
+                                            //                         role.value === SystemRole.PRINCIPAL,
+                                            //                 );
+                                            //             }
 
-                                                        return RoleList;
-                                                    },
-                                                },
-                                            },
+                                            //             return RoleList;
+                                            //         },
+                                            //     },
+                                            // },
                                             {
                                                 name: 'schoolId',
                                                 label: 'School',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                    readonly: true
                                                 },
                                             },
                                         ]}

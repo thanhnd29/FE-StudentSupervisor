@@ -21,7 +21,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
@@ -56,7 +56,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 return value || 'N/A';
                             },
                         },
-
                         {
                             key: 'schoolId',
                             title: 'Class',
@@ -64,6 +63,31 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             apiAction(value) {
                                 return highSchoolApi.getEnumSelectOptions(value);
                             },
+                        },
+                        {
+                            key: 'schoolCode',
+                            title: 'School Code',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'city',
+                            title: 'City',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'address',
+                            title: 'Address',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'phone',
+                            title: 'Phone',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'webURL',
+                            title: 'Web URL',
+                            type: FieldType.LINK_BUTTON,
                         },
                         {
                             key: 'status',
@@ -100,10 +124,45 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 description: record.description,
                                                 registeredDate: new Date(record.registeredDate),
                                                 registeredId: record.registeredId,
-                                                schoolId: record.schoolId,
+                                                schoolName: record.schoolName,
                                                 status: record.status,
+                                                schoolCode: record.schoolCode,
+                                                city: record.city,
+                                                address: record.address,
+                                                phone: record.phone,
+                                                webURL: record.webURL,
                                             }}
                                             fields={[
+                                                {
+                                                    name: 'schoolName',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'School Name',
+                                                },
+                                                {
+                                                    name: 'schoolCode',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'School Code',
+                                                },
+                                                {
+                                                    name: 'city',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'City',
+                                                },
+                                                {
+                                                    name: 'address',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Address',
+                                                },
+                                                {
+                                                    name: 'phone',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Phone',
+                                                },
+                                                {
+                                                    name: 'webURL',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Web URL',
+                                                },
                                                 {
                                                     name: 'registeredDate',
                                                     type: NKFormType.DATE,
@@ -113,14 +172,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
                                                     label: 'Description',
-                                                },
-                                                {
-                                                    name: 'schoolId',
-                                                    type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'School',
-                                                    fieldProps: {
-                                                        apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
-                                                    },
                                                 },
                                                 {
                                                     name: 'status',
@@ -135,9 +186,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             schema={{
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 registeredDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 registeredId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                city: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                webURL: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT)
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={() => {
@@ -193,6 +249,36 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         }}
                                         fields={[
                                             {
+                                                name: 'schoolName',
+                                                type: NKFormType.TEXT,
+                                                label: 'School Name',
+                                            },
+                                            {
+                                                name: 'schoolCode',
+                                                type: NKFormType.TEXT,
+                                                label: 'School Code',
+                                            },
+                                            {
+                                                name: 'city',
+                                                type: NKFormType.TEXT,
+                                                label: 'City',
+                                            },
+                                            {
+                                                name: 'address',
+                                                type: NKFormType.TEXT,
+                                                label: 'Address',
+                                            },
+                                            {
+                                                name: 'phone',
+                                                type: NKFormType.TEXT,
+                                                label: 'Phone',
+                                            },
+                                            {
+                                                name: 'webURL',
+                                                type: NKFormType.TEXT,
+                                                label: 'Web URL',
+                                            },
+                                            {
                                                 name: 'registeredDate',
                                                 type: NKFormType.DATE,
                                                 label: 'Registered Date',
@@ -202,20 +288,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.TEXTAREA,
                                                 label: 'Description',
                                             },
-                                            {
-                                                name: 'schoolId',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'School',
-                                                fieldProps: {
-                                                    apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
-                                                },
-                                            },
                                         ]}
                                         title=""
                                         schema={{
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             registeredDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            schoolName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            city: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            schoolCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            webURL: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT)
                                         }}
                                         onExtraErrorAction={toastError}
                                         onExtraSuccessAction={() => {
@@ -230,7 +313,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         defaultValues={{
                                             description: '',
                                             registeredDate: new Date(),
-                                            schoolId: 0,
+                                            schoolName: '',
+                                            schoolCode: '',
+                                            city: '',
+                                            address: '',
+                                            phone: '',
+                                            webURL: '',
                                         }}
                                     />
                                 );

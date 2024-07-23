@@ -4,10 +4,8 @@ export enum ViolationConfigStatus {
 }
 
 export interface ViolationConfig {
-    evaluationId: number;
+    minusPoints: number;
     violationTypeId: number;
-    violationConfigName: string;
-    code: string;
     description: string;
     status: string;
     violationConfigId: number;

@@ -65,7 +65,6 @@ const Page = () => {
                         label: 'Name',
                         type: NKFormType.TEXT,
                     },
-
                     {
                         name: 'Description',
                         label: 'Description',

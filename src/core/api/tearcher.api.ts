@@ -4,17 +4,21 @@ import { getColorWithId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateTeacherDto extends Omit<Teacher, 'teacherId' | 'schoolName' | 'roleId' | 'status'> {}
+export interface ICreateTeacherDto extends Omit<Teacher, 'teacherId' | 'schoolName' | 'roleId' | 'status'> { }
 
 const baseUrl = '/teachers';
 
 export const teacherApi = {
     create: async (dto: ICreateTeacherDto) => {
-        const { data } = await http.post<Teacher>(`${baseUrl}/create-account`, dto);
+        const { data } = await http.post<Teacher>(baseUrl, dto);
 
         return data;
     },
+    createSupervisors: async (dto: ICreateTeacherDto) => {
+        const { data } = await http.post<Teacher>(`${baseUrl}/supervisors`, dto);
 
+        return data;
+    },
     getAll: async () => {
         const { data } = await http.get<ResponseList<Teacher>>(`${baseUrl}`, {
             params: {

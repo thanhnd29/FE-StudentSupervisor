@@ -15,7 +15,6 @@ export const packageApi = {
 
         return data;
     },
-
     update: async (id: number, dto: IUpdatePackageDto) => {
         console.log(id);
         console.log(dto);

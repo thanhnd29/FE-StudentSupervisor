@@ -23,7 +23,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
@@ -47,11 +47,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'violationConfigName',
-                            title: 'Name',
-                            type: FieldType.TEXT,
-                        },
-                        {
                             key: 'violationTypeName',
                             title: 'Type',
                             type: FieldType.TEXT,
@@ -68,12 +63,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             apiAction: violationConfigApi.getEnumStatuses,
                         },
                         {
-                            key: 'evaluationId',
-                            title: 'Evaluation',
-                            type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return evaluationApi.getEnumSelectOptions(value);
-                            },
+                            key: 'minusPoints',
+                            title: 'Minus Points',
+                            type: FieldType.TEXT,
                         },
                     ]}
                     queryApi={schoolId ? () => violationConfigApi.getBySchool(schoolId) : violationConfigApi.getAll}
@@ -93,35 +85,20 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             className="!p-0"
                                             apiAction={(dto) => violationConfigApi.update(record.violationTypeId, dto)}
                                             defaultValues={{
-                                                code: record.code,
                                                 description: record.description,
-                                                evaluationId: record.evaluationId,
-                                                violationConfigName: record.violationConfigName,
+                                                minusPoints: record.minusPoints,
                                                 violationTypeId: record.violationTypeId,
                                             }}
                                             fields={[
-                                                {
-                                                    name: 'violationConfigName',
-                                                    type: NKFormType.TEXT,
-                                                    label: 'Name',
-                                                },
-                                                {
-                                                    name: 'code',
-                                                    type: NKFormType.TEXT,
-                                                    label: 'Code',
-                                                },
                                                 {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
                                                     label: 'Description',
                                                 },
                                                 {
-                                                    name: 'evaluationId',
-                                                    type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Evaluation',
-                                                    fieldProps: {
-                                                        apiAction: (value) => evaluationApi.getEnumSelectOptions(value),
-                                                    },
+                                                    name: 'minusPoints',
+                                                    type: NKFormType.NUMBER,
+                                                    label: 'Minus Points',
                                                 },
                                                 {
                                                     name: 'violationTypeId',
@@ -134,10 +111,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             ]}
                                             title=""
                                             schema={{
-                                                code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                evaluationId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                violationConfigName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                minusPoints: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 violationTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
@@ -195,24 +170,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         apiAction={violationConfigApi.create}
                                         fields={[
                                             {
-                                                name: 'violationConfigName',
-                                                type: NKFormType.TEXT,
-                                                label: 'Name',
-                                            },
-                                            {
-                                                name: 'code',
-                                                type: NKFormType.TEXT,
-                                                label: 'Code',
-                                            },
-                                            {
                                                 name: 'description',
                                                 type: NKFormType.TEXTAREA,
                                                 label: 'Description',
                                             },
                                             {
-                                                name: 'evaluationId',
+                                                name: 'minusPoints',
                                                 type: NKFormType.NUMBER,
-                                                label: 'Evaluation',
+                                                label: 'Minus Points',
                                             },
                                             {
                                                 name: 'violationTypeId',
@@ -225,10 +190,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         ]}
                                         title=""
                                         schema={{
-                                            code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            evaluationId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            violationConfigName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            minusPoints: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             violationTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
@@ -241,10 +204,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             toast.success('Create violation config successfully');
                                         }}
                                         defaultValues={{
-                                            code: '',
                                             description: '',
-                                            evaluationId: 0,
-                                            violationConfigName: '',
+                                            minusPoints: 0,
                                             violationTypeId: 0,
                                         }}
                                     />

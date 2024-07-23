@@ -1,8 +1,8 @@
 export interface Discipline {
     violationId: number;
     pennaltyId: number;
-    code: string;
-    name: string;
+    studentCode: string;
+    studentName: string;
     description: string;
     startDate: string;
     endDate: string;

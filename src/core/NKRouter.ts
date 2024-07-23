@@ -108,6 +108,7 @@ export const NKRouter = {
     },
     package: {
         list: () => '/dashboard/packages',
+        buy: () => '/dashboard/packages/buy-packages',
         create: () => '/dashboard/packages/create',
         edit: (id: number) => `/dashboard/packages/${id}/edit`,
         detail: (id: number) => `/dashboard/packages/${id}`,

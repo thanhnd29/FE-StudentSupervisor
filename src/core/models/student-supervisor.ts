@@ -1,8 +1,9 @@
 export interface StudentSupervisor {
     studentSupervisorId: number;
-    supervisorCode: string;
+    studentInClassId: number;
+    schoolId: number;
+    code: string;
     description: string;
-    userCode: string;
     supervisorName: string;
     phone: string;
     password: string;

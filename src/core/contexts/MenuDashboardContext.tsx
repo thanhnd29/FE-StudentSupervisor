@@ -14,6 +14,7 @@ import {
     Ungroup,
     UsersRound,
     Waves,
+    ShoppingCart 
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 
@@ -306,6 +307,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
                     icon: <CircleSlash2 className="h-4 w-4" />,
                     onClick: () => {
                         router.push(NKRouter.penalty.list());
+                    },
+                },
+                {
+                    label: 'Buy Packages',
+                    key: 'buy-packages',
+                    icon: <ShoppingCart className="h-4 w-4" />,
+                    onClick: () => {
+                        router.push(NKRouter.package.buy());
                     },
                 },
                 // {

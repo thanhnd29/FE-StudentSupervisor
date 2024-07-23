@@ -3,8 +3,8 @@ import { RegisterSchool, RegisterSchoolStatus } from '../models/register-school'
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateRegisterSchoolDto extends Omit<RegisterSchool, 'registeredId' | 'status'> {}
-export interface IUpdateRegisterSchoolDto extends RegisterSchool {}
+export interface ICreateRegisterSchoolDto extends Omit<RegisterSchool, 'registeredId' | 'status' | 'schoolId'> { }
+export interface IUpdateRegisterSchoolDto extends Omit<RegisterSchool, 'schoolId'> { }
 
 const baseUrl = '/registered-schools';
 
@@ -16,8 +16,12 @@ export const registerSchoolApi = {
     },
 
     update: async (dto: IUpdateRegisterSchoolDto) => {
+        console.log(dto);
+        
         const { data } = await http.put<RegisterSchool>(`${baseUrl}`, dto);
 
+        console.log(data);
+        
         return data;
     },
     getAll: async () => {

@@ -46,6 +46,11 @@ export const userApi = {
 
         return data;
     },
+    createPrincipal: async (dto: ICreateUserDto) => {
+        const { data } = await http.post<User>(`${baseUrl}/principal`, dto);
+
+        return data;
+    },
     createSchoolAdmin: async (dto: ICreateUserDto) => {
         const { data } = await http.post<User>(`${baseUrl}/school_admin`, dto);
 

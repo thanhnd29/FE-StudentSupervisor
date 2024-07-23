@@ -1,17 +1,21 @@
 import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
-import { ViolationGroup } from '../models/violation-group';
+import { ViolationGroup, ViolationGroupStatus } from '../models/violation-group';
 import { getColorWithId } from '../utils/api.helper';
+import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateViolationGroupDto extends Omit<ViolationGroup, 'violationGroupId'> {}
+export interface ICreateViolationGroupDto extends Omit<ViolationGroup, 'violationGroupId' | 'schoolName' | 'status'> { }
 
-export interface IUpdateViolationGroupDto extends Omit<ViolationGroup, 'violationGroupId'> {}
+export interface IUpdateViolationGroupDto extends Omit<ViolationGroup, 'violationGroupId' | 'schoolName' | 'status' | 'schoolId'> { }
 
 const baseUrl = '/violation-groups';
 
 export const violationGroupApi = {
     create: async (dto: ICreateViolationGroupDto) => {
         const { data } = await http.post<ViolationGroup>(`${baseUrl}`, dto);
+
+        console.log(data);
+        
 
         return data;
     },
@@ -59,6 +63,28 @@ export const violationGroupApi = {
                 return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
             }
         }
+
+        return list;
+    },
+    getEnumStatuses: async (search?: string) => {
+        const list: EnumListItem[] = [
+            {
+                color: Colors.GREEN,
+                id: ViolationGroupStatus.ACTIVE,
+                label: 'Active',
+                name: 'Active',
+                slug: ViolationGroupStatus.ACTIVE,
+                value: ViolationGroupStatus.ACTIVE,
+            },
+            {
+                color: Colors.RED,
+                id: ViolationGroupStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: ViolationGroupStatus.INACTIVE,
+                value: ViolationGroupStatus.INACTIVE,
+            },
+        ];
 
         return list;
     },

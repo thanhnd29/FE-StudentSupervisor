@@ -48,12 +48,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'name',
+                            key: 'studentName',
                             title: 'Name',
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'code',
+                            key: 'studentCode',
                             title: 'Code',
                             type: FieldType.TEXT,
                         },
@@ -114,12 +114,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             }}
                                             fields={[
                                                 {
-                                                    name: 'name',
+                                                    name: 'studentName',
                                                     type: NKFormType.TEXT,
                                                     label: 'Name',
                                                 },
                                                 {
-                                                    name: 'code',
+                                                    name: 'studentCode',
                                                     type: NKFormType.TEXT,
                                                     label: 'Code',
                                                 },
@@ -140,8 +140,11 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 },
                                                 {
                                                     name: 'status',
-                                                    type: NKFormType.TEXT,
                                                     label: 'Status',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: disciplineApi.getEnumStatuses,
+                                                    },
                                                 },
                                                 {
                                                     name: 'violationId',
@@ -162,11 +165,11 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             ]}
                                             title=""
                                             schema={{
-                                                code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 disciplineId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 pennaltyId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -217,7 +220,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         {
                             label: 'Name',
                             comparator: FilterComparator.LIKE,
-                            name: 'name',
+                            name: 'studentName',
                             type: NKFormType.TEXT,
                         },
                         {
@@ -250,12 +253,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         }
                                         fields={[
                                             {
-                                                name: 'name',
+                                                name: 'studentName',
                                                 type: NKFormType.TEXT,
                                                 label: 'Name',
                                             },
                                             {
-                                                name: 'code',
+                                                name: 'studentCode',
                                                 type: NKFormType.TEXT,
                                                 label: 'Code',
                                             },
@@ -294,9 +297,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         title=""
                                         schema={{
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             pennaltyId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                             violationId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -312,11 +315,11 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             toast.success('Create discipline successfully');
                                         }}
                                         defaultValues={{
-                                            code: '',
+                                            studentCode: '',
                                             description: '',
                                             endDate: moment(new Date()).add(1, 'days').toDate(),
                                             startDate: new Date(),
-                                            name: '',
+                                            studentName: '',
                                             violationId: 0,
                                             pennaltyId: 0,
                                         }}

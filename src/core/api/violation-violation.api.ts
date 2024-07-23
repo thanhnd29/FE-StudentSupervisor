@@ -13,7 +13,6 @@ const baseUrl = '/violation-configs';
 export const violationConfigApi = {
     create: async (dto: ICreateViolationConfigDto) => {
         const { data } = await http.post<ViolationConfig>(`${baseUrl}`, {
-            minusPoints: dto.evaluationId,
             ...dto
         });
 
@@ -51,10 +50,10 @@ export const violationConfigApi = {
 
         const list: EnumListItem[] = violationConfigs.map((item) => ({
             id: item.violationConfigId,
-            label: item.violationConfigName,
+            label: item.violationConfigId.toString(),
             color: getColorWithId(item.violationConfigId),
-            slug: item.violationConfigName,
-            name: item.violationConfigName,
+            slug: item.violationConfigId.toString(),
+            name: item.violationConfigId.toString(),
             value: item.violationConfigId,
         }));
 

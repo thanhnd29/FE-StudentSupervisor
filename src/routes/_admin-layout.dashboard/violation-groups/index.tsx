@@ -22,8 +22,9 @@ import { toastError } from '@/core/utils/api.helper';
 import { RootState } from '@/core/store';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
+import { highSchoolApi } from '@/core/api/high-school.api';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
@@ -48,6 +49,21 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
+                            key: 'vioGroupName',
+                            title: 'Name',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'vioGroupCode',
+                            title: 'Code',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'schoolName',
+                            title: 'School Name',
+                            type: FieldType.TEXT,
+                        },
+                        {
                             key: 'description',
                             title: 'Description',
                             type: FieldType.MULTILINE_TEXT,
@@ -56,9 +72,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                         {
-                            key: 'vioGroupName',
-                            title: 'Name',
-                            type: FieldType.TEXT,
+                            key: 'status',
+                            title: 'Status',
+                            type: FieldType.BADGE_API,
+                            apiAction: violationGroupApi.getEnumStatuses,
                         },
                     ]}
                     queryApi={schoolId ? () => violationGroupApi.getBySchool(schoolId) : violationGroupApi.getAll}
@@ -115,13 +132,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             className="!p-0"
                                             apiAction={(dto) => violationGroupApi.update(record.violationGroupId, dto)}
                                             defaultValues={{
-                                                code: record.code,
+                                                vioGroupCode: record.vioGroupCode,
                                                 vioGroupName: record.vioGroupName,
                                                 description: record.description,
                                             }}
                                             fields={[
                                                 {
-                                                    name: 'code',
+                                                    name: 'vioGroupCode',
                                                     label: 'Code',
                                                     type: NKFormType.TEXT,
                                                 },
@@ -138,7 +155,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             ]}
                                             title=""
                                             schema={{
-                                                code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                vioGroupCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 vioGroupName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 description: Joi.string().allow('').optional().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
@@ -203,7 +220,15 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         apiAction={violationGroupApi.create}
                                         fields={[
                                             {
-                                                name: 'code',
+                                                name: 'schoolId',
+                                                label: 'School',
+                                                type: NKFormType.SELECT_API_OPTION,
+                                                fieldProps: {
+                                                    apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                },
+                                            },
+                                            {
+                                                name: 'vioGroupCode',
                                                 label: 'Code',
                                                 type: NKFormType.TEXT,
                                             },
@@ -220,9 +245,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         ]}
                                         title=""
                                         schema={{
-                                            code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            vioGroupCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             vioGroupName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             description: Joi.string().allow('').optional().messages(NKConstant.MESSAGE_FORMAT),
+                                            schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
                                         onExtraSuccessAction={() => {
@@ -233,9 +259,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             toast.success('Create violation group successfully');
                                         }}
                                         defaultValues={{
-                                            code: '',
+                                            vioGroupCode: '',
                                             vioGroupName: '',
                                             description: '',
+                                            schoolId: 0,
                                         }}
                                     />
                                 );

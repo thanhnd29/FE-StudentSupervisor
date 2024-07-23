@@ -21,8 +21,10 @@ import { toastError } from '@/core/utils/api.helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
+import { studentInClassApi } from '@/core/api/student-in-class.api';
+import { highSchoolApi } from '@/core/api/high-school.api';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
@@ -45,18 +47,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'supervisorCode',
+                            key: 'code',
                             title: 'Supervisor Code',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'supervisorName',
                             title: 'Name',
-                            type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'userCode',
-                            title: 'User Code',
                             type: FieldType.TEXT,
                         },
                         {
@@ -73,6 +70,22 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                             formatter(value) {
                                 return value || 'N/A';
+                            },
+                        },
+                        {
+                            key: 'description',
+                            title: 'Description',
+                            type: FieldType.TEXT,
+                            formatter(value) {
+                                return value || 'N/A';
+                            },
+                        },
+                        {
+                            key: 'password',
+                            title: 'Password',
+                            type: FieldType.TEXT,
+                            formatter(value) {
+                                return "***********";
                             },
                         },
                         {
@@ -105,26 +118,33 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 description: record.description,
                                                 password: record.password,
                                                 phone: record.phone,
-                                                schoolAdminId: record.schoolAdminId,
-                                                supervisorCode: record.supervisorCode,
+                                                code: record.code,
                                                 supervisorName: record.supervisorName,
-                                                userCode: record.userCode,
+                                                schoolId: schoolId,
+                                                studentInClassId: record.studentInClassId,
                                             }}
                                             fields={[
+                                                {
+                                                    label: 'Student',
+                                                    name: 'studentInClassId',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: (value) =>
+                                                            studentInClassApi.getEnumSelectOptions({
+                                                                search: value,
+                                                            }),
+                                                        readonly: true
+                                                    },
+                                                },
                                                 {
                                                     name: 'supervisorName',
                                                     type: NKFormType.TEXT,
                                                     label: 'Name',
                                                 },
                                                 {
-                                                    name: 'supervisorCode',
+                                                    name: 'code',
                                                     type: NKFormType.TEXT,
                                                     label: 'Code',
-                                                },
-                                                {
-                                                    name: 'userCode',
-                                                    type: NKFormType.TEXT,
-                                                    label: 'User Code',
                                                 },
                                                 {
                                                     name: 'description',
@@ -147,11 +167,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     label: 'Password',
                                                 },
                                                 {
-                                                    name: 'schoolAdminId',
+                                                    name: 'schoolId',
+                                                    label: 'School',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'School Admin',
                                                     fieldProps: {
-                                                        apiAction: (value) => schoolAdminApi.getEnumSelectOptions(value),
+                                                        apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                        readonly: true
                                                     },
                                                 },
                                             ]}
@@ -161,10 +182,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                schoolAdminId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                supervisorCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 supervisorName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                userCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={() => {
@@ -215,19 +236,25 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         apiAction={studentSupervisorApi.create}
                                         fields={[
                                             {
+                                                label: 'Student',
+                                                name: 'studentInClassId',
+                                                type: NKFormType.SELECT_API_OPTION,
+                                                fieldProps: {
+                                                    apiAction: (value) =>
+                                                        studentInClassApi.getEnumSelectOptions({
+                                                            search: value,
+                                                        }),
+                                                },
+                                            },
+                                            {
                                                 name: 'supervisorName',
                                                 type: NKFormType.TEXT,
                                                 label: 'Name',
                                             },
                                             {
-                                                name: 'supervisorCode',
+                                                name: 'code',
                                                 type: NKFormType.TEXT,
                                                 label: 'Code',
-                                            },
-                                            {
-                                                name: 'userCode',
-                                                type: NKFormType.TEXT,
-                                                label: 'User Code',
                                             },
                                             {
                                                 name: 'description',
@@ -250,11 +277,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 label: 'Password',
                                             },
                                             {
-                                                name: 'schoolAdminId',
+                                                name: 'schoolId',
+                                                label: 'School',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'School Admin',
                                                 fieldProps: {
-                                                    apiAction: (value) => schoolAdminApi.getEnumSelectOptions(value),
+                                                    apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                    readonly: true
                                                 },
                                             },
                                         ]}
@@ -264,10 +292,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            schoolAdminId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            supervisorCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             supervisorName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            userCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
                                         onExtraSuccessAction={() => {
@@ -284,10 +312,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             description: '',
                                             password: '',
                                             phone: '',
-                                            supervisorCode: '',
-                                            schoolAdminId: 0,
+                                            code: '',
                                             supervisorName: '',
-                                            userCode: '',
+                                            schoolId: schoolId || 0,
+                                            studentInClassId: 0,
                                         }}
                                         isDebug
                                     />

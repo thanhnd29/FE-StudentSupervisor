@@ -1,6 +1,14 @@
 export interface ViolationGroup {
     violationGroupId: number;
-    code: string | null;
+    schoolId: number;
+    schoolName: string;
+    vioGroupCode: string | null;
     vioGroupName: string;
     description: string | null;
+    status: string;
+}
+
+export enum ViolationGroupStatus {
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
 }

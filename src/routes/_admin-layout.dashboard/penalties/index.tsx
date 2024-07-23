@@ -21,7 +21,7 @@ import { RootState } from '@/core/store';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
@@ -123,6 +123,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     label: 'School',
                                                     fieldProps: {
                                                         apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                        readonly: true,
                                                     },
                                                 },
                                             ]}
@@ -203,6 +204,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 label: 'School',
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                    readonly: true,
                                                 },
                                             },
                                         ]}
@@ -227,7 +229,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             code: '',
                                             description: '',
                                             name: '',
-                                            schoolId: 0,
+                                            schoolId: schoolId || 0,
                                         }}
                                     />
                                 );
