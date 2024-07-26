@@ -132,11 +132,21 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             className="!p-0"
                                             apiAction={(dto) => violationGroupApi.update(record.violationGroupId, dto)}
                                             defaultValues={{
+                                                schoolId: schoolId,
                                                 vioGroupCode: record.vioGroupCode,
                                                 vioGroupName: record.vioGroupName,
                                                 description: record.description,
                                             }}
                                             fields={[
+                                                {
+                                                    name: 'schoolId',
+                                                    label: 'School',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                        readonly: true
+                                                    },
+                                                },
                                                 {
                                                     name: 'vioGroupCode',
                                                     label: 'Code',
@@ -155,6 +165,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             ]}
                                             title=""
                                             schema={{
+                                                schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 vioGroupCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 vioGroupName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 description: Joi.string().allow('').optional().messages(NKConstant.MESSAGE_FORMAT),
@@ -225,6 +236,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                    readonly: true
                                                 },
                                             },
                                             {
@@ -262,7 +274,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             vioGroupCode: '',
                                             vioGroupName: '',
                                             description: '',
-                                            schoolId: 0,
+                                            schoolId: schoolId || 0,
                                         }}
                                     />
                                 );

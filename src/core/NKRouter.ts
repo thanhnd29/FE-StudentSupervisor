@@ -88,6 +88,14 @@ export const NKRouter = {
         edit: (id: number) => `/dashboard/violation-configs/${id}/edit`,
         detail: (id: number) => `/dashboard/violation-configs/${id}`,
     },
+    violationTop: {
+        inWeek: () => '/dashboard/violation-tops/violation-in-week',
+        inClass: () => '/dashboard/violation-tops/violation-in-class',
+        inYear: () => '/dashboard/violation-tops/violation-in-year',
+        topClass: () => '/dashboard/violation-tops/violation-top-class',
+        topStudent: () => '/dashboard/violation-tops/violation-top-student',
+        topStudentInClass: () => '/dashboard/violation-tops/violation-top-studentInClass',
+    },
     yearPackage: {
         list: () => '/dashboard/year-packages',
         create: () => '/dashboard/year-packages/create',

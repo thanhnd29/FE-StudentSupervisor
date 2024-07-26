@@ -58,7 +58,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'schoolId',
-                            title: 'Class',
+                            title: 'School Name',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return highSchoolApi.getEnumSelectOptions(value);

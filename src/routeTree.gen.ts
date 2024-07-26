@@ -42,6 +42,12 @@ import { Route as AdminLayoutDashboardClassesIndexImport } from './routes/_admin
 import { Route as AdminLayoutDashboardClassGroupIndexImport } from './routes/_admin-layout.dashboard/class-group/index'
 import { Route as AdminLayoutDashboardViolationsCreateSupervisorImport } from './routes/_admin-layout.dashboard/violations/create-supervisor'
 import { Route as AdminLayoutDashboardViolationsCreateStudentImport } from './routes/_admin-layout.dashboard/violations/create-student'
+import { Route as AdminLayoutDashboardViolationTopsViolationTopStudentInClassImport } from './routes/_admin-layout.dashboard/violation-tops/violation-top-studentInClass'
+import { Route as AdminLayoutDashboardViolationTopsViolationTopStudentImport } from './routes/_admin-layout.dashboard/violation-tops/violation-top-student'
+import { Route as AdminLayoutDashboardViolationTopsViolationTopClassImport } from './routes/_admin-layout.dashboard/violation-tops/violation-top-class'
+import { Route as AdminLayoutDashboardViolationTopsViolationInYearImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-year'
+import { Route as AdminLayoutDashboardViolationTopsViolationInWeekImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-week'
+import { Route as AdminLayoutDashboardViolationTopsViolationInClassImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-class'
 import { Route as AdminLayoutDashboardPackagesBuyPackagesImport } from './routes/_admin-layout.dashboard/packages/buy-packages'
 import { Route as AdminLayoutDashboardHighSchoolIdImport } from './routes/_admin-layout.dashboard/high-school/$id'
 import { Route as AdminLayoutDashboardClassesIdImport } from './routes/_admin-layout.dashboard/classes/$id'
@@ -234,6 +240,42 @@ const AdminLayoutDashboardViolationsCreateStudentRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute =
+  AdminLayoutDashboardViolationTopsViolationTopStudentInClassImport.update({
+    path: '/dashboard/violation-tops/violation-top-studentInClass',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardViolationTopsViolationTopStudentRoute =
+  AdminLayoutDashboardViolationTopsViolationTopStudentImport.update({
+    path: '/dashboard/violation-tops/violation-top-student',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardViolationTopsViolationTopClassRoute =
+  AdminLayoutDashboardViolationTopsViolationTopClassImport.update({
+    path: '/dashboard/violation-tops/violation-top-class',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardViolationTopsViolationInYearRoute =
+  AdminLayoutDashboardViolationTopsViolationInYearImport.update({
+    path: '/dashboard/violation-tops/violation-in-year',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardViolationTopsViolationInWeekRoute =
+  AdminLayoutDashboardViolationTopsViolationInWeekImport.update({
+    path: '/dashboard/violation-tops/violation-in-week',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardViolationTopsViolationInClassRoute =
+  AdminLayoutDashboardViolationTopsViolationInClassImport.update({
+    path: '/dashboard/violation-tops/violation-in-class',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardPackagesBuyPackagesRoute =
   AdminLayoutDashboardPackagesBuyPackagesImport.update({
     path: '/dashboard/packages/buy-packages',
@@ -318,6 +360,30 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/packages/buy-packages': {
       preLoaderRoute: typeof AdminLayoutDashboardPackagesBuyPackagesImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/violation-tops/violation-in-class': {
+      preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationInClassImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/violation-tops/violation-in-week': {
+      preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationInWeekImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/violation-tops/violation-in-year': {
+      preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationInYearImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/violation-tops/violation-top-class': {
+      preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationTopClassImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/violation-tops/violation-top-student': {
+      preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationTopStudentImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/violation-tops/violation-top-studentInClass': {
+      preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationTopStudentInClassImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/create-student': {
@@ -448,6 +514,12 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardClassesIdRoute,
     AdminLayoutDashboardHighSchoolIdRoute,
     AdminLayoutDashboardPackagesBuyPackagesRoute,
+    AdminLayoutDashboardViolationTopsViolationInClassRoute,
+    AdminLayoutDashboardViolationTopsViolationInWeekRoute,
+    AdminLayoutDashboardViolationTopsViolationInYearRoute,
+    AdminLayoutDashboardViolationTopsViolationTopClassRoute,
+    AdminLayoutDashboardViolationTopsViolationTopStudentRoute,
+    AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute,
     AdminLayoutDashboardViolationsCreateStudentRoute,
     AdminLayoutDashboardViolationsCreateSupervisorRoute,
     AdminLayoutDashboardClassGroupIndexRoute,

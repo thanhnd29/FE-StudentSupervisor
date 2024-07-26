@@ -12,9 +12,16 @@ import { violationTypeApi } from '@/core/api/violation-type.api';
 import { violationsApi } from '@/core/api/violation.api';
 import FormBuilder from '@/core/components/form/FormBuilder';
 import { NKFormType } from '@/core/components/form/NKForm';
+import { RootState } from '@/core/store';
+import { useSelector } from 'react-redux';
+import { UserState } from '@/core/store/user';
 
 const Page = () => {
     const { id } = Route.useParams();
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+        (state: RootState) => state.user,
+    );
+
     const violationQuery = useQuery({
         queryKey: ['violation', id],
         queryFn: () => {
@@ -104,7 +111,7 @@ const Page = () => {
                         label: 'Violation Type',
                         type: NKFormType.SELECT_API_OPTION,
                         fieldProps: {
-                            apiAction: (value) => violationTypeApi.getEnumSelectOptions(value),
+                            apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
                         },
                     },
                     {

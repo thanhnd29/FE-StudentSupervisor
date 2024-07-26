@@ -63,7 +63,7 @@ const Page = () => {
                 },
                 {
                     key: 'classId',
-                    title: 'School',
+                    title: 'Class',
                     type: FieldType.BADGE_API,
                     apiAction(value) {
                         return classApi.getEnumSelectOptions(value);

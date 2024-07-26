@@ -14,7 +14,7 @@ import {
     Ungroup,
     UsersRound,
     Waves,
-    ShoppingCart 
+    ShoppingCart
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 
@@ -87,12 +87,60 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
 
     const SupervisorMenu = [
         {
-            label: 'Violations',
-            key: 'violations',
-            onClick: () => {
-                router.push(NKRouter.violations.list());
-            },
+            label: 'Violation',
+            key: 'violation',
             icon: <Group className="h-4 w-4" />,
+            children: [
+                {
+                    label: 'Violations',
+                    key: 'violations',
+                    onClick: () => {
+                        router.push(NKRouter.violations.list());
+                    },
+                },
+                {
+                    label: 'Violation in week',
+                    key: 'violation-in-week',
+                    onClick: () => {
+                        router.push(NKRouter.violationTop.inWeek());
+                    },
+                },
+                {
+                    label: 'Violation in class',
+                    key: 'violation-in-class',
+                    onClick: () => {
+                        router.push(NKRouter.violationTop.inClass());
+                    },
+                },
+                {
+                    label: 'Violation in year',
+                    key: 'violation-in-year',
+                    onClick: () => {
+                        router.push(NKRouter.violationTop.inYear());
+                    },
+                },
+                {
+                    label: 'Violation top class',
+                    key: 'violation-top-class',
+                    onClick: () => {
+                        router.push(NKRouter.violationTop.topClass());
+                    },
+                },
+                {
+                    label: 'Violation top student',
+                    key: 'violation-top-student',
+                    onClick: () => {
+                        router.push(NKRouter.violationTop.topStudent());
+                    },
+                },
+                {
+                    label: 'Violation top studentInClass',
+                    key: 'violation-top-studentInClass',
+                    onClick: () => {
+                        router.push(NKRouter.violationTop.topStudentInClass());
+                    },
+                },
+            ]
         },
         {
             key: 'disciplines',

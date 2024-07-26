@@ -96,7 +96,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             title: 'Type',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
-                                return violationTypeApi.getEnumSelectOptions(value);
+                                return violationTypeApi.getEnumSelectOptions(schoolId, value);
                             },
                         },
                     ]}

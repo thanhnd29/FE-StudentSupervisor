@@ -23,7 +23,7 @@ import { toastError } from '@/core/utils/api.helper';
 const Page = () => {
     const router = useNKRouter();
     const [classId, setClassId] = useState(0);
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolAdminId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolAdminId, schoolId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
@@ -101,7 +101,7 @@ const Page = () => {
                         label: 'Violation Type',
                         type: NKFormType.SELECT_API_OPTION,
                         fieldProps: {
-                            apiAction: (value) => violationTypeApi.getEnumSelectOptions(value),
+                            apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
                         },
                     },
                     {

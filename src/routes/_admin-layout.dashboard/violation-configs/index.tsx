@@ -105,7 +105,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     label: 'Type',
                                                     fieldProps: {
-                                                        apiAction: (value) => violationTypeApi.getEnumSelectOptions(value),
+                                                        apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
                                                     },
                                                 },
                                             ]}
@@ -184,7 +184,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 label: 'Type',
                                                 fieldProps: {
-                                                    apiAction: (value) => violationTypeApi.getEnumSelectOptions(value),
+                                                    apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
                                                 },
                                             },
                                         ]}

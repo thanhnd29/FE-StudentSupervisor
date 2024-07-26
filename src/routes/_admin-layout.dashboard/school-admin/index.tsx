@@ -77,6 +77,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             apiAction: async (value) => RoleList,
                         },
                         {
+                            key: 'status',
+                            title: 'Status',
+                            type: FieldType.BADGE_API,
+                            apiAction: userApi.getEnumStatuses,
+                        },
+                        {
                             key: 'schoolName',
                             title: 'School',
                             type: FieldType.TEXT,
@@ -262,7 +268,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             },
                                             {
                                                 name: 'phone',
-                                                label: 'Phone',
+                                                label: 'Phone (*Nếu số điện thoại là 0xx thì nhập là 84xx)',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
