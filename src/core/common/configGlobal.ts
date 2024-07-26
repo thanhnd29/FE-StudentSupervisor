@@ -4942,3 +4942,17 @@ export const violationsApi = {
         return list;
     },
 };
+
+
+{
+    color: Colors.PINK,
+    id: ViolationStatus.PENDING,
+    label: 'Pending',
+    name: 'Pending',
+    slug: ViolationStatus.PENDING,
+    value: ViolationStatus.PENDING,
+},
+];
+
+return list;
+},
