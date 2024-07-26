@@ -1199,6 +1199,26 @@ export const patrolScheduleApi = {
 
 
 
+getEnumStatuses: async (search?: string) => {
+    return [
+        {
+            color: Colors.YELLOW,
+            id: PatrolScheduleStatus.ONGOING,
+            label: 'Ongoing',
+            name: 'Ongoing',
+            slug: 'ongoing',
+            value: PatrolScheduleStatus.ONGOING,
+        },
+        {
+            color: Colors.GREEN,
+            id: PatrolScheduleStatus.FINISHED,
+            label: 'Finished',
+            name: 'Finished',
+            slug: 'finished',
+            value: PatrolScheduleStatus.FINISHED,
+        },
+    ] as EnumListItem[];
+},
 
 
 
