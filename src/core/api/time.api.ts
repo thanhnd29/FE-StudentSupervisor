@@ -77,3 +77,22 @@ export const timeApi = {
     },
 };
 
+export const timeApi = {
+    getAll: async () => {
+        const { data } = await http.get<ResponseList<Time>>(`${baseUrl}`, {
+            params: {
+                sortOrder: 'desc',
+            },
+        });
+
+        return data.data ? data.data : [];
+    },
+    getById: async (id: number) => {
+        const { data } = await http.get<BaseResponse<Time>>(`${baseUrl}/${id}`);
+
+        return data;
+    },
+    delete: async (id: number) => {
+        await http.delete(`${baseUrl}/${id}`);
+    },
+};
