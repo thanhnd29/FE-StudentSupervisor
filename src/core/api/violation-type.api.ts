@@ -176,3 +176,25 @@ export const violationTypeApi = {
         return list;
     },
 };
+
+
+getEnumStatuses: async (search?: string) => {
+    const list: EnumListItem[] = [
+        {
+            color: Colors.GREEN,
+            id: ViolationTypeStatus.ACTIVE,
+            label: 'Active',
+            name: 'Active',
+            slug: ViolationTypeStatus.ACTIVE,
+            value: ViolationTypeStatus.ACTIVE,
+        },
+        {
+            color: Colors.RED,
+            id: ViolationTypeStatus.INACTIVE,
+            label: 'Inactive',
+            name: 'Inactive',
+            slug: ViolationTypeStatus.INACTIVE,
+            value: ViolationTypeStatus.INACTIVE,
+        },
+    ];
+
