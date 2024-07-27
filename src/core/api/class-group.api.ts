@@ -109,4 +109,26 @@ export const classGroupApi = {
 
         return list;
     },
+
+    for (const classGroup of classGroups) {
+        if (classGroup.status === ClassGroupStatus.INACTIVE) {
+            continue;
+        }
+
+        list.push({
+            value: classGroup.classGroupId,
+            color: getColorWithUuId(classGroup.classGroupId.toString()),
+            id: classGroup.classGroupId,
+            label: classGroup.classGroupName,
+            name: classGroup.classGroupName,
+            slug: classGroup.classGroupName,
+        });
+    }
+
+    if (search) {
+        return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
+    }
+
+    return list;
+},
 };
