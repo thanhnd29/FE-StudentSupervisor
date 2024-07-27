@@ -62,4 +62,25 @@ export const classApi = {
 
         return list;
     },
+
+    getEnumSelectOptions: async (search?: string) => {
+        const classes = await classApi.getAll();
+
+        const list: EnumListItem[] = classes
+            .map((item) => ({
+                id: item.classId,
+                label: item.name,
+                color: getColorWithId(item.classId),
+                slug: item.name,
+                name: item.name,
+                value: item.classId,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+
+        if (search) {
+            return list.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
+        }
+
+        return list;
+    },
 };
