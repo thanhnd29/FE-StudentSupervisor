@@ -41,6 +41,19 @@ export const schoolAdminApi = {
             };
         });
 
+        const list: EnumListItem[] = schoolAdmins.map((item) => {
+            const label = `${item.adminName} - ${item.schoolName}`;
+            return {
+                id: item.schoolAdminId,
+                label,
+                color: getColorWithId(item.schoolAdminId),
+                slug: label,
+                name: label,
+                value: item.schoolAdminId,
+            };
+        });
+
+
         if (search) {
             return list.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
         }
