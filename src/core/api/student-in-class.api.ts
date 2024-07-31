@@ -185,4 +185,17 @@ export const studentInClassApi = {
 },
 };
 
+
+
+{
+    color: Colors.RED,
+    id: StudentInClassStatus.UNENROLLED,
+    label: 'Unenrolled',
+    name: 'Unenrolled',
+    slug: 'Unenrolled',
+    value: StudentInClassStatus.UNENROLLED,
+},
+] as EnumListItem[];
+},
+};
 };
