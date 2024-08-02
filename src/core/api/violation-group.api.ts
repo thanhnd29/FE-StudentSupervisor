@@ -186,4 +186,13 @@ export const violationGroupApi = {
     },
 };
 
+create: async (dto: ICreateViolationGroupDto) => {
+    const { data } = await http.post<ViolationGroup>(`${baseUrl}`, dto);
+
+    console.log(data);
+
+
+    return data;
+},
+
 };
