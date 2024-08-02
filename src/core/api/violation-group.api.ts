@@ -153,6 +153,11 @@ export const violationGroupApi = {
             {
                 return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
             }
+
+            if (search) {
+                {
+                    return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
+                }
         }
 
         return list;
