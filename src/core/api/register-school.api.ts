@@ -64,15 +64,6 @@ export const registerSchoolApi = {
                 name: 'Inactive',
                 slug: RegisterSchoolStatus.INACTIVE,
             },
-
-            {
-                value: RegisterSchoolStatus.INACTIVE,
-                color: Colors.RED,
-                label: 'Inactive',
-                id: RegisterSchoolStatus.INACTIVE,
-                name: 'Inactive',
-                slug: RegisterSchoolStatus.INACTIVE,
-            },
         ] as EnumListItem[];
     },
 };

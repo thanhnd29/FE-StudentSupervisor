@@ -10,29 +10,3 @@ export const queryClient = new QueryClient({
         },
     },
 });
-
-'use client';
-
-import { QueryClient } from '@tanstack/react-query';
-
-export const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
-        },
-    },
-});
-
-'use client';
-
-import { QueryClient } from '@tanstack/react-query';
-
-export const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
-        },
-    },
-});

@@ -82,27 +82,4 @@ export const teacherApi = {
 
         return list;
     },
-
-    getEnumStatuses: async (search?: string) => {
-        const list: EnumListItem[] = [
-            {
-                color: Colors.GREEN,
-                id: TeacherStatus.ACTIVE,
-                label: 'Active',
-                name: 'Active',
-                slug: TeacherStatus.ACTIVE,
-                value: TeacherStatus.ACTIVE,
-            },
-            {
-                color: Colors.RED,
-                id: TeacherStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
-                slug: TeacherStatus.INACTIVE,
-                value: TeacherStatus.INACTIVE,
-            },
-        ];
-
-        return list;
-    },
 };
