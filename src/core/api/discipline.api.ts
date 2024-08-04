@@ -108,5 +108,21 @@ export const disciplineApi = {
         ];
 
         return list;
+
+        {
+            color: Colors.ORANGE,
+            id: DisciplineStatus.COMPLAIN,
+            label: 'Complain',
+            name: 'Complain',
+            slug: DisciplineStatus.COMPLAIN,
+            value: DisciplineStatus.COMPLAIN,
+        },
+        {
+            color: Colors.YELLOW,
+            id: DisciplineStatus.FINALIZED,
+            label: 'Finalized',
+            name: 'Finalized',
+            slug: DisciplineStatus.FINALIZED,
+            value: DisciplineStatus.FINALIZED,
     },
 };
