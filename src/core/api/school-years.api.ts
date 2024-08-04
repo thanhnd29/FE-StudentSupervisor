@@ -1,5 +1,7 @@
 import { EnumListItem, ResponseList } from '../models/common';
+import { SchoolYear, SchoolYearStatus } from '../models/schoolYears';
 import { getColorWithUuId } from '../utils/api.helper';
+import { Colors } from '../utils/colors.helper';
 import http from './http';
 
 export interface ICreateSchoolYearDto extends Pick<SchoolYear, 'schoolId' | 'year' | 'startDate' | 'endDate'> {}
@@ -59,5 +61,33 @@ export const schoolYearApi = {
         }
 
         return list;
+    },
+    getEnumStatuses: async (search?: string) => {
+        return [
+            {
+                color: Colors.GREEN,
+                id: SchoolYearStatus.ONGOING,
+                label: 'Ongoing',
+                name: 'Ongoing',
+                slug: 'Ongoing',
+                value: SchoolYearStatus.ONGOING,
+            },
+            {
+                color: Colors.RED,
+                id: SchoolYearStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: 'Inactive',
+                value: SchoolYearStatus.INACTIVE,
+            },
+            {
+                color: Colors.BLUE,
+                id: SchoolYearStatus.FINISHED,
+                label: 'Finished',
+                name: 'Finished',
+                slug: 'Finished',
+                value: SchoolYearStatus.FINISHED,
+            },
+        ] as EnumListItem[];
     },
 };

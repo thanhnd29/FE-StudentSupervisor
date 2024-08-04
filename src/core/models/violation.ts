@@ -14,10 +14,12 @@ export interface Violation {
     imageUrls: string[];
     studentInClassId: number;
     studentName: string;
+    studentCode: string;
     violationTypeName: string;
     violationGroupId: number;
     violationGroupName: string;
     status: string;
+    year: string;
 }
 
 export enum ViolationStatus {
@@ -25,4 +27,6 @@ export enum ViolationStatus {
     APPROVED = 'APPROVED',
     REJECTED = 'REJECTED',
     INACTIVE = 'INACTIVE',
+    DISCUSSING = 'DISCUSSING',
+    COMPLETED = 'COMPLETED'
 }

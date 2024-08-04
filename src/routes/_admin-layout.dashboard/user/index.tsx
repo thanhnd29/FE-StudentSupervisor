@@ -201,12 +201,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['account'],
                                                 });
                                                 close();
-                                                toast.success('Update account successfully');
+                                                toast.success(data.message || 'Successful');
                                             }}
                                         />
                                     );
@@ -217,12 +217,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 isConfirm
                                 confirmMessage="Are you sure you want to delete this account?"
                                 extraOnError={toastError}
-                                extraOnSuccess={() => {
+                                extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
                                         queryKey: ['account'],
                                     });
 
-                                    toast.success('Delete account successfully');
+                                    toast.success(data.message || 'Successful');
                                 }}
                             >
                                 <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
@@ -325,12 +325,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={() => {
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['account'],
                                             });
                                             close();
-                                            toast.success('Create account successfully');
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         defaultValues={{
                                             name: '',

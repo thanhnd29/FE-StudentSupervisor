@@ -111,12 +111,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     isConfirm
                                     confirmMessage="Are you sure you want to delete this teacher?"
                                     extraOnError={toastError}
-                                    extraOnSuccess={() => {
+                                    extraOnSuccess={(data) => {
                                         queryClient.invalidateQueries({
                                             queryKey: ['teacher-list'],
                                         });
 
-                                        toast.success('Delete teacher successfully');
+                                        toast.success(data.message || 'Successful');
                                     }}
                                 >
                                     <Button
@@ -224,14 +224,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 //     },
                                                 // },
                                             ]}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['teacher-list'],
                                                 });
 
-                                                toast.success('Create teacher successfully');
-
                                                 close();
+
+                                                toast.success(data.message || 'Successful');
                                             }}
                                             onExtraErrorAction={toastError}
                                         />
@@ -334,14 +334,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 //     },
                                                 // },
                                             ]}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['teacher-list'],
                                                 });
 
-                                                toast.success('Create teacher successfully');
-
                                                 close();
+
+                                                toast.success(data.message || 'Successful');
                                             }}
                                             onExtraErrorAction={toastError}
                                         />

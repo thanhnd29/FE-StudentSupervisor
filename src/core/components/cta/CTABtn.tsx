@@ -26,12 +26,15 @@ const CTAButton: React.FC<CTAButtonProps> = ({
 }) => {
     const ctaMutation = useMutation({
         mutationFn: ctaApi,
-        onSuccess: (data) => {
-            extraOnSuccess && extraOnSuccess(data);
+        onSuccess: (data: any) => {
+            if (data.success) {
+                extraOnSuccess?.(data);
+            } else {
+                extraOnError?.(data);
+            }
         },
         onError: (error: any) => {
-            console.log('error', error);
-            extraOnError && extraOnError(error);
+            extraOnError?.(error);
         },
     });
 

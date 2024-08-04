@@ -77,7 +77,11 @@ const FormBuilder = <T,>({
     const mutate = useMutation({
         mutationFn: apiAction,
         onSuccess: (data: any) => {
-            onExtraSuccessAction?.(data);
+            if (data.success) {
+                onExtraSuccessAction?.(data);
+            } else {
+                onExtraErrorAction?.(data);
+            }
         },
         onError: (error: any) => {
             onExtraErrorAction?.(error);

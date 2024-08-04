@@ -57,6 +57,11 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
+                            key: 'studentCode',
+                            title: 'Code',
+                            type: FieldType.TEXT,
+                        },
+                        {
                             key: 'studentName',
                             title: 'Student',
                             type: FieldType.TEXT,
@@ -66,7 +71,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             title: 'Name',
                             type: FieldType.TEXT,
                         },
-
                         {
                             key: 'date',
                             title: 'Date',
@@ -86,59 +90,127 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
+                            key: 'year',
+                            title: 'Year',
+                            type: FieldType.TEXT,
+                        },
+                        {
                             key: 'status',
                             title: 'Status',
                             type: FieldType.BADGE_API,
                             apiAction: violationsApi.getEnumStatuses,
                         },
-                        {
-                            key: 'violationTypeId',
-                            title: 'Type',
-                            type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return violationTypeApi.getEnumSelectOptions(schoolId, value);
-                            },
-                        },
+                        // {
+                        //     key: 'violationTypeId',
+                        //     title: 'Type',
+                        //     type: FieldType.BADGE_API,
+                        //     apiAction(value) {
+                        //         return violationTypeApi.getEnumSelectOptions(schoolId, value);
+                        //     },
+                        // },
                     ]}
                     queryApi={getClass}
                     actionColumns={(record) => (
-                        <div className="flex flex-col gap-2">
-                            <Button
-                                icon={<EyeOutlined />}
-                                type="primary"
-                                size="small"
-                                onClick={() => {
-                                    router.push(NKRouter.violations.detail(record.violationId));
-                                }}
-                            />
-                            {!isSchoolAdmin && (
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="col-span-1">
                                 <Button
-                                    icon={<EditOutlined />}
+                                    icon={<EyeOutlined />}
+                                    type="primary"
                                     size="small"
                                     onClick={() => {
-                                        router.push(NKRouter.violations.edit(record.violationId));
+                                        router.push(NKRouter.violations.detail(record.violationId));
                                     }}
                                 />
+                            </div>
+                            {!isSchoolAdmin && (
+                                <div className="col-span-1">
+                                    <Button
+                                        icon={<EditOutlined />}
+                                        size="small"
+                                        onClick={() => {
+                                            router.push(NKRouter.violations.edit(record.violationId));
+                                        }}
+                                    />
+                                </div>
                             )}
                             {!isSchoolAdmin && (
+                                <div className="col-span-1">
+                                    <CTAButton
+                                        ctaApi={() => violationTypeApi.delete(record.violationTypeId)}
+                                        isConfirm
+                                        confirmMessage="Are you sure you want to delete this violation type?"
+                                        extraOnError={toastError}
+                                        extraOnSuccess={(data) => {
+                                            queryClient.invalidateQueries({
+                                                queryKey: ['violation-types'],
+                                            });
+
+                                            toast.success(data.message || 'Successful');
+                                        }}
+                                    >
+                                        <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
+                                            <Trash className="h-4 w-4" />
+                                        </Button>
+                                    </CTAButton>
+                                </div>
+                            )}
+                            <div className="col-span-1">
                                 <CTAButton
-                                    ctaApi={() => violationTypeApi.delete(record.violationTypeId)}
+                                    ctaApi={() => violationsApi.approve(record.violationTypeId)}
                                     isConfirm
-                                    confirmMessage="Are you sure you want to delete this violation type?"
+                                    confirmMessage="Are you sure you want to approve this violation?"
                                     extraOnError={toastError}
-                                    extraOnSuccess={() => {
+                                    extraOnSuccess={(data) => {
                                         queryClient.invalidateQueries({
                                             queryKey: ['violation-types'],
                                         });
 
-                                        toast.success('Delete violation type successfully');
+                                        toast.success(data.message || 'Successful');
+                                    }}
+                                >
+                                    <Button className="flex h-6 w-6 items-center justify-center p-0" type="primary" size="small">
+                                        A
+                                    </Button>
+                                </CTAButton>
+                            </div>
+                            <div className="col-span-1">
+                                <CTAButton
+                                    ctaApi={() => violationsApi.complete(record.violationTypeId)}
+                                    isConfirm
+                                    confirmMessage="Are you sure you want to complete this violation?"
+                                    extraOnError={toastError}
+                                    extraOnSuccess={(data) => {
+                                        queryClient.invalidateQueries({
+                                            queryKey: ['violation-types'],
+                                        });
+
+                                        toast.success(data.message || 'Successful');
+                                    }}
+                                >
+                                    <Button className="flex h-6 w-6 items-center justify-center p-0" type="default" size="small">
+                                        C
+                                    </Button>
+                                </CTAButton>
+                            </div>
+                            <div className="col-span-1">
+                                <CTAButton
+                                    ctaApi={() => violationsApi.reject(record.violationTypeId)}
+                                    isConfirm
+                                    confirmMessage="Are you sure you want to reject this violation?"
+                                    extraOnError={toastError}
+                                    extraOnSuccess={(data) => {
+                                        queryClient.invalidateQueries({
+                                            queryKey: ['violation-types'],
+                                        });
+
+                                        toast.success(data.message || 'Successful');
                                     }}
                                 >
                                     <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
-                                        <Trash className="h-4 w-4" />
+                                        R
                                     </Button>
                                 </CTAButton>
-                            )}
+                            </div>
                         </div>
                     )}
                     filters={[
@@ -146,6 +218,18 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             label: 'Name',
                             comparator: FilterComparator.LIKE,
                             name: 'violationName',
+                            type: NKFormType.TEXT,
+                        },
+                        {
+                            label: 'Code',
+                            comparator: FilterComparator.LIKE,
+                            name: 'studentCode',
+                            type: NKFormType.TEXT,
+                        },
+                        {
+                            label: 'Year',
+                            comparator: FilterComparator.IN,
+                            name: 'year',
                             type: NKFormType.TEXT,
                         },
                         ...(!isTeacher ? [{
@@ -158,7 +242,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <div className="flex items-center gap-3">
-                            {!isSchoolAdmin && (
+                            {!isSchoolAdmin && !isSupervisor && (
                                 <Button
                                     type="primary"
                                     icon={<PlusOutlined />}

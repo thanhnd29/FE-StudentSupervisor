@@ -42,6 +42,7 @@ const Page: React.FunctionComponent = () => {
         },
 
         onSuccess: (data: any) => {
+            toast.success(data.message || 'Successful');
             const cookies = new Cookies();
             cookies.set(NKConstant.TOKEN_COOKIE_KEY, data.token, {
                 path: '/',
@@ -52,7 +53,7 @@ const Page: React.FunctionComponent = () => {
             }, 1000);
         },
         onError: (error: any) => {
-            toast.error('Username or password is incorrect');
+            toast.error(error.message || 'An error occurred');
         },
     });
 

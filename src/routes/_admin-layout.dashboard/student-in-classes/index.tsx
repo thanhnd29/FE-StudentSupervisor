@@ -140,14 +140,14 @@ const Page = () => {
                                         studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                     }}
                                     onExtraErrorAction={toastError}
-                                    onExtraSuccessAction={() => {
+                                    onExtraSuccessAction={(data) => {
                                         queryClient.invalidateQueries({
                                             queryKey: [`students-in-class`],
                                         });
 
                                         close();
 
-                                        toast.success('Update student successfully');
+                                        toast.success(data.message || 'Successful');
                                     }}
                                 />
                             );
@@ -158,12 +158,12 @@ const Page = () => {
                         isConfirm
                         confirmMessage="Are you sure you want to delete this student?"
                         extraOnError={toastError}
-                        extraOnSuccess={() => {
+                        extraOnSuccess={(data) => {
                             queryClient.invalidateQueries({
                                 queryKey: [`students-in-class`],
                             });
 
-                            toast.success('Delete student successfully');
+                            toast.success(data.message || 'Successful');
                         }}
                     >
                         <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
@@ -239,14 +239,14 @@ const Page = () => {
                                     studentId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                 }}
                                 onExtraErrorAction={toastError}
-                                onExtraSuccessAction={() => {
+                                onExtraSuccessAction={(data) => {
                                     queryClient.invalidateQueries({
                                         queryKey: [`students-in-class`],
                                     });
 
                                     close();
 
-                                    toast.success('Create student successfully');
+                                    toast.success(data.message || 'Successful');
                                 }}
                                 defaultValues={{
                                     classId: 0,

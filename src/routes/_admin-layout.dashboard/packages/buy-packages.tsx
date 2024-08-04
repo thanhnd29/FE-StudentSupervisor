@@ -76,16 +76,6 @@ const Page = () => {
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'totalStudents',
-                            title: 'Total Students',
-                            type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'totalViolations',
-                            title: 'Total Violations',
-                            type: FieldType.TEXT,
-                        },
-                        {
                             key: 'price',
                             title: 'Price',
                             type: FieldType.NUMBER,

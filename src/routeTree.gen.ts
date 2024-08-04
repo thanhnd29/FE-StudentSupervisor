@@ -50,6 +50,7 @@ import { Route as AdminLayoutDashboardViolationTopsViolationInWeekImport } from 
 import { Route as AdminLayoutDashboardViolationTopsViolationInClassImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-class'
 import { Route as AdminLayoutDashboardPackagesBuyPackagesImport } from './routes/_admin-layout.dashboard/packages/buy-packages'
 import { Route as AdminLayoutDashboardHighSchoolIdImport } from './routes/_admin-layout.dashboard/high-school/$id'
+import { Route as AdminLayoutDashboardDisciplinesIdImport } from './routes/_admin-layout.dashboard/disciplines/$id'
 import { Route as AdminLayoutDashboardClassesIdImport } from './routes/_admin-layout.dashboard/classes/$id'
 import { Route as AdminLayoutDashboardAuthViewImport } from './routes/_admin-layout.dashboard/auth/view'
 import { Route as AdminLayoutDashboardAuthEditImport } from './routes/_admin-layout.dashboard/auth/edit'
@@ -288,6 +289,12 @@ const AdminLayoutDashboardHighSchoolIdRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardDisciplinesIdRoute =
+  AdminLayoutDashboardDisciplinesIdImport.update({
+    path: '/dashboard/disciplines/$id',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardClassesIdRoute =
   AdminLayoutDashboardClassesIdImport.update({
     path: '/dashboard/classes/$id',
@@ -352,6 +359,10 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/classes/$id': {
       preLoaderRoute: typeof AdminLayoutDashboardClassesIdImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/disciplines/$id': {
+      preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIdImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/high-school/$id': {
@@ -512,6 +523,7 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardAuthEditRoute,
     AdminLayoutDashboardAuthViewRoute,
     AdminLayoutDashboardClassesIdRoute,
+    AdminLayoutDashboardDisciplinesIdRoute,
     AdminLayoutDashboardHighSchoolIdRoute,
     AdminLayoutDashboardPackagesBuyPackagesRoute,
     AdminLayoutDashboardViolationTopsViolationInClassRoute,

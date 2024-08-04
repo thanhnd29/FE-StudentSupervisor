@@ -53,24 +53,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             title: 'Price',
                             type: FieldType.NUMBER,
                         },
-                        {
-                            key: 'totalStudents',
-                            title: 'Total Students',
-                            type: FieldType.NUMBER,
-                        },
-                        {
-                            key: 'totalViolations',
-                            title: 'Total Violations',
-                            type: FieldType.NUMBER,
-                        },
-                        {
-                            key: 'packageTypeId',
-                            title: 'Type',
-                            type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return packageTypeApi.getEnumSelectOptions(value);
-                            },
-                        },
+                        // {
+                        //     key: 'packageTypeId',
+                        //     title: 'Type',
+                        //     type: FieldType.BADGE_API,
+                        //     apiAction(value) {
+                        //         return packageTypeApi.getEnumSelectOptions(value);
+                        //     },
+                        // },
                         {
                             key: 'status',
                             title: 'Status',
@@ -105,8 +95,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 name: record.name,
                                                 price: record.price,
                                                 packageTypeId: record.packageTypeId,
-                                                totalStudents: record.totalStudents,
-                                                totalViolations: record.totalViolations,
                                             }}
                                             fields={[
                                                 {
@@ -124,45 +112,33 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.NUMBER,
                                                     label: 'Price',
                                                 },
-                                                {
-                                                    name: 'totalStudents',
-                                                    type: NKFormType.NUMBER,
-                                                    label: 'Total Students',
-                                                },
-                                                {
-                                                    name: 'totalViolations',
-                                                    type: NKFormType.NUMBER,
-                                                    label: 'Total Violations',
-                                                },
-                                                {
-                                                    name: 'packageTypeId',
-                                                    type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Type',
-                                                    fieldProps: {
-                                                        apiAction(value) {
-                                                            return packageTypeApi.getEnumSelectOptions(value);
-                                                        },
-                                                    },
-                                                },
+                                                // {
+                                                //     name: 'packageTypeId',
+                                                //     type: NKFormType.SELECT_API_OPTION,
+                                                //     label: 'Type',
+                                                //     fieldProps: {
+                                                //         apiAction(value) {
+                                                //             return packageTypeApi.getEnumSelectOptions(value);
+                                                //         },
+                                                //     },
+                                                // },
                                             ]}
                                             title=""
                                             schema={{
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 price: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                totalStudents: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                totalViolations: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 packageTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['packages'],
                                                 });
 
                                                 close();
 
-                                                toast.success('Update package successfully');
+                                                toast.success(data.message || 'Successful');
                                             }}
                                         />
                                     );
@@ -173,12 +149,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 isConfirm
                                 confirmMessage="Are you sure you want to delete this package?"
                                 extraOnError={toastError}
-                                extraOnSuccess={() => {
+                                extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
                                         queryKey: ['packages'],
                                     });
 
-                                    toast.success('Delete package successfully');
+                                    toast.success(data.message || 'Successful');
                                 }}
                             >
                                 <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
@@ -229,53 +205,39 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.NUMBER,
                                                 label: 'Price',
                                             },
-                                            {
-                                                name: 'totalStudents',
-                                                type: NKFormType.NUMBER,
-                                                label: 'Total Students',
-                                            },
-                                            {
-                                                name: 'totalViolations',
-                                                type: NKFormType.NUMBER,
-                                                label: 'Total Violations',
-                                            },
-                                            {
-                                                name: 'packageTypeId',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Type',
-                                                fieldProps: {
-                                                    apiAction(value) {
-                                                        return packageTypeApi.getEnumSelectOptions(value);
-                                                    },
-                                                },
-                                            },
+                                            // {
+                                            //     name: 'packageTypeId',
+                                            //     type: NKFormType.SELECT_API_OPTION,
+                                            //     label: 'Type',
+                                            //     fieldProps: {
+                                            //         apiAction(value) {
+                                            //             return packageTypeApi.getEnumSelectOptions(value);
+                                            //         },
+                                            //     },
+                                            // },
                                         ]}
                                         title=""
                                         schema={{
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             price: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            totalStudents: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            totalViolations: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             packageTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={() => {
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['packages'],
                                             });
 
                                             close();
 
-                                            toast.success('Create package successfully');
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         defaultValues={{
                                             description: '',
                                             name: '',
                                             price: 0,
                                             packageTypeId: 0,
-                                            totalStudents: 0,
-                                            totalViolations: 0,
                                         }}
                                     />
                                 );

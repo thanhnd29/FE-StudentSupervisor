@@ -125,8 +125,8 @@ const Page = () => {
                     },
                 ]}
                 onExtraErrorAction={toastError}
-                onExtraSuccessAction={() => {
-                    toast.success('Create a new violation successfully');
+                onExtraSuccessAction={(data) => {
+                    toast.success(data.message || 'Successful');
                     router.push(NKRouter.violations.list());
                 }}
             />

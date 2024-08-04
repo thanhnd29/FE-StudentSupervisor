@@ -63,85 +63,85 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                     ]}
                     queryApi={schoolId ? () => yearPackageApi.getBySchool(schoolId) : yearPackageApi.getAll}
-                    actionColumns={(record) => (
-                        <div className="flex flex-col gap-2">
-                            <ModalBuilder
-                                btnLabel=""
-                                btnProps={{
-                                    size: 'small',
-                                    icon: <EditOutlined />,
-                                }}
-                                title="Edit Year Package"
-                            >
-                                {(close) => {
-                                    return (
-                                        <FormBuilder<IUpdateYearPackageDto>
-                                            className="!p-0"
-                                            apiAction={(dto) => yearPackageApi.update(record.yearPackageId, dto)}
-                                            defaultValues={{
-                                                numberOfStudent: record.numberOfStudent,
-                                                packageId: record.packageId,
-                                                schoolYearId: record.schoolYearId,
-                                            }}
-                                            fields={[
-                                                {
-                                                    name: 'schoolYearId',
-                                                    type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'School Year',
-                                                    fieldProps: {
-                                                        apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
-                                                    },
-                                                },
-                                                {
-                                                    name: 'packageId',
-                                                    type: NKFormType.NUMBER,
-                                                    label: 'Package',
-                                                },
-                                                {
-                                                    name: 'numberOfStudent',
-                                                    type: NKFormType.TEXT,
-                                                    label: 'Number of Student',
-                                                },
-                                            ]}
-                                            title=""
-                                            schema={{
-                                                numberOfStudent: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                packageId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            }}
-                                            onExtraErrorAction={toastError}
-                                            onExtraSuccessAction={() => {
-                                                queryClient.invalidateQueries({
-                                                    queryKey: ['year-packages'],
-                                                });
+                    // actionColumns={(record) => (
+                    //     <div className="flex flex-col gap-2">
+                    //         <ModalBuilder
+                    //             btnLabel=""
+                    //             btnProps={{
+                    //                 size: 'small',
+                    //                 icon: <EditOutlined />,
+                    //             }}
+                    //             title="Edit Year Package"
+                    //         >
+                    //             {(close) => {
+                    //                 return (
+                    //                     <FormBuilder<IUpdateYearPackageDto>
+                    //                         className="!p-0"
+                    //                         apiAction={(dto) => yearPackageApi.update(record.yearPackageId, dto)}
+                    //                         defaultValues={{
+                    //                             numberOfStudent: record.numberOfStudent,
+                    //                             packageId: record.packageId,
+                    //                             schoolYearId: record.schoolYearId,
+                    //                         }}
+                    //                         fields={[
+                    //                             {
+                    //                                 name: 'schoolYearId',
+                    //                                 type: NKFormType.SELECT_API_OPTION,
+                    //                                 label: 'School Year',
+                    //                                 fieldProps: {
+                    //                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                    //                                 },
+                    //                             },
+                    //                             {
+                    //                                 name: 'packageId',
+                    //                                 type: NKFormType.NUMBER,
+                    //                                 label: 'Package',
+                    //                             },
+                    //                             {
+                    //                                 name: 'numberOfStudent',
+                    //                                 type: NKFormType.TEXT,
+                    //                                 label: 'Number of Student',
+                    //                             },
+                    //                         ]}
+                    //                         title=""
+                    //                         schema={{
+                    //                             numberOfStudent: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                    //                             packageId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                    //                             schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                    //                         }}
+                    //                         onExtraErrorAction={toastError}
+                    //                         onExtraSuccessAction={(data) => {
+                    //                             queryClient.invalidateQueries({
+                    //                                 queryKey: ['year-packages'],
+                    //                             });
 
-                                                close();
+                    //                             close();
 
-                                                toast.success('Edit year package successfully');
-                                            }}
-                                        />
-                                    );
-                                }}
-                            </ModalBuilder>
-                            <CTAButton
-                                ctaApi={() => yearPackageApi.delete(record.violationTypeId)}
-                                isConfirm
-                                confirmMessage="Are you sure you want to delete this year package?"
-                                extraOnError={toastError}
-                                extraOnSuccess={() => {
-                                    queryClient.invalidateQueries({
-                                        queryKey: ['year-packages'],
-                                    });
+                    //                             toast.success(data.message || 'Successful');
+                    //                         }}
+                    //                     />
+                    //                 );
+                    //             }}
+                    //         </ModalBuilder>
+                    //         <CTAButton
+                    //             ctaApi={() => yearPackageApi.delete(record.violationTypeId)}
+                    //             isConfirm
+                    //             confirmMessage="Are you sure you want to delete this year package?"
+                    //             extraOnError={toastError}
+                    //             extraOnSuccess={(data) => {
+                    //                 queryClient.invalidateQueries({
+                    //                     queryKey: ['year-packages'],
+                    //                 });
 
-                                    toast.success('Delete year package successfully');
-                                }}
-                            >
-                                <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
-                                    <Trash className="h-4 w-4" />
-                                </Button>
-                            </CTAButton>
-                        </div>
-                    )}
+                    //                 toast.success(data.message || 'Successful');
+                    //             }}
+                    //         >
+                    //             <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
+                    //                 <Trash className="h-4 w-4" />
+                    //             </Button>
+                    //         </CTAButton>
+                    //     </div>
+                    // )}
                     filters={[
                         {
                             label: 'Name',
@@ -194,14 +194,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={() => {
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['year-packages'],
                                             });
 
                                             close();
 
-                                            toast.success('Create year package successfully');
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         defaultValues={{
                                             numberOfStudent: 0,

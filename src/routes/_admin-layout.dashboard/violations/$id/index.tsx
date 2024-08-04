@@ -44,6 +44,11 @@ const Page = () => {
                     type: FieldType.TEXT,
                 },
                 {
+                    key: 'studentCode',
+                    title: 'Code',
+                    type: FieldType.TEXT,
+                },
+                {
                     key: 'violationName',
                     title: 'Name',
                     type: FieldType.TEXT,
@@ -104,6 +109,17 @@ const Page = () => {
                     key: 'updatedAt',
                     title: 'Updated At',
                     type: FieldType.TIME_DATE,
+                },
+                {
+                    key: 'year',
+                    title: 'Year',
+                    type: FieldType.TEXT,
+                },
+                {
+                    key: 'status',
+                    title: 'Status',
+                    type: FieldType.BADGE_API,
+                    apiAction: violationsApi.getEnumStatuses
                 },
             ]}
             record={violationQuery.data}

@@ -1,13 +1,14 @@
 import moment from 'moment';
 
 import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
-import { Evaluation } from '../models/evalution';
+import { Evaluation, EvaluationStatus } from '../models/evalution';
 import { getColorWithId } from '../utils/api.helper';
 import http from './http';
+import { Colors } from '../utils/colors.helper';
 
-export interface ICreateEvaluationDto extends Omit<Evaluation, 'evaluationId'> {}
+export interface ICreateEvaluationDto extends Omit<Evaluation, 'evaluationId' | 'className' | 'status'> { }
 
-export interface IUpdateEvaluationDto extends Evaluation {}
+export interface IUpdateEvaluationDto extends Omit<Evaluation, 'status'> { }
 
 const baseUrl = '/evaluations';
 
@@ -62,6 +63,28 @@ export const evaluationApi = {
         if (search) {
             return list.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
         }
+
+        return list;
+    },
+    getEnumStatuses: async (search?: string) => {
+        const list: EnumListItem[] = [
+            {
+                color: Colors.GREEN,
+                id: EvaluationStatus.ACTIVE,
+                label: 'Active',
+                name: 'Active',
+                slug: EvaluationStatus.ACTIVE,
+                value: EvaluationStatus.ACTIVE,
+            },
+            {
+                color: Colors.RED,
+                id: EvaluationStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: EvaluationStatus.INACTIVE,
+                value: EvaluationStatus.INACTIVE,
+            },
+        ];
 
         return list;
     },

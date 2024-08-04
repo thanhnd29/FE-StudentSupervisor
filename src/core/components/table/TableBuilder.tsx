@@ -309,7 +309,7 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
 
                                     sorter: true,
                                 })),
-                                {
+                                ...(actionColumns ? [{
                                     key: 'action',
                                     title: '',
                                     sorter: false,
@@ -320,7 +320,7 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                                         }
                                         return <>{typeof actionColumns === 'function' ? actionColumns(record) : actionColumns}</>;
                                     },
-                                },
+                                }] : []),
                             ]}
                             pagination={{
                                 current: page,

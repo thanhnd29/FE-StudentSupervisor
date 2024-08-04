@@ -171,12 +171,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 description: Joi.string().allow('').optional().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['violation-groups'],
                                                 });
                                                 close();
-                                                toast.success('Edit violation group successfully');
+                                                toast.success(data.message || 'Successful');
                                             }}
                                         />
                                     );
@@ -187,12 +187,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 isConfirm
                                 confirmMessage="Are you sure you want to delete this violation group?"
                                 extraOnError={toastError}
-                                extraOnSuccess={() => {
+                                extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
                                         queryKey: ['violation-groups'],
                                     });
 
-                                    toast.success('Delete violation group successfully');
+                                    toast.success(data.message || 'Successful');
                                 }}
                             >
                                 <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
@@ -263,12 +263,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={() => {
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['violation-groups'],
                                             });
                                             close();
-                                            toast.success('Create violation group successfully');
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         defaultValues={{
                                             vioGroupCode: '',

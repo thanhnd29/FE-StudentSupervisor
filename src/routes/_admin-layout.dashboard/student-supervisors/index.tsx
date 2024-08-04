@@ -188,14 +188,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 supervisorName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['student-supervisors'],
                                                 });
 
                                                 close();
 
-                                                toast.success('Update student supervisor successfully');
+                                                toast.success(data.message || 'Successful');
                                             }}
                                         />
                                     );
@@ -206,12 +206,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 isConfirm
                                 confirmMessage="Are you sure you want to delete this student supervisor?"
                                 extraOnError={toastError}
-                                extraOnSuccess={() => {
+                                extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
                                         queryKey: ['student-supervisors'],
                                     });
 
-                                    toast.success('Delete student supervisor successfully');
+                                    toast.success(data.message || 'Successful');
                                 }}
                             >
                                 <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
@@ -298,14 +298,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={() => {
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['student-supervisors'],
                                             });
 
                                             close();
 
-                                            toast.success('Create student supervisor successfully');
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         defaultValues={{
                                             address: '',

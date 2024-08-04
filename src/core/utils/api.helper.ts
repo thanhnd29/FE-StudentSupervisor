@@ -4,10 +4,10 @@ import { toast } from 'react-toastify';
 import { EnumListItem } from '../models/common';
 
 export const toastError = (error: any) => {
-    const errorMessages = _get(error, 'data.translation', {});
-    const message = _get(errorMessages, 'vi', 'Có lỗi xảy ra, vui lòng thử lại sau');
+    // const errorMessages = _get(error.message, 'data.translation', {});
+    // const message = _get(errorMessages, 'vi', 'Có lỗi xảy ra, vui lòng thử lại sau');
 
-    toast.error(message);
+    toast.error(error.message || 'An error occurred');
 };
 
 export const getColorWithUuId = (uuid: string): string => {

@@ -15,6 +15,8 @@ import { NKFormType } from '@/core/components/form/NKForm';
 import { RootState } from '@/core/store';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
+import { toastError } from '@/core/utils/api.helper';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const { id } = Route.useParams();
@@ -122,7 +124,6 @@ const Page = () => {
                             apiAction: (value) => teacherApi.getEnumSelectOptions(value),
                         },
                     },
-
                     {
                         name: 'Date',
                         label: 'Date',
@@ -134,6 +135,10 @@ const Page = () => {
                         type: NKFormType.MULTI_UPLOAD_IMAGE,
                     },
                 ]}
+                onExtraErrorAction={toastError}
+                onExtraSuccessAction={(data) => {
+                    toast.success(data.message || 'Successful');
+                }}
             />
         </div>
     );

@@ -23,7 +23,7 @@ import { UserState } from '@/core/store/user';
 const Page = () => {
     const router = useNKRouter();
     const [classId, setClassId] = useState(0);
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolAdminId, schoolId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolAdminId, schoolId, userId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
@@ -41,6 +41,8 @@ const Page = () => {
                 apiAction={(data) => {
                     return violationsApi.createForSupervisor({
                         ...data,
+                        SchoolId: schoolId,
+                        UserId: userId,
                         Date: data.Date.toISOString(),
                     });
                 }}
@@ -49,26 +51,26 @@ const Page = () => {
                     ClassId: 0,
                     Date: new Date(),
                     Description: '',
-                    TeacherId: 0,
                     ViolationName: '',
                     ViolationTypeId: 0,
                     Images: [],
                     StudentInClassId: 0,
+                    Year: 0,
                 }}
                 schema={{
                     ClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                     Date: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                     Description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                    TeacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                     ViolationName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                     ViolationTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                     Images: Joi.array().items(Joi.string()).required().messages(NKConstant.MESSAGE_FORMAT),
                     StudentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                    Year: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                 }}
                 fields={[
                     {
                         name: 'ViolationName',
-                        label: 'Name',
+                        label: 'Violation Name',
                         type: NKFormType.TEXT,
                     },
                     {
@@ -88,6 +90,11 @@ const Page = () => {
                         },
                     },
                     {
+                        name: 'Year',
+                        label: 'Year',
+                        type: NKFormType.TEXT,
+                    },
+                    {
                         name: 'StudentInClassId',
                         label: 'Student',
                         type: NKFormType.SELECT_API_OPTION,
@@ -104,15 +111,6 @@ const Page = () => {
                         },
                     },
                     {
-                        name: 'TeacherId',
-                        label: 'Teacher',
-                        type: NKFormType.SELECT_API_OPTION,
-                        fieldProps: {
-                            apiAction: (value) => teacherApi.getEnumSelectOptions(value),
-                        },
-                    },
-
-                    {
                         name: 'Date',
                         label: 'Date',
                         type: NKFormType.DATE,
@@ -124,8 +122,8 @@ const Page = () => {
                     },
                 ]}
                 onExtraErrorAction={toastError}
-                onExtraSuccessAction={() => {
-                    toast.success('Create a new violation successfully');
+                onExtraSuccessAction={(data) => {
+                    toast.success(data.message || 'Successful');
 
                     router.push(NKRouter.violations.list());
                 }}

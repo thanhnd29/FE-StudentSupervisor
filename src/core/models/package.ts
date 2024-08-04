@@ -8,10 +8,10 @@ export interface Package {
     description: string;
     registeredDate: string;
     price: number;
-    type: string;
+    // type: string;
     packageId: number;
     status: PackageStatus;
-    totalStudents: number;
-    totalViolations: number;
+    // totalStudents: number;
+    // totalViolations: number;
     packageTypeId: number;
 }

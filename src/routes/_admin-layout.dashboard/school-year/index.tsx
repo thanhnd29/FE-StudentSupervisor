@@ -24,7 +24,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
@@ -66,6 +66,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             key: 'schoolName',
                             title: 'School Name',
                             type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'status',
+                            title: 'Status',
+                            type: FieldType.BADGE_API,
+                            apiAction(value) {
+                                return schoolYearApi.getEnumStatuses(value);
+                            },
                         },
                     ]}
                     queryApi={schoolId ? () => schoolYearApi.getBySchool(schoolId) : schoolYearApi.getAll}
@@ -139,13 +147,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                         },
                                                     },
                                                 ]}
-                                                onExtraSuccessAction={() => {
-                                                    toast.success('Update school year successfully');
+                                                onExtraSuccessAction={(data) => {
                                                     queryClient.invalidateQueries({
                                                         queryKey: ['school-year'],
                                                     });
 
                                                     close();
+
+                                                    toast.success(data.message || 'Successful');
                                                 }}
                                                 onExtraErrorAction={toastError}
                                             />
@@ -157,12 +166,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     isConfirm
                                     confirmMessage="Are you sure you want to delete this school year?"
                                     extraOnError={toastError}
-                                    extraOnSuccess={() => {
+                                    extraOnSuccess={(data) => {
                                         queryClient.invalidateQueries({
                                             queryKey: ['school-year'],
                                         });
 
-                                        toast.success('Delete school year successfully');
+                                        toast.success(data.message || 'Successful');
                                     }}
                                 >
                                     <Button
@@ -258,14 +267,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 },
                                             },
                                         ]}
-                                        onExtraSuccessAction={() => {
-                                            toast.success('Create school year successfully');
-
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['school-year'],
                                             });
 
                                             close();
+
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         onExtraErrorAction={toastError}
                                     />
