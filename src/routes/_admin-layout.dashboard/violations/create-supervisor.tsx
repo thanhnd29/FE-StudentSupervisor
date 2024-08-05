@@ -83,7 +83,7 @@ const Page = () => {
                         label: 'Class',
                         type: NKFormType.SELECT_API_OPTION,
                         fieldProps: {
-                            apiAction: (value) => classApi.getEnumSelectOptions(value),
+                            apiAction: (value) => classApi.getEnumSelectOptions({ search: value}),
                         },
                         onChangeExtra(value) {
                             setClassId(value);

@@ -1,4 +1,5 @@
 import { EnumListItem, ResponseList } from '../models/common';
+import { SchoolYear } from '../models/schoolYears';
 import { Student } from '../models/student';
 import { getColorWithId } from '../utils/api.helper';
 import http from './http';

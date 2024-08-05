@@ -86,7 +86,6 @@ export const classGroupApi = {
 
         return list;
     },
-
     getEnumSelectOptions: async (search?: string) => {
         const classGroups = await classGroupApi.getAll();
 

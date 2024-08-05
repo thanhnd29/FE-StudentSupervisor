@@ -54,6 +54,9 @@ const Page = () => {
                     return violationsApi.createForStudent({
                         ...data,
                         Date: data.Date.toISOString(),
+                        SchoolId: 0,
+                        UserId: 0,
+                        Year: 0
                     });
                 }}
                 title="Update Violation"
@@ -94,7 +97,7 @@ const Page = () => {
                         label: 'Class',
                         type: NKFormType.SELECT_API_OPTION,
                         fieldProps: {
-                            apiAction: (value) => classApi.getEnumSelectOptions(value),
+                            apiAction: (value) => classApi.getEnumSelectOptions({ search: value }),
                         },
                         onChangeExtra(value) {
                             setClassId(value);

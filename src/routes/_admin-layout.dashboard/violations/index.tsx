@@ -81,7 +81,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             title: 'Class',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
-                                return classApi.getEnumSelectOptions(value);
+                                return classApi.getEnumSelectOptions({ search: value });
                             },
                         },
                         {
@@ -157,7 +157,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             {isSupervisor && (
                                 <div className="col-span-1">
                                     <CTAButton
-                                        ctaApi={() => violationsApi.approve(record.violationTypeId)}
+                                        ctaApi={() => violationsApi.approve(record.violationId)}
                                         isConfirm
                                         confirmMessage="Are you sure you want to approve this violation?"
                                         extraOnError={toastError}
@@ -178,7 +178,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             {isSupervisor && (
                                 <div className="col-span-1">
                                     <CTAButton
-                                        ctaApi={() => violationsApi.complete(record.violationTypeId)}
+                                        ctaApi={() => violationsApi.complete(record.violationId)}
                                         isConfirm
                                         confirmMessage="Are you sure you want to complete this violation?"
                                         extraOnError={toastError}
@@ -199,7 +199,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             {isSupervisor && (
                                 <div className="col-span-1">
                                     <CTAButton
-                                        ctaApi={() => violationsApi.reject(record.violationTypeId)}
+                                        ctaApi={() => violationsApi.reject(record.violationId)}
                                         isConfirm
                                         confirmMessage="Are you sure you want to reject this violation?"
                                         extraOnError={toastError}

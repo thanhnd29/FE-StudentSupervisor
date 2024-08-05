@@ -23,7 +23,7 @@ import { toastError } from '@/core/utils/api.helper';
 const Page = () => {
     const router = useNKRouter();
     const [classId, setClassId] = useState(0);
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolAdminId, schoolId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolAdminId, schoolId, userId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
@@ -42,6 +42,9 @@ const Page = () => {
                     return violationsApi.createForStudent({
                         ...data,
                         Date: data.Date.toISOString(),
+                        SchoolId: schoolId,
+                        UserId: userId,
+                        Year: 0
                     });
                 }}
                 title="Create Violation for Student"
@@ -71,7 +74,6 @@ const Page = () => {
                         label: 'Name',
                         type: NKFormType.TEXT,
                     },
-
                     {
                         name: 'Description',
                         label: 'Description',
@@ -82,7 +84,7 @@ const Page = () => {
                         label: 'Class',
                         type: NKFormType.SELECT_API_OPTION,
                         fieldProps: {
-                            apiAction: (value) => classApi.getEnumSelectOptions(value),
+                            apiAction: (value) => classApi.getEnumSelectOptions({ search: value}),
                         },
                         onChangeExtra(value) {
                             setClassId(value);
@@ -112,7 +114,6 @@ const Page = () => {
                             apiAction: (value) => teacherApi.getEnumSelectOptions(value),
                         },
                     },
-
                     {
                         name: 'Date',
                         label: 'Date',
