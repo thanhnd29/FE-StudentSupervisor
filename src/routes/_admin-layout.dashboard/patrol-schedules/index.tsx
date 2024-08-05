@@ -24,7 +24,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
@@ -128,7 +128,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     label: 'Class',
                                                     fieldProps: {
-                                                        apiAction: (value) => classApi.getEnumSelectOptions(value),
+                                                        apiAction: (value) => classApi.getEnumSelectOptions({ search: value }),
                                                     },
                                                 },
                                                 {
@@ -234,7 +234,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 label: 'Class',
                                                 fieldProps: {
-                                                    apiAction: (value) => classApi.getEnumSelectOptions(value),
+                                                    apiAction: (value) => classApi.getEnumSelectOptions({ search: value }),
                                                 },
                                             },
                                             {

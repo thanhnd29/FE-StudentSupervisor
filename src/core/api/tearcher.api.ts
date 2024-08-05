@@ -1,4 +1,5 @@
 import { EnumListItem, ResponseList } from '../models/common';
+import { SchoolYear } from '../models/schoolYears';
 import { Teacher, TeacherStatus } from '../models/teacher';
 import { getColorWithId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
@@ -33,6 +34,11 @@ export const teacherApi = {
 
         return data.data;
     },
+    getTeacherBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Teacher>>(`${baseUrl}/role/teacher/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<SchoolYear>(`${baseUrl}/${id}`);
 
@@ -41,8 +47,8 @@ export const teacherApi = {
     delete: async (id: number) => {
         await http.delete(`${baseUrl}/${id}`);
     },
-    getEnumSelectOptions: async (search?: string) => {
-        const teachers = await teacherApi.getAll();
+    getEnumSelectOptions: async (search?: string, schoolId?: number) => {
+        const teachers = schoolId ? await teacherApi.getTeacherBySchool(schoolId) : await teacherApi.getAll();
 
         const list: EnumListItem[] = teachers.map((item) => ({
             id: item.teacherId,
@@ -59,7 +65,6 @@ export const teacherApi = {
 
         return list;
     },
-
     getEnumStatuses: async (search?: string) => {
         const list: EnumListItem[] = [
             {

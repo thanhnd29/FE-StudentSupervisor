@@ -103,6 +103,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
+            label: 'Class',
+            key: 'class',
+            icon: <Ungroup className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.classes.list());
+            },
+        },
+        {
             label: 'Students In Class',
             key: 'students-in-class',
             icon: <UsersRound className="h-4 w-4" />,
@@ -242,14 +250,6 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'Patrol Schedule',
-            key: 'patrol-schedule',
-            icon: <Calendar className="h-4 w-4" />,
-            onClick: () => {
-                router.push(NKRouter.patrolSchedule.list());
-            },
-        },
-        {
             label: 'Student Supervisors',
             key: 'student-supervisors',
             icon: <Glasses className="h-4 w-4" />,
@@ -330,6 +330,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
 
     const SupervisorMenu = [
         {
+            label: 'Class Group',
+            key: 'class-group',
+            icon: <Ungroup className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.classGroup.list());
+            },
+        },
+        {
             label: 'Violation',
             key: 'violation',
             icon: <Group className="h-4 w-4" />,
@@ -345,9 +353,25 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
                 router.push(NKRouter.discipline.list());
             },
         },
+        {
+            label: 'Patrol Schedule',
+            key: 'patrol-schedule',
+            icon: <Calendar className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.patrolSchedule.list());
+            },
+        },
     ];
 
     const TeacherMenu = [
+        {
+            label: 'Class',
+            key: 'class',
+            icon: <Ungroup className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.classes.list());
+            },
+        },
         {
             label: 'Violations',
             key: 'violations',

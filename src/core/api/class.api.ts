@@ -1,11 +1,12 @@
-import { Class } from '../models/class';
+import { Class, ClassStatus } from '../models/class';
 import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
 import { getColorWithId } from '../utils/api.helper';
+import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateClassDto extends Omit<Class, 'classId'> { }
+export interface ICreateClassDto extends Omit<Class, 'classId' | 'year' | 'status' | 'totalPoint' | 'teacherName'> { }
 
-export interface IUpdateClassDto extends Class { }
+export interface IUpdateClassDto extends Omit<Class, 'year' | 'status' | 'grade' | 'teacherName'> { }
 
 const baseUrl = '/classes';
 
@@ -34,6 +35,11 @@ export const classApi = {
 
         return data.data;
     },
+    getByClass: async (id: number) => {
+        const { data } = await http.get<ResponseList<Class>>(`${baseUrl}/classes/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<Class>>(`${baseUrl}/${id}`);
 
@@ -42,10 +48,14 @@ export const classApi = {
     delete: async (id: number) => {
         await http.delete(`${baseUrl}/${id}`);
     },
-    getEnumSelectOptions: async (search?: string) => {
-        const classes = await classApi.getAll();
+    getEnumSelectOptions: async ({ search, highSchoolId, year }: { search?: string, highSchoolId?: number, year?: number }) => {
+        let classes = highSchoolId ? await classApi.getBySchool(highSchoolId) : await classApi.getAll();
 
-        const list: EnumListItem[] = classes
+        if (year) {
+            classes = classes.filter((classYear) => classYear.schoolYearId == year)
+        }
+
+        let list: EnumListItem[] = classes
             .map((item) => ({
                 id: item.classId,
                 label: item.name,
@@ -59,6 +69,28 @@ export const classApi = {
         if (search) {
             return list.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
         }
+
+        return list;
+    },
+    getEnumStatuses: async (search?: string) => {
+        const list: EnumListItem[] = [
+            {
+                color: Colors.GREEN,
+                id: ClassStatus.ACTIVE,
+                label: 'Active',
+                name: 'Active',
+                slug: ClassStatus.ACTIVE,
+                value: ClassStatus.ACTIVE,
+            },
+            {
+                color: Colors.RED,
+                id: ClassStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: ClassStatus.INACTIVE,
+                value: ClassStatus.INACTIVE,
+            },
+        ];
 
         return list;
     },

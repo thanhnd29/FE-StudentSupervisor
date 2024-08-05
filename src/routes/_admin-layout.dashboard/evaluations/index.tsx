@@ -20,10 +20,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 import { FilterComparator } from '@/core/models/common';
+import { classApi } from '@/core/api/class.api';
 
 interface PageProps { }
 
-// TODO: Change columns
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
@@ -164,7 +164,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                                 highSchoolId: schoolId,
                                                                 withSchoolName: true,
                                                             }),
-                                                        },
+                                                    },
                                                 },
                                                 {
                                                     name: 'className',
@@ -238,12 +238,24 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             return evaluationApi.create({
                                                 description: dto.description,
                                                 from: dto.from.toISOString(),
-                                                points: dto.points,
+                                                classId: dto.classId,
                                                 year: dto.year,
                                                 to: dto.to.toISOString(),
                                             });
                                         }}
                                         fields={[
+                                            {
+                                                name: 'year',
+                                                type: NKFormType.SELECT_API_OPTION,
+                                                label: 'Year',
+                                                fieldProps: {
+                                                    apiAction: (value) =>
+                                                        schoolYearApi.getEnumSelectOptions({
+                                                            search: value,
+                                                            highSchoolId: schoolId
+                                                        }),
+                                                },
+                                            },
                                             {
                                                 name: 'from',
                                                 type: NKFormType.DATE,
@@ -255,33 +267,31 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 label: 'To',
                                             },
                                             {
-                                                name: 'points',
-                                                type: NKFormType.NUMBER,
-                                                label: 'Point',
+                                                name: 'classId',
+                                                type: NKFormType.SELECT_API_OPTION,
+                                                label: 'Class',
+                                                fieldProps: {
+                                                    apiAction: (value, formMethods) => {
+                                                        const year = formMethods.getValues('year');
+                                                        return classApi.getEnumSelectOptions({
+                                                            search: value,
+                                                            highSchoolId: schoolId,
+                                                            year: year ?? 0,
+                                                        });
+                                                    },
+                                                },
                                             },
                                             {
                                                 name: 'description',
                                                 type: NKFormType.TEXTAREA,
                                                 label: 'Description',
                                             },
-                                            {
-                                                name: 'year',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'School Year',
-                                                fieldProps: {
-                                                    apiAction: (value) =>
-                                                        schoolYearApi.getEnumSelectOptions({
-                                                            search: value,
-                                                            withSchoolName: true,
-                                                        }),
-                                                },
-                                            },
                                         ]}
                                         title=""
                                         schema={{
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             from: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            points: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             year: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
@@ -297,7 +307,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             from: new Date(),
                                             to: new Date(),
                                             description: '',
-                                            points: 0,
+                                            classId: 0,
                                             year: 0,
                                         }}
                                     />

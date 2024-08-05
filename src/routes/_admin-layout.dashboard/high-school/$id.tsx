@@ -327,20 +327,20 @@ const ClassesContent = ({ schoolYearIds }: { schoolYearIds: number[] }) => {
                                         title=""
                                         apiAction={classApi.update}
                                         defaultValues={{
-                                            classId: record.classId,
+                                            teacherID: record.teacherID,
                                             classGroupId: record.classGroupId,
+                                            classId: record.classId,
                                             code: record.code,
                                             name: record.name,
-                                            room: record.room,
                                             schoolYearId: record.schoolYearId,
                                             totalPoint: record.totalPoint,
                                         }}
                                         schema={{
-                                            classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            room: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             totalPoint: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
@@ -441,20 +441,20 @@ const ClassesContent = ({ schoolYearIds }: { schoolYearIds: number[] }) => {
                                 title=""
                                 apiAction={classApi.create}
                                 defaultValues={{
+                                    teacherID: 0,
                                     classGroupId: 0,
                                     code: '',
                                     name: '',
-                                    room: '',
                                     schoolYearId: 0,
-                                    totalPoint: 0,
+                                    grade: 0,
                                 }}
                                 schema={{
-                                    classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                     code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                     name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    room: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                     schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    totalPoint: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                 }}
                                 fields={[
                                     {

@@ -4,7 +4,7 @@ import { Colors } from '../utils/colors.helper';
 import http from './http';
 
 export interface ICreateDisciplineDto extends Omit<Discipline, 'disciplineId' | 'status' | 'year'> { }
-export interface IUpdateDisciplineDto extends Discipline { }
+export interface IUpdateDisciplineDto extends Pick<Discipline, 'startDate' | 'endDate' | 'pennaltyId'> { }
 
 const baseUrl = '/disciplines';
 
@@ -14,20 +14,29 @@ export const disciplineApi = {
 
         return data;
     },
+    update: async (id: string, dto: IUpdateDisciplineDto) => {
+        console.log(dto);
 
-    update: async (dto: IUpdateDisciplineDto) => {
-        const { data } = await http.put<Discipline>(`${baseUrl}`, dto);
+        const { data } = await http.put<Discipline>(`${baseUrl}?id=${id}`, dto);
+
+        console.log(data);
 
         return data;
     },
     executing: async (id: number) => {
-        await http.put(`${baseUrl}/${id}/executing`);
+        const { data } = await http.put(`${baseUrl}/${id}/executing`);
+
+        return data;
     },
     done: async (id: number) => {
-        await http.put(`${baseUrl}/${id}/done`);
+        const { data } = await http.put(`${baseUrl}/${id}/done`);
+
+        return data;
     },
     complain: async (id: number) => {
-        await http.put(`${baseUrl}/${id}/complain`);
+        const { data } = await http.put(`${baseUrl}/${id}/complain`);
+
+        return data;
     },
     getAll: async () => {
         try {
@@ -44,6 +53,15 @@ export const disciplineApi = {
     },
     getBySchool: async (id: number) => {
         const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/school/${id}`);
+
+        return data.data || [];
+    },
+    getByUser: async (id: number) => {
+        const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/user/${id}`, {
+            params: {
+                sortOrder: 'desc',
+            },
+        });
 
         return data.data || [];
     },
@@ -108,21 +126,5 @@ export const disciplineApi = {
         ];
 
         return list;
-
-        {
-            color: Colors.ORANGE,
-            id: DisciplineStatus.COMPLAIN,
-            label: 'Complain',
-            name: 'Complain',
-            slug: DisciplineStatus.COMPLAIN,
-            value: DisciplineStatus.COMPLAIN,
-        },
-        {
-            color: Colors.YELLOW,
-            id: DisciplineStatus.FINALIZED,
-            label: 'Finalized',
-            name: 'Finalized',
-            slug: DisciplineStatus.FINALIZED,
-            value: DisciplineStatus.FINALIZED,
     },
 };

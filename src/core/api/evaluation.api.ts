@@ -6,9 +6,9 @@ import { getColorWithId } from '../utils/api.helper';
 import http from './http';
 import { Colors } from '../utils/colors.helper';
 
-export interface ICreateEvaluationDto extends Omit<Evaluation, 'evaluationId' | 'className' | 'status'> { }
+export interface ICreateEvaluationDto extends Omit<Evaluation, 'evaluationId' | 'className' | 'status' | 'points'> { }
 
-export interface IUpdateEvaluationDto extends Omit<Evaluation, 'status'> { }
+export interface IUpdateEvaluationDto extends Omit<Evaluation, 'status' | 'classId'> { }
 
 const baseUrl = '/evaluations';
 

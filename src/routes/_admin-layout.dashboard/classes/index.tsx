@@ -24,6 +24,7 @@ import { toastError } from '@/core/utils/api.helper';
 import { RootState } from '@/core/store';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
+import { teacherApi } from '@/core/api/tearcher.api';
 
 interface PageProps { }
 
@@ -31,10 +32,20 @@ const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
 
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
-    
+
+    const getByRole = () => {
+        if (schoolId) {
+            if (isTeacher) {
+                return classApi.getByClass(userId);
+            }
+            return classApi.getBySchool(schoolId)
+        }
+        return classApi.getAll()
+    };
+
     useDocumentTitle('Classes');
 
     return (
@@ -60,8 +71,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'room',
-                            title: 'Room',
+                            key: 'grade',
+                            title: 'Grade',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'teacherName',
+                            title: 'Teacher Name',
                             type: FieldType.TEXT,
                         },
                         {
@@ -81,15 +97,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                         {
-                            key: 'classGroupId',
-                            title: 'Class Group',
+                            key: 'status',
+                            title: 'Status',
                             type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return classGroupApi.getEnumSelectOptions(value);
-                            },
+                            apiAction: classApi.getEnumStatuses
                         },
                     ]}
-                    queryApi={schoolId ? () => classApi.getBySchool(schoolId) : classApi.getAll}
+                    queryApi={getByRole}
                     actionColumns={(record) => {
                         return (
                             <div className="flex flex-col gap-2">
@@ -115,20 +129,20 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 title=""
                                                 apiAction={classApi.update}
                                                 defaultValues={{
-                                                    classId: record.classId,
+                                                    teacherID: record.teacherID,
                                                     classGroupId: record.classGroupId,
+                                                    classId: record.classId,
                                                     code: record.code,
                                                     name: record.name,
-                                                    room: record.room,
                                                     schoolYearId: record.schoolYearId,
                                                     totalPoint: record.totalPoint,
                                                 }}
                                                 schema={{
-                                                    classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                    teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                    classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    room: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     totalPoint: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 }}
@@ -141,11 +155,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     {
                                                         name: 'code',
                                                         label: 'Code',
-                                                        type: NKFormType.TEXT,
-                                                    },
-                                                    {
-                                                        name: 'room',
-                                                        label: 'Room',
                                                         type: NKFormType.TEXT,
                                                     },
                                                     {
@@ -163,14 +172,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                                     search: value,
                                                                     withSchoolName: true,
                                                                 }),
-                                                        },
-                                                    },
-                                                    {
-                                                        name: 'classGroupId',
-                                                        label: 'Class Group',
-                                                        type: NKFormType.SELECT_API_OPTION,
-                                                        fieldProps: {
-                                                            apiAction: (value) => classGroupApi.getEnumSelectOptions(value),
                                                         },
                                                     },
                                                 ]}
@@ -226,9 +227,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Room',
-                            comparator: FilterComparator.LIKE,
-                            name: 'room',
+                            label: 'Year',
+                            comparator: FilterComparator.IN,
+                            name: 'year',
                             type: NKFormType.TEXT,
                         },
                     ]}
@@ -248,22 +249,34 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         title=""
                                         apiAction={classApi.create}
                                         defaultValues={{
+                                            teacherID: 0,
                                             classGroupId: 0,
                                             code: '',
                                             name: '',
-                                            room: '',
                                             schoolYearId: 0,
-                                            totalPoint: 0,
+                                            grade: 0,
                                         }}
                                         schema={{
-                                            classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            room: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            totalPoint: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         fields={[
+                                            {
+                                                name: 'schoolYearId',
+                                                label: 'School Year',
+                                                type: NKFormType.SELECT_API_OPTION,
+                                                fieldProps: {
+                                                    apiAction: (value) =>
+                                                        schoolYearApi.getEnumSelectOptions({
+                                                            search: value,
+                                                            highSchoolId: schoolId
+                                                        }),
+                                                },
+                                            },
                                             {
                                                 name: 'name',
                                                 label: 'Name',
@@ -275,25 +288,16 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.TEXT,
                                             },
                                             {
-                                                name: 'room',
-                                                label: 'Room',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'totalPoint',
-                                                label: 'Total Point',
+                                                name: 'grade',
+                                                label: 'Grade',
                                                 type: NKFormType.NUMBER,
                                             },
                                             {
-                                                name: 'schoolYearId',
-                                                label: 'School Year',
+                                                name: 'teacherID',
+                                                label: 'Teacher',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
-                                                    apiAction: (value) =>
-                                                        schoolYearApi.getEnumSelectOptions({
-                                                            search: value,
-                                                            withSchoolName: true,
-                                                        }),
+                                                    apiAction: (value) => teacherApi.getEnumSelectOptions(value, schoolId),
                                                 },
                                             },
                                             {

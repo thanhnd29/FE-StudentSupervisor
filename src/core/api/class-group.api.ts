@@ -5,9 +5,9 @@ import { getColorWithUuId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateClassGroupDto extends Omit<ClassGroup, 'classGroupId'> {}
+export interface ICreateClassGroupDto extends Omit<ClassGroup, 'classGroupId' | 'teacherId'> {}
 
-export interface IUpdateClassGroupDto extends ClassGroup {}
+export interface IUpdateClassGroupDto extends Omit<ClassGroup, 'teacherId'> {}
 export interface ISearchClassGroupDto extends Omit<ClassGroup, 'classGroupId'> {
     sortOrder: 'asc' | 'desc';
 }
@@ -39,6 +39,11 @@ export const classGroupApi = {
 
         return data.data;
     },
+    getByUser: async (id: number) => {
+        const { data } = await http.get<ResponseList<ClassGroup>>(`${baseUrl}/user/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<ClassGroup>(`${baseUrl}/${id}`);
 
@@ -55,7 +60,6 @@ export const classGroupApi = {
 
         return data.data;
     },
-
     getEnumStatus: async (search?: string) => {
         const list = [
             {

@@ -39,7 +39,6 @@ export const schoolYearApi = {
     delete: async (id: number) => {
         await http.delete(`${baseUrl}/${id}`);
     },
-
     getEnumSelectOptions: async ({ highSchoolId, search, withSchoolName }: { search?: string; highSchoolId?: number; withSchoolName?: boolean }) => {
         let schoolYears = await schoolYearApi.getAll();
 

@@ -28,14 +28,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
 
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
-    const getClass = () => {
+    const getByRole = () => {
         if (schoolId) {
             if (isTeacher) {
-                return violationsApi.getBySchool(schoolId).then((res) => res.filter((x) => x.status === ViolationStatus.APPROVED));
+                return violationsApi.getByUser(userId);
             }
             return violationsApi.getBySchool(schoolId)
         }
@@ -109,7 +109,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         //     },
                         // },
                     ]}
-                    queryApi={getClass}
+                    queryApi={getByRole}
                     actionColumns={(record) => (
                         <div className="grid grid-cols-2 gap-2">
                             <div className="col-span-1">
@@ -122,7 +122,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     }}
                                 />
                             </div>
-                            {!isSchoolAdmin && (
+                            {isSupervisor && (
                                 <div className="col-span-1">
                                     <Button
                                         icon={<EditOutlined />}
@@ -133,7 +133,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     />
                                 </div>
                             )}
-                            {!isSchoolAdmin && (
+                            {isSupervisor && (
                                 <div className="col-span-1">
                                     <CTAButton
                                         ctaApi={() => violationTypeApi.delete(record.violationTypeId)}
@@ -154,63 +154,69 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     </CTAButton>
                                 </div>
                             )}
-                            <div className="col-span-1">
-                                <CTAButton
-                                    ctaApi={() => violationsApi.approve(record.violationTypeId)}
-                                    isConfirm
-                                    confirmMessage="Are you sure you want to approve this violation?"
-                                    extraOnError={toastError}
-                                    extraOnSuccess={(data) => {
-                                        queryClient.invalidateQueries({
-                                            queryKey: ['violation-types'],
-                                        });
+                            {isSupervisor && (
+                                <div className="col-span-1">
+                                    <CTAButton
+                                        ctaApi={() => violationsApi.approve(record.violationTypeId)}
+                                        isConfirm
+                                        confirmMessage="Are you sure you want to approve this violation?"
+                                        extraOnError={toastError}
+                                        extraOnSuccess={(data) => {
+                                            queryClient.invalidateQueries({
+                                                queryKey: ['violation-types'],
+                                            });
 
-                                        toast.success(data.message || 'Successful');
-                                    }}
-                                >
-                                    <Button className="flex h-6 w-6 items-center justify-center p-0" type="primary" size="small">
-                                        A
-                                    </Button>
-                                </CTAButton>
-                            </div>
-                            <div className="col-span-1">
-                                <CTAButton
-                                    ctaApi={() => violationsApi.complete(record.violationTypeId)}
-                                    isConfirm
-                                    confirmMessage="Are you sure you want to complete this violation?"
-                                    extraOnError={toastError}
-                                    extraOnSuccess={(data) => {
-                                        queryClient.invalidateQueries({
-                                            queryKey: ['violation-types'],
-                                        });
+                                            toast.success(data.message || 'Successful');
+                                        }}
+                                    >
+                                        <Button className="flex h-6 w-6 items-center justify-center p-0" type="primary" size="small">
+                                            A
+                                        </Button>
+                                    </CTAButton>
+                                </div>
+                            )}
+                            {isSupervisor && (
+                                <div className="col-span-1">
+                                    <CTAButton
+                                        ctaApi={() => violationsApi.complete(record.violationTypeId)}
+                                        isConfirm
+                                        confirmMessage="Are you sure you want to complete this violation?"
+                                        extraOnError={toastError}
+                                        extraOnSuccess={(data) => {
+                                            queryClient.invalidateQueries({
+                                                queryKey: ['violation-types'],
+                                            });
 
-                                        toast.success(data.message || 'Successful');
-                                    }}
-                                >
-                                    <Button className="flex h-6 w-6 items-center justify-center p-0" type="default" size="small">
-                                        C
-                                    </Button>
-                                </CTAButton>
-                            </div>
-                            <div className="col-span-1">
-                                <CTAButton
-                                    ctaApi={() => violationsApi.reject(record.violationTypeId)}
-                                    isConfirm
-                                    confirmMessage="Are you sure you want to reject this violation?"
-                                    extraOnError={toastError}
-                                    extraOnSuccess={(data) => {
-                                        queryClient.invalidateQueries({
-                                            queryKey: ['violation-types'],
-                                        });
+                                            toast.success(data.message || 'Successful');
+                                        }}
+                                    >
+                                        <Button className="flex h-6 w-6 items-center justify-center p-0" type="default" size="small">
+                                            C
+                                        </Button>
+                                    </CTAButton>
+                                </div>
+                            )}
+                            {isSupervisor && (
+                                <div className="col-span-1">
+                                    <CTAButton
+                                        ctaApi={() => violationsApi.reject(record.violationTypeId)}
+                                        isConfirm
+                                        confirmMessage="Are you sure you want to reject this violation?"
+                                        extraOnError={toastError}
+                                        extraOnSuccess={(data) => {
+                                            queryClient.invalidateQueries({
+                                                queryKey: ['violation-types'],
+                                            });
 
-                                        toast.success(data.message || 'Successful');
-                                    }}
-                                >
-                                    <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
-                                        R
-                                    </Button>
-                                </CTAButton>
-                            </div>
+                                            toast.success(data.message || 'Successful');
+                                        }}
+                                    >
+                                        <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
+                                            R
+                                        </Button>
+                                    </CTAButton>
+                                </div>
+                            )}
                         </div>
                     )}
                     filters={[
@@ -242,7 +248,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <div className="flex items-center gap-3">
-                            {!isSchoolAdmin && !isSupervisor && (
+                            {isSupervisor && (
                                 <Button
                                     type="primary"
                                     icon={<PlusOutlined />}
@@ -253,7 +259,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     Create Violation Student
                                 </Button>
                             )}
-                            {!isSchoolAdmin && (
+                            {isSupervisor && (
                                 <Button
                                     type="primary"
                                     icon={<PlusOutlined />}

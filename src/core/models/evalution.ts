@@ -1,4 +1,5 @@
 export interface Evaluation {
+    classId: number;
     className: string;
     evaluationId: number;
     year: number;

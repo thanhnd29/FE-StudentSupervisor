@@ -100,7 +100,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     queryApi={schoolId ? () => studentSupervisorApi.getBySchool(schoolId) : studentSupervisorApi.getAll}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
-                            <ModalBuilder
+                            {/* <ModalBuilder
                                 btnLabel=""
                                 btnProps={{
                                     size: 'small',
@@ -200,7 +200,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         />
                                     );
                                 }}
-                            </ModalBuilder>
+                            </ModalBuilder> */}
                             <CTAButton
                                 ctaApi={() => studentSupervisorApi.delete(record.studentSupervisorId)}
                                 isConfirm

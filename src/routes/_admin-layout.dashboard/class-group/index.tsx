@@ -22,6 +22,7 @@ import { toastError } from '@/core/utils/api.helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
+import { teacherApi } from '@/core/api/tearcher.api';
 
 interface PageProps { }
 
@@ -29,11 +30,20 @@ const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
     const queryClient = useQueryClient();
 
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
-    console.log(schoolId);
+    const getByRole = () => {
+        if (schoolId) {
+            if (isSupervisor) {
+                return classGroupApi.getByUser(userId);
+            }
+            return classGroupApi.getBySchool(schoolId)
+        }
+        return classGroupApi.getAll()
+    };
+
 
     useDocumentTitle('Class Group List');
 
@@ -50,13 +60,16 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'classGroupName',
-                            title: 'Class Group Name',
-                            type: FieldType.TEXT,
+                            key: 'teacherId',
+                            title: 'Teacher',
+                            type: FieldType.BADGE_API,
+                            apiAction(value) {
+                                return teacherApi.getEnumSelectOptions(value);
+                            },
                         },
                         {
-                            key: 'hall',
-                            title: 'Hall',
+                            key: 'grade',
+                            title: 'Grade',
                             type: FieldType.TEXT,
                         },
                         {
@@ -68,7 +81,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             },
                         },
                     ]}
-                    queryApi={schoolId ? () => classGroupApi.getBySchool(schoolId) : classGroupApi.getAll}
+                    queryApi={getByRole}
                     actionColumns={(record) => {
                         return (
                             <div className="flex flex-col gap-2">
@@ -87,14 +100,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 title=""
                                                 apiAction={(dto) => classGroupApi.update(dto)}
                                                 defaultValues={{
+                                                    grade: record.grade,
                                                     classGroupName: record.classGroupName,
-                                                    hall: record.hall,
                                                     status: record.status,
                                                     classGroupId: record.classGroupId,
                                                 }}
                                                 schema={{
+                                                    grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     classGroupName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    hall: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 }}
@@ -102,11 +115,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     {
                                                         name: 'classGroupName',
                                                         label: 'Class Group Name',
-                                                        type: NKFormType.TEXT,
-                                                    },
-                                                    {
-                                                        name: 'hall',
-                                                        label: 'Hall',
                                                         type: NKFormType.TEXT,
                                                     },
                                                     {
@@ -161,13 +169,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             comparator: FilterComparator.LIKE,
                             name: 'classGroupName',
                             type: NKFormType.TEXT,
-                        },
-                        {
-                            label: 'Hall',
-                            comparator: FilterComparator.LIKE,
-                            name: 'hall',
-                            type: NKFormType.TEXT,
-                        },
+                        }
                     ]}
                     extraButtons={
                         <ModalBuilder
@@ -185,24 +187,19 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         title=""
                                         apiAction={classGroupApi.create}
                                         defaultValues={{
+                                            grade: 0,
                                             classGroupName: '',
-                                            hall: '',
                                             status: ClassGroupStatus.ACTIVE,
                                         }}
                                         schema={{
+                                            grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             classGroupName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            hall: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         fields={[
                                             {
                                                 name: 'classGroupName',
                                                 label: 'Name',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'hall',
-                                                label: 'Hall',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
