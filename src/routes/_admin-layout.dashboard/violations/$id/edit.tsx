@@ -124,7 +124,7 @@ const Page = () => {
                         label: 'Teacher',
                         type: NKFormType.SELECT_API_OPTION,
                         fieldProps: {
-                            apiAction: (value) => teacherApi.getEnumSelectOptions(value),
+                            apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value }),
                         },
                     },
                     {

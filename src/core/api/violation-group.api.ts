@@ -33,8 +33,8 @@ export const violationGroupApi = {
 
         return data.data;
     },
-    getBySchool: async (id: number) => {
-        const { data } = await http.get<ResponseList<ViolationGroup>>(`${baseUrl}/school/${id}`);
+    getBySchool: async (id: number, active?: boolean) => {
+        const { data } = active ? await http.get<ResponseList<ViolationGroup>>(`${baseUrl}/school/${id}/active`) : await http.get<ResponseList<ViolationGroup>>(`${baseUrl}/school/${id}`);
 
         return data.data;
     },
@@ -44,10 +44,12 @@ export const violationGroupApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
-    getEnumSelectOptions: async (id: number, search: string) => {
-        const violationGroups = id ? await violationGroupApi.getBySchool(id) : await violationGroupApi.getAll();
+    getEnumSelectOptions: async (search?: string, schoolId?: number, active?: boolean) => {
+        const violationGroups = schoolId ? await violationGroupApi.getBySchool(schoolId, active) : await violationGroupApi.getAll();
 
         const list: EnumListItem[] = violationGroups.map((item) => ({
             id: item.violationGroupId,

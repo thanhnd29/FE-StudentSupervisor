@@ -21,6 +21,8 @@ import { toastError } from '@/core/utils/api.helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
+import moment from 'moment';
+import { Data } from 'akar-icons';
 
 const Page = () => {
     const queryClient = useQueryClient();
@@ -89,26 +91,65 @@ const Page = () => {
                                         studentInClassApi.update({
                                             ...dto,
                                             enrollDate: dto.enrollDate.toISOString(),
+                                            birthday: dto.birthday.toISOString(),
+                                            startDate: dto.startDate.toISOString(),
+                                            endDate: dto.endDate.toISOString(),
                                         })
                                     }
                                     defaultValues={{
+                                        studentName: record.studentName,
+                                        code: record.code,
+                                        sex: record.sex,
+                                        birthday: new Date(record.birthday),
+                                        address: record.address,
+                                        phone: record.phone,
                                         classId: record.classId,
                                         enrollDate: new Date(record.enrollDate),
                                         isSupervisor: record.isSupervisor,
-                                        status: record.status,
+                                        startDate: new Date(record.startDate),
+                                        endDate: new Date(record.endDate),
                                         studentId: record.studentId,
                                         studentInClassId: record.studentInClassId,
                                     }}
                                     fields={[
                                         {
                                             label: 'Student',
-                                            name: 'studentId',
+                                            name: 'studentName',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Code',
+                                            name: 'code',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Sex (*male)',
+                                            name: 'sex',
+                                            type: NKFormType.BOOLEAN,
+                                        },
+                                        {
+                                            label: 'Birthday',
+                                            name: 'birthday',
+                                            type: NKFormType.DATE,
+                                        },
+                                        {
+                                            label: 'Address',
+                                            name: 'address',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Phone',
+                                            name: 'phone',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Class',
+                                            name: 'classId',
                                             type: NKFormType.SELECT_API_OPTION,
                                             fieldProps: {
-                                                apiAction: (value) =>
-                                                    studentApi.getEnumSelectOptions({
-                                                        search: value,
-                                                    }),
+                                                apiAction(value) {
+                                                    return classApi.getEnumSelectOptions({ search: value });
+                                                }
                                             },
                                         },
                                         {
@@ -122,12 +163,14 @@ const Page = () => {
                                             type: NKFormType.BOOLEAN,
                                         },
                                         {
-                                            label: 'Status',
-                                            name: 'status',
-                                            type: NKFormType.SELECT_API_OPTION,
-                                            fieldProps: {
-                                                apiAction: (value) => studentInClassApi.getEnumStatuses(value),
-                                            },
+                                            label: 'Start Date',
+                                            name: 'startDate',
+                                            type: NKFormType.DATE,
+                                        },
+                                        {
+                                            label: 'End Date',
+                                            name: 'endDate',
+                                            type: NKFormType.DATE,
                                         },
                                     ]}
                                     title=""
@@ -135,9 +178,16 @@ const Page = () => {
                                         classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         enrollDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         isSupervisor: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                         studentId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                     }}
                                     onExtraErrorAction={toastError}
                                     onExtraSuccessAction={(data) => {
@@ -193,22 +243,62 @@ const Page = () => {
                         return (
                             <FormBuilder
                                 className="!p-0"
+                                beforeSubmit={(dto) => {
+                                    if (moment(dto.startDate).isAfter(dto.endDate)) {
+                                        toast.error('Start Date must be before end date');
+                                        return false;
+                                    }
+
+                                    return true;
+                                }}
                                 apiAction={(dto) =>
                                     studentInClassApi.create({
                                         ...dto,
                                         enrollDate: dto.enrollDate.toISOString(),
+                                        birthday: dto.birthday.toISOString(),
+                                        startDate: dto.startDate.toISOString(),
+                                        endDate: dto.endDate.toISOString(),
                                     })
                                 }
                                 fields={[
                                     {
                                         label: 'Student',
-                                        name: 'studentId',
+                                        name: 'studentName',
+                                        type: NKFormType.TEXT,
+                                    },
+                                    {
+                                        label: 'Code',
+                                        name: 'code',
+                                        type: NKFormType.TEXT,
+                                    },
+                                    {
+                                        label: 'Sex (*male)',
+                                        name: 'sex',
+                                        type: NKFormType.BOOLEAN,
+                                    },
+                                    {
+                                        label: 'Birthday',
+                                        name: 'birthday',
+                                        type: NKFormType.DATE,
+                                    },
+                                    {
+                                        label: 'Address',
+                                        name: 'address',
+                                        type: NKFormType.TEXT,
+                                    },
+                                    {
+                                        label: 'Phone',
+                                        name: 'phone',
+                                        type: NKFormType.TEXT,
+                                    },
+                                    {
+                                        label: 'Class',
+                                        name: 'classId',
                                         type: NKFormType.SELECT_API_OPTION,
                                         fieldProps: {
-                                            apiAction: (value) =>
-                                                studentApi.getEnumSelectOptions({
-                                                    search: value,
-                                                }),
+                                            apiAction(value) {
+                                                return classApi.getEnumSelectOptions({ search: value });
+                                            }
                                         },
                                     },
                                     {
@@ -222,21 +312,30 @@ const Page = () => {
                                         type: NKFormType.BOOLEAN,
                                     },
                                     {
-                                        label: 'Status',
-                                        name: 'status',
-                                        type: NKFormType.SELECT_API_OPTION,
-                                        fieldProps: {
-                                            apiAction: (value) => studentInClassApi.getEnumStatuses(value),
-                                        },
+                                        label: 'Start Date',
+                                        name: 'startDate',
+                                        type: NKFormType.DATE,
+                                    },
+                                    {
+                                        label: 'End Date',
+                                        name: 'endDate',
+                                        type: NKFormType.DATE,
                                     },
                                 ]}
                                 title=""
                                 schema={{
+                                    schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                     classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                     enrollDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                     isSupervisor: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    studentId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                 }}
                                 onExtraErrorAction={toastError}
                                 onExtraSuccessAction={(data) => {
@@ -249,11 +348,18 @@ const Page = () => {
                                     toast.success(data.message || 'Successful');
                                 }}
                                 defaultValues={{
+                                    schoolId: schoolId,
+                                    studentName: "",
+                                    code: "",
+                                    sex: false,
+                                    birthday: new Date(),
+                                    address: "",
+                                    phone: "",
                                     classId: 0,
                                     enrollDate: new Date(),
                                     isSupervisor: false,
-                                    status: '',
-                                    studentId: 0,
+                                    startDate: new Date(),
+                                    endDate: new Date(),
                                 }}
                             />
                         );

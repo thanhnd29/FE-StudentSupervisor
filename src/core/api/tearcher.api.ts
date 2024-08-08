@@ -39,16 +39,23 @@ export const teacherApi = {
 
         return data.data;
     },
+    getSupervisorBySchool: async (id: number) => {
+        const { data } = await http.get<ResponseList<Teacher>>(`${baseUrl}/role/supervisor/${id}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<SchoolYear>(`${baseUrl}/${id}`);
 
         return data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
-    getEnumSelectOptions: async (search?: string, schoolId?: number) => {
-        const teachers = schoolId ? await teacherApi.getTeacherBySchool(schoolId) : await teacherApi.getAll();
+    getEnumSelectOptions: async ({search, schoolId, supervisorId} : {search?: string, schoolId?: number, supervisorId?: number}) => {
+        const teachers = schoolId ? await teacherApi.getTeacherBySchool(schoolId) : supervisorId ? await teacherApi.getSupervisorBySchool(supervisorId) : await teacherApi.getAll();
 
         const list: EnumListItem[] = teachers.map((item) => ({
             id: item.teacherId,

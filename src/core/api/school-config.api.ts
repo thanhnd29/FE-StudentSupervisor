@@ -34,6 +34,8 @@ export const schoolConfigApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
 };

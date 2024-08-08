@@ -4,6 +4,7 @@ export enum ClassGroupStatus {
 }
 
 export interface ClassGroup {
+    schoolId: number;
     classGroupId: number;
     classGroupName: string;
     grade: number;

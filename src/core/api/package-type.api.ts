@@ -4,8 +4,8 @@ import { getColorWithId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreatePackageTypeDto extends Pick<PackageType, 'description' | 'name'> {}
-export interface IUpdatePackageTypeDto extends Pick<PackageType, 'description' | 'name'> {}
+export interface ICreatePackageTypeDto extends Pick<PackageType, 'description' | 'name'> { }
+export interface IUpdatePackageTypeDto extends Pick<PackageType, 'description' | 'name'> { }
 
 const baseUrl = '/package-types';
 
@@ -36,7 +36,9 @@ export const packageTypeApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async (search?: string) => {
         const packages = await packageTypeApi.getAll().then((data) => data.filter((item) => item.status === PackageTypeStatus.ACTIVE));

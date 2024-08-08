@@ -3,9 +3,9 @@ import { HighSchool, HighSchoolStatus } from '../models/highSchools';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateHighSchoolDto extends Pick<HighSchool, 'code' | 'name' | 'address' | 'phone' | 'imageUrl' | 'webUrl'> {}
+export interface ICreateHighSchoolDto extends Pick<HighSchool, 'code' | 'name' | 'address' | 'phone' | 'imageUrl' | 'webUrl'> { }
 
-export interface IUpdateHighSchoolDto extends Pick<HighSchool, 'code' | 'name' | 'address' | 'phone' | 'imageUrl' | 'webUrl'> {}
+export interface IUpdateHighSchoolDto extends Pick<HighSchool, 'code' | 'name' | 'address' | 'phone' | 'imageUrl' | 'webUrl'> { }
 
 const baseUrl = '/highschools';
 
@@ -35,7 +35,9 @@ export const highSchoolApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumStatus: async () => {
         return [

@@ -62,7 +62,9 @@ export const userApi = {
         return data;
     },
     delete: async (id: string) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data.data;
     },
     getEnumStatuses: async (search?: string) => {
         const list: EnumListItem[] = [

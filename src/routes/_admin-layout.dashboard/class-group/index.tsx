@@ -64,7 +64,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             title: 'Teacher',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
-                                return teacherApi.getEnumSelectOptions(value);
+                                return teacherApi.getEnumSelectOptions({ search: value, supervisorId: schoolId });
                             },
                         },
                         {
@@ -82,7 +82,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                     ]}
                     queryApi={getByRole}
-                    actionColumns={(record) => {
+                    actionColumns={!isSupervisor ? (record) => {
                         return (
                             <div className="flex flex-col gap-2">
                                 <ModalBuilder
@@ -100,29 +100,23 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 title=""
                                                 apiAction={(dto) => classGroupApi.update(dto)}
                                                 defaultValues={{
-                                                    grade: record.grade,
-                                                    classGroupName: record.classGroupName,
-                                                    status: record.status,
-                                                    classGroupId: record.classGroupId,
+                                                    teacherId: record.teacherId,
+                                                    schoolId: schoolId,
+                                                    classGroupId: record.classGroupId
                                                 }}
                                                 schema={{
-                                                    grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    classGroupName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                    teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                    schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 }}
                                                 fields={[
                                                     {
-                                                        name: 'classGroupName',
-                                                        label: 'Class Group Name',
-                                                        type: NKFormType.TEXT,
-                                                    },
-                                                    {
-                                                        name: 'status',
-                                                        label: 'Status',
+                                                        name: 'teacherId',
+                                                        label: 'Teacher',
                                                         type: NKFormType.SELECT_API_OPTION,
                                                         fieldProps: {
-                                                            apiAction: classGroupApi.getEnumStatus,
+                                                            apiAction: (value) =>
+                                                                teacherApi.getEnumSelectOptions({ search: value, supervisorId: schoolId }),
                                                         },
                                                     },
                                                 ]}
@@ -162,7 +156,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 </CTAButton>
                             </div>
                         );
-                    }}
+                    } : null}
                     filters={[
                         {
                             label: 'Name',
@@ -172,57 +166,53 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         }
                     ]}
                     extraButtons={
-                        <ModalBuilder
-                            btnLabel="Create Class Group"
-                            btnProps={{
-                                type: 'primary',
-                                icon: <PlusOutlined />,
-                            }}
-                            title="Create Class Group"
-                        >
-                            {(close) => {
-                                return (
-                                    <FormBuilder
-                                        className="!p-0"
-                                        title=""
-                                        apiAction={classGroupApi.create}
-                                        defaultValues={{
-                                            grade: 0,
-                                            classGroupName: '',
-                                            status: ClassGroupStatus.ACTIVE,
-                                        }}
-                                        schema={{
-                                            grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            classGroupName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        }}
-                                        fields={[
-                                            {
-                                                name: 'classGroupName',
-                                                label: 'Name',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'status',
-                                                label: 'Status',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                fieldProps: {
-                                                    apiAction: classGroupApi.getEnumStatus,
+                        (!isSupervisor) && (
+                            <ModalBuilder
+                                btnLabel="Create Class Group"
+                                btnProps={{
+                                    type: 'primary',
+                                    icon: <PlusOutlined />,
+                                }}
+                                title="Create Class Group"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder
+                                            className="!p-0"
+                                            title=""
+                                            apiAction={classGroupApi.create}
+                                            defaultValues={{
+                                                teacherId: 0,
+                                                schoolId: schoolId
+                                            }}
+                                            schema={{
+                                                teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            fields={[
+                                                {
+                                                    name: 'teacherId',
+                                                    label: 'Teacher',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: (value) =>
+                                                            teacherApi.getEnumSelectOptions({ search: value, supervisorId: schoolId }),
+                                                    },
                                                 },
-                                            },
-                                        ]}
-                                        onExtraSuccessAction={() => {
-                                            toast.success('Create Class Group successfully');
-                                            queryClient.invalidateQueries({
-                                                queryKey: ['class-group'],
-                                            });
-                                            close();
-                                        }}
-                                        onExtraErrorAction={toastError}
-                                    />
-                                );
-                            }}
-                        </ModalBuilder>
+                                            ]}
+                                            onExtraSuccessAction={() => {
+                                                toast.success('Create Class Group successfully');
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['class-group'],
+                                                });
+                                                close();
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                        )
                     }
                 />
             </div>

@@ -136,13 +136,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             {isSupervisor && (
                                 <div className="col-span-1">
                                     <CTAButton
-                                        ctaApi={() => violationTypeApi.delete(record.violationTypeId)}
+                                        ctaApi={() => violationsApi.delete(record.violationId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to delete this violation type?"
+                                        confirmMessage="Are you sure you want to delete this violation?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
-                                                queryKey: ['violation-types'],
+                                                queryKey: ['violations'],
                                             });
 
                                             toast.success(data.message || 'Successful');
@@ -163,7 +163,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
-                                                queryKey: ['violation-types'],
+                                                queryKey: ['violations'],
                                             });
 
                                             toast.success(data.message || 'Successful');
@@ -184,7 +184,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
-                                                queryKey: ['violation-types'],
+                                                queryKey: ['violations'],
                                             });
 
                                             toast.success(data.message || 'Successful');
@@ -205,7 +205,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
-                                                queryKey: ['violation-types'],
+                                                queryKey: ['violations'],
                                             });
 
                                             toast.success(data.message || 'Successful');
@@ -248,7 +248,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <div className="flex items-center gap-3">
-                            {isSupervisor && (
+                            {/* {isSupervisor && (
                                 <Button
                                     type="primary"
                                     icon={<PlusOutlined />}
@@ -258,7 +258,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 >
                                     Create Violation Student
                                 </Button>
-                            )}
+                            )} */}
                             {isSupervisor && (
                                 <Button
                                     type="primary"

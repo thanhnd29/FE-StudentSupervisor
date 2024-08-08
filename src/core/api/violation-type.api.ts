@@ -4,9 +4,9 @@ import { getColorWithId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description'> {}
+export interface ICreateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description'> { }
 
-export interface IUpdateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description'> {}
+export interface IUpdateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description'> { }
 
 const baseUrl = '/violation-types';
 
@@ -41,7 +41,9 @@ export const violationTypeApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async (id: number, search: string) => {
         const violationTypes = id ? await violationTypeApi.getBySchool(id) : await violationTypeApi.getAll();

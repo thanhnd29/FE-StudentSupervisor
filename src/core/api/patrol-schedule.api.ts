@@ -3,8 +3,8 @@ import { PatrolSchedule, PatrolScheduleStatus } from '../models/patrol-schedule'
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'supervisorId' | 'teacherId' | 'from' | 'to'> { }
-export interface IUpdatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'supervisorId' | 'teacherId' | 'from' | 'to' | 'scheduleId'> { }
+export interface ICreatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'userId' | 'name' | 'slot' | 'time' | 'supervisorId' | 'from' | 'to'> { }
+export interface IUpdatePatrolScheduleDto extends Pick<PatrolSchedule, 'classId' | 'supervisorId' | 'from' | 'to' | 'scheduleId' | 'userId' | 'name' | 'slot' | 'time' | 'status'> { }
 
 const baseUrl = '/patrol-schedules';
 
@@ -34,13 +34,20 @@ export const patrolScheduleApi = {
 
         return data.data || [];
     },
+    getByUser: async (id: number) => {
+        const { data } = await http.get<ResponseList<PatrolSchedule>>(`${baseUrl}/supervisor/${id}/schedule`);
+
+        return data.data || [];
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<PatrolSchedule>>(`${baseUrl}/${id}`);
 
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumStatuses: async (search?: string) => {
         return [

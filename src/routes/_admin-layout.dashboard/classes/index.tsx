@@ -297,7 +297,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 label: 'Teacher',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
-                                                    apiAction: (value) => teacherApi.getEnumSelectOptions(value, schoolId),
+                                                    apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value, schoolId: schoolId }),
                                                 },
                                             },
                                             {

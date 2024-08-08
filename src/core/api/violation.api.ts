@@ -126,7 +126,9 @@ export const violationsApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async (search?: string) => {
         const violations = await violationsApi.getAll();

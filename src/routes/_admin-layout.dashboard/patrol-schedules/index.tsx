@@ -28,9 +28,19 @@ interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
+
+    const getByRole = () => {
+        if (schoolId) {
+            if (isSupervisor) {
+                return patrolScheduleApi.getByUser(userId);
+            }
+            return patrolScheduleApi.getBySchool(schoolId)
+        }
+        return patrolScheduleApi.getAll()
+    };
 
     useDocumentTitle('Patrol Schedules');
 
@@ -52,15 +62,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'teacherName',
-                            title: 'Teacher',
-                            type: FieldType.TEXT,
+                            key: 'classId',
+                            title: 'Class',
+                            type: FieldType.BADGE_API,
+                            apiAction(value) {
+                                return classApi.getEnumSelectOptions({ search: value });
+                            },
                         },
                         {
-                            key: 'status',
-                            title: 'Status',
-                            type: FieldType.BADGE_API,
-                            apiAction: patrolScheduleApi.getEnumStatuses,
+                            key: 'slot',
+                            title: 'Time',
+                            type: FieldType.TEXT,
                         },
                         {
                             key: 'from',
@@ -73,15 +85,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TIME_DATE,
                         },
                         {
-                            key: 'classId',
-                            title: 'Class',
+                            key: 'status',
+                            title: 'Status',
                             type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return classApi.getEnumSelectOptions({ search: value });
-                            },
+                            apiAction: patrolScheduleApi.getEnumStatuses,
                         },
                     ]}
-                    queryApi={schoolId ? () => patrolScheduleApi.getBySchool(schoolId) : patrolScheduleApi.getAll}
+                    queryApi={getByRole}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
                             <ModalBuilder
@@ -105,11 +115,15 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 });
                                             }}
                                             defaultValues={{
-                                                classId: record.classId,
-                                                from: new Date(record.from),
                                                 scheduleId: record.scheduleId,
+                                                classId: record.classId,
+                                                userId: record.userId,
+                                                name: record.name,
+                                                slot: record.slot,
+                                                time: record.time,
+                                                status: record.status,
+                                                from: new Date(record.from),
                                                 supervisorId: record.supervisorId,
-                                                teacherId: record.teacherId,
                                                 to: new Date(record.to),
                                             }}
                                             fields={[
@@ -128,7 +142,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     label: 'Class',
                                                     fieldProps: {
-                                                        apiAction: (value) => classApi.getEnumSelectOptions({ search: value }),
+                                                        apiAction: (value) => classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId }),
                                                     },
                                                 },
                                                 {
@@ -136,15 +150,30 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     label: 'Supervisor',
                                                     fieldProps: {
-                                                        apiAction: (value) => studentSupervisorApi.getEnumSelectOptions(value),
+                                                        apiAction: (value) => studentSupervisorApi.getEnumSelectOptions(value, schoolId),
                                                     },
                                                 },
                                                 {
-                                                    name: 'teacherId',
+                                                    name: 'name',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Name',
+                                                },
+                                                {
+                                                    name: 'slot',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Slot',
+                                                },
+                                                {
+                                                    name: 'time',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Time',
+                                                },
+                                                {
+                                                    name: 'status',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Teacher',
+                                                    label: 'Status',
                                                     fieldProps: {
-                                                        apiAction: (value) => teacherApi.getEnumSelectOptions(value),
+                                                        apiAction: (value) => patrolScheduleApi.getEnumStatuses(value),
                                                     },
                                                 },
                                             ]}
@@ -154,8 +183,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 from: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 scheduleId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 supervisorId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                userId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                slot: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                time: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={() => {
@@ -216,6 +249,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 ...dto,
                                                 from: dto.from.toISOString(),
                                                 to: dto.to.toISOString(),
+                                                time: {
+                                                    ticks: dto.time
+                                                }
                                             })
                                         }
                                         fields={[
@@ -234,7 +270,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 label: 'Class',
                                                 fieldProps: {
-                                                    apiAction: (value) => classApi.getEnumSelectOptions({ search: value }),
+                                                    apiAction: (value) => classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId }),
                                                 },
                                             },
                                             {
@@ -242,24 +278,34 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 label: 'Supervisor',
                                                 fieldProps: {
-                                                    apiAction: (value) => studentSupervisorApi.getEnumSelectOptions(value),
+                                                    apiAction: (value) => studentSupervisorApi.getEnumSelectOptions(value, schoolId),
                                                 },
                                             },
                                             {
-                                                name: 'teacherId',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Teacher',
-                                                fieldProps: {
-                                                    apiAction: (value) => teacherApi.getEnumSelectOptions(value),
-                                                },
+                                                name: 'name',
+                                                type: NKFormType.TEXT,
+                                                label: 'Name',
+                                            },
+                                            {
+                                                name: 'slot',
+                                                type: NKFormType.TEXT,
+                                                label: 'Slot',
+                                            },
+                                            {
+                                                name: 'time',
+                                                type: NKFormType.TEXT,
+                                                label: 'Time',
                                             },
                                         ]}
                                         title=""
                                         schema={{
                                             classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            userId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            slot: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            time: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             from: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                             supervisorId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
@@ -277,7 +323,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             to: new Date(),
                                             classId: 0,
                                             supervisorId: 0,
-                                            teacherId: 0,
+                                            userId: userId,
+                                            name: "",
+                                            slot: 0,
+                                            time: 0
                                         }}
                                     />
                                 );

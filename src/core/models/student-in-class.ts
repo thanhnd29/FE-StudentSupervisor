@@ -1,4 +1,10 @@
 export interface StudentInClass {
+    schoolId: number;
+    code: string;
+    sex: boolean;
+    birthday: string;
+    address: string;
+    phone: string;
     studentInClassId: number;
     classId: number;
     studentId: number;
@@ -6,6 +12,8 @@ export interface StudentInClass {
     enrollDate: string;
     isSupervisor: boolean;
     status: StudentInClassStatus;
+    startDate: string;
+    endDate: string;
 }
 
 export enum StudentInClassStatus {

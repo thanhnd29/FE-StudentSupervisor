@@ -87,7 +87,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             defaultValues={{
                                                 description: record.description,
                                                 minusPoints: record.minusPoints,
-                                                violationTypeId: record.violationTypeId,
                                             }}
                                             fields={[
                                                 {
@@ -100,20 +99,11 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.NUMBER,
                                                     label: 'Minus Points',
                                                 },
-                                                {
-                                                    name: 'violationTypeId',
-                                                    type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Type',
-                                                    fieldProps: {
-                                                        apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
-                                                    },
-                                                },
                                             ]}
                                             title=""
                                             schema={{
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 minusPoints: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                violationTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={(data) => {
@@ -127,7 +117,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     );
                                 }}
                             </ModalBuilder>
-                            <CTAButton
+                            {/* <CTAButton
                                 ctaApi={() => violationConfigApi.delete(record.violationConfigId)}
                                 isConfirm
                                 confirmMessage="Are you sure you want to delete this violation config?"
@@ -143,7 +133,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
                                     <Trash className="h-4 w-4" />
                                 </Button>
-                            </CTAButton>
+                            </CTAButton> */}
                         </div>
                     )}
                     filters={[
@@ -154,65 +144,65 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: NKFormType.TEXT,
                         },
                     ]}
-                    extraButtons={
-                        <ModalBuilder
-                            btnLabel="Create Violation Config"
-                            btnProps={{
-                                type: 'primary',
-                                icon: <PlusOutlined />,
-                            }}
-                            title="Create Violation Config"
-                        >
-                            {(close) => {
-                                return (
-                                    <FormBuilder<ICreateViolationConfigDto>
-                                        className="!p-0"
-                                        apiAction={violationConfigApi.create}
-                                        fields={[
-                                            {
-                                                name: 'description',
-                                                type: NKFormType.TEXTAREA,
-                                                label: 'Description',
-                                            },
-                                            {
-                                                name: 'minusPoints',
-                                                type: NKFormType.NUMBER,
-                                                label: 'Minus Points',
-                                            },
-                                            {
-                                                name: 'violationTypeId',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Type',
-                                                fieldProps: {
-                                                    apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
-                                                },
-                                            },
-                                        ]}
-                                        title=""
-                                        schema={{
-                                            description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            minusPoints: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            violationTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        }}
-                                        onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={(data) => {
-                                            queryClient.invalidateQueries({
-                                                queryKey: ['violation-configs'],
-                                            });
-                                            close();
+                    // extraButtons={
+                    //     <ModalBuilder
+                    //         btnLabel="Create Violation Config"
+                    //         btnProps={{
+                    //             type: 'primary',
+                    //             icon: <PlusOutlined />,
+                    //         }}
+                    //         title="Create Violation Config"
+                    //     >
+                    //         {(close) => {
+                    //             return (
+                    //                 <FormBuilder<ICreateViolationConfigDto>
+                    //                     className="!p-0"
+                    //                     apiAction={violationConfigApi.create}
+                    //                     fields={[
+                    //                         {
+                    //                             name: 'description',
+                    //                             type: NKFormType.TEXTAREA,
+                    //                             label: 'Description',
+                    //                         },
+                    //                         {
+                    //                             name: 'minusPoints',
+                    //                             type: NKFormType.NUMBER,
+                    //                             label: 'Minus Points',
+                    //                         },
+                    //                         {
+                    //                             name: 'violationTypeId',
+                    //                             type: NKFormType.SELECT_API_OPTION,
+                    //                             label: 'Type',
+                    //                             fieldProps: {
+                    //                                 apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
+                    //                             },
+                    //                         },
+                    //                     ]}
+                    //                     title=""
+                    //                     schema={{
+                    //                         description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                    //                         minusPoints: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                    //                         violationTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                    //                     }}
+                    //                     onExtraErrorAction={toastError}
+                    //                     onExtraSuccessAction={(data) => {
+                    //                         queryClient.invalidateQueries({
+                    //                             queryKey: ['violation-configs'],
+                    //                         });
+                    //                         close();
 
-                                            toast.success(data.message || 'Successful');
-                                        }}
-                                        defaultValues={{
-                                            description: '',
-                                            minusPoints: 0,
-                                            violationTypeId: 0,
-                                        }}
-                                    />
-                                );
-                            }}
-                        </ModalBuilder>
-                    }
+                    //                         toast.success(data.message || 'Successful');
+                    //                     }}
+                    //                     defaultValues={{
+                    //                         description: '',
+                    //                         minusPoints: 0,
+                    //                         violationTypeId: 0,
+                    //                     }}
+                    //                 />
+                    //             );
+                    //         }}
+                    //     </ModalBuilder>
+                    // }
                 />
             </div>
         </div>

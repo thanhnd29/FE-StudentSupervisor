@@ -40,7 +40,9 @@ export const evaluationDetailApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumStatuses: async (search?: string) => {
         return [

@@ -42,9 +42,11 @@ export const evaluationApi = {
 
         return data.data;
     },
-    // delete: async (id: number) => {
-    //     await http.delete(`${baseUrl}/${id}`);
-    // },
+    delete: async (id: number) => {
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
+    },
     getEnumSelectOptions: async (search?: string) => {
         const classes = await evaluationApi.getAll();
 

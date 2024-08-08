@@ -101,7 +101,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     label: 'Group',
                                                     fieldProps: {
-                                                        apiAction: (value) => violationGroupApi.getEnumSelectOptions(schoolId, value),
+                                                        apiAction: (value) => violationGroupApi.getEnumSelectOptions(value, schoolId, true),
                                                     },
                                                 },
                                                 {
@@ -180,7 +180,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 label: 'Group',
                                                 fieldProps: {
-                                                    apiAction: (value) => violationGroupApi.getEnumSelectOptions(schoolId, value),
+                                                    apiAction: (value) => violationGroupApi.getEnumSelectOptions(value, schoolId),
                                                 },
                                             },
                                             {

@@ -41,7 +41,9 @@ export const studentApi = {
         return data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async ({ schoolId, search }: { search?: string; schoolId?: number }) => {
         let students = await studentApi.getAll();

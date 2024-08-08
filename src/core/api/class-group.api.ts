@@ -5,9 +5,9 @@ import { getColorWithUuId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateClassGroupDto extends Omit<ClassGroup, 'classGroupId' | 'teacherId'> {}
+export interface ICreateClassGroupDto extends Pick<ClassGroup, 'teacherId' | 'schoolId'> { }
 
-export interface IUpdateClassGroupDto extends Omit<ClassGroup, 'teacherId'> {}
+export interface IUpdateClassGroupDto extends Pick<ClassGroup, 'teacherId' | 'schoolId' | 'classGroupId'> { }
 export interface ISearchClassGroupDto extends Omit<ClassGroup, 'classGroupId'> {
     sortOrder: 'asc' | 'desc';
 }
@@ -50,9 +50,10 @@ export const classGroupApi = {
         return data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
-    },
+        const { data } = await http.delete(`${baseUrl}/${id}`);
 
+        return data;
+    },
     search: async (dto: ISearchClassGroupDto) => {
         const { data } = await http.get<ResponseList<ClassGroup>>(`${baseUrl}/search`, {
             params: dto,

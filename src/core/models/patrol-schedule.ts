@@ -1,6 +1,3 @@
-import { Colors } from '../utils/colors.helper';
-import { EnumListItem } from './common';
-
 export enum PatrolScheduleStatus {
     ONGOING = 'ONGOING',
     FINISHED = 'FINISHED',
@@ -11,8 +8,14 @@ export interface PatrolSchedule {
     classId: number;
     supervisorId: number;
     supervisorName: string;
-    teacherId: number;
-    teacherName: string;
+    className: string;
     from: string;
     to: string;
+    userId: number;
+    name: string;
+    slot: number;
+    time: {
+        ticks: number;
+    }
+    status: string;
 }

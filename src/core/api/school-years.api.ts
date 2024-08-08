@@ -4,9 +4,9 @@ import { getColorWithUuId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateSchoolYearDto extends Pick<SchoolYear, 'schoolId' | 'year' | 'startDate' | 'endDate'> {}
+export interface ICreateSchoolYearDto extends Pick<SchoolYear, 'schoolId' | 'year' | 'startDate' | 'endDate'> { }
 
-export interface IUpdateSchoolYearDto extends Pick<SchoolYear, 'schoolId' | 'year' | 'startDate' | 'endDate'> {}
+export interface IUpdateSchoolYearDto extends Pick<SchoolYear, 'schoolId' | 'year' | 'startDate' | 'endDate'> { }
 
 const baseUrl = '/school-years';
 
@@ -37,7 +37,9 @@ export const schoolYearApi = {
         return data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async ({ highSchoolId, search, withSchoolName }: { search?: string; highSchoolId?: number; withSchoolName?: boolean }) => {
         let schoolYears = await schoolYearApi.getAll();

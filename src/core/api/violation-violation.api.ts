@@ -6,7 +6,7 @@ import http from './http';
 
 export interface ICreateViolationConfigDto extends Omit<ViolationConfig, 'violationConfigId' | 'status'> { }
 
-export interface IUpdateViolationConfigDto extends Omit<ViolationConfig, 'violationConfigId' | 'status'> { }
+export interface IUpdateViolationConfigDto extends Omit<ViolationConfig, 'violationConfigId' | 'status' | 'violationTypeId'> { }
 
 const baseUrl = '/violation-configs';
 
@@ -43,7 +43,9 @@ export const violationConfigApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async (search: string) => {
         const violationConfigs = await violationConfigApi.getAll();

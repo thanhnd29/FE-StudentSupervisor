@@ -41,8 +41,9 @@ export const penaltyApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        const res: any = await http.delete(`${baseUrl}/${id}`);
-        console.log(res.data);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async (search?: string) => {
         const penalties = await penaltyApi.getAll();

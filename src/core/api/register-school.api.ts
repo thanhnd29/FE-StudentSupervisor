@@ -17,11 +17,11 @@ export const registerSchoolApi = {
 
     update: async (dto: IUpdateRegisterSchoolDto) => {
         console.log(dto);
-        
+
         const { data } = await http.put<RegisterSchool>(`${baseUrl}`, dto);
 
         console.log(data);
-        
+
         return data;
     },
     getAll: async () => {
@@ -44,7 +44,9 @@ export const registerSchoolApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumStatus: async () => {
         return [

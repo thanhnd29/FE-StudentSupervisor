@@ -35,7 +35,9 @@ export const packageApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async (search?: string) => {
         const packages = await packageApi.getAll().then((data) => data.filter((item) => item.status === PackageStatus.ACTIVE));

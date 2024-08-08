@@ -1,9 +1,10 @@
-import { BaseResponse, ResponseList } from '../models/common';
-import { YearPackage } from '../models/year-package';
+import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
+import { YearPackage, YearPackageStatus } from '../models/year-package';
+import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateYearPackageDto extends Pick<YearPackage, 'numberOfStudent' | 'packageId' | 'schoolYearId'> {}
-export interface IUpdateYearPackageDto extends Pick<YearPackage, 'numberOfStudent' | 'packageId' | 'schoolYearId'> {}
+export interface ICreateYearPackageDto extends Pick<YearPackage, 'numberOfStudent' | 'packageId' | 'schoolYearId'> { }
+export interface IUpdateYearPackageDto extends Pick<YearPackage, 'numberOfStudent' | 'packageId' | 'schoolYearId'> { }
 
 const baseUrl = '/year-packages';
 
@@ -44,6 +45,30 @@ export const yearPackageApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
+    },
+    getEnumStatuses: async (search?: string) => {
+        const list: EnumListItem[] = [
+            {
+                color: Colors.GREEN,
+                id: YearPackageStatus.VALID,
+                label: 'Valid',
+                name: 'Valid',
+                slug: YearPackageStatus.VALID,
+                value: YearPackageStatus.VALID,
+            },
+            {
+                color: Colors.RED,
+                id: YearPackageStatus.EXPIRED,
+                label: 'Expired',
+                name: 'Expired',
+                slug: YearPackageStatus.EXPIRED,
+                value: YearPackageStatus.EXPIRED,
+            },
+        ];
+
+        return list;
     },
 };

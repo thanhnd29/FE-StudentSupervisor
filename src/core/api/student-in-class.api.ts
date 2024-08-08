@@ -3,9 +3,9 @@ import { StudentInClass, StudentInClassStatus } from '../models/student-in-class
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateStudentInClassDto extends Omit<StudentInClass, 'studentInClassId' | 'status' | 'studentName'> {}
+export interface ICreateStudentInClassDto extends Omit<StudentInClass, 'studentInClassId' | 'status' | 'studentId'> { }
 
-export interface IUpdateStudentInClassDto extends Omit<StudentInClass, 'studentInClassId' | 'studentName'> {}
+export interface IUpdateStudentInClassDto extends Omit<StudentInClass, 'status' | 'schoolId'> { }
 
 const baseUrl = '/student-in-classes';
 
@@ -40,7 +40,9 @@ export const studentInClassApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
     getEnumSelectOptions: async ({ search, classId }: { search?: string; classId?: number }) => {
         let studentInClasses = await studentInClassApi.getAll();

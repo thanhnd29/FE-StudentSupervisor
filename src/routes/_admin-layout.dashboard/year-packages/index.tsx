@@ -52,14 +52,30 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.BADGE_API,
                         },
                         {
-                            key: 'packageId',
-                            title: 'Package',
+                            key: 'code',
+                            title: 'Code',
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'numberOfStudent',
-                            title: 'Number of Student',
+                            key: 'schoolName',
+                            title: 'School Name',
                             type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'packageName',
+                            title: 'Package Name',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'year',
+                            title: 'Year',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'status',
+                            title: 'Status',
+                            type: FieldType.BADGE_API,
+                            apiAction: yearPackageApi.getEnumStatuses
                         },
                     ]}
                     queryApi={schoolId ? () => yearPackageApi.getBySchool(schoolId) : yearPackageApi.getAll}

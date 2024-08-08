@@ -42,10 +42,12 @@ export const studentSupervisorApi = {
         return data.data;
     },
     delete: async (id: number) => {
-        await http.delete(`${baseUrl}/${id}`);
+        const { data } = await http.delete(`${baseUrl}/${id}`);
+
+        return data;
     },
-    getEnumSelectOptions: async (search?: string) => {
-        const studentSupervisors = await studentSupervisorApi.getAll();
+    getEnumSelectOptions: async (search?: string, schoolId?: number) => {
+        const studentSupervisors = schoolId ? await studentSupervisorApi.getBySchool(schoolId) : await studentSupervisorApi.getAll();
 
         const list: EnumListItem[] = studentSupervisors.map((item) => ({
             id: item.studentSupervisorId,
