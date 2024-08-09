@@ -51,22 +51,30 @@ export const violationGroupApi = {
     getEnumSelectOptions: async (search?: string, schoolId?: number, active?: boolean) => {
         const violationGroups = schoolId ? await violationGroupApi.getBySchool(schoolId, active) : await violationGroupApi.getAll();
 
-        const list: EnumListItem[] = violationGroups.map((item) => ({
-            id: item.violationGroupId,
-            label: item.vioGroupName,
-            color: getColorWithId(item.violationGroupId),
-            slug: item.vioGroupName,
-            name: item.vioGroupName,
-            value: item.violationGroupId,
-        }));
+        delete: async (id: number) => {
+            const { data } = await http.delete(`${baseUrl}/${id}`);
+    
+            return data;
+        },
+        getEnumSelectOptions: async (search?: string, schoolId?: number, active?: boolean) => {
+            const violationGroups = schoolId ? await violationGroupApi.getBySchool(schoolId, active) : await violationGroupApi.getAll();
 
-        if (search) {
-            {
-                return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
-            }
-        }
+        // const list: EnumListItem[] = violationGroups.map((item) => ({
+        //     id: item.violationGroupId,
+        //     label: item.vioGroupName,
+        //     color: getColorWithId(item.violationGroupId),
+        //     slug: item.vioGroupName,
+        //     name: item.vioGroupName,
+        //     value: item.violationGroupId,
+        // }));
 
-        return list;
+        // if (search) {
+        //     {
+        //         return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
+        //     }
+        // }
+
+        // return list;
     },
     getEnumStatuses: async (search?: string) => {
         const list: EnumListItem[] = [
