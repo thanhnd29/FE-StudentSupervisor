@@ -259,34 +259,34 @@ export const patrolScheduleApi = {
 
         return data.data || [];
     },
-    getById: async (id: number) => {
-        const { data } = await http.get<BaseResponse<PatrolSchedule>>(`${baseUrl}/${id}`);
+//     getById: async (id: number) => {
+//         const { data } = await http.get<BaseResponse<PatrolSchedule>>(`${baseUrl}/${id}`);
 
-        return data.data;
-    },
-    delete: async (id: number) => {
-        const { data } = await http.delete(`${baseUrl}/${id}`);
+//         return data.data;
+//     },
+//     delete: async (id: number) => {
+//         const { data } = await http.delete(`${baseUrl}/${id}`);
 
-        return data;
-    },
-    getEnumStatuses: async (search?: string) => {
-        return [
-            {
-                color: Colors.YELLOW,
-                id: PatrolScheduleStatus.ONGOING,
-                label: 'Ongoing',
-                name: 'Ongoing',
-                slug: 'ongoing',
-                value: PatrolScheduleStatus.ONGOING,
-            },
-            {
-                color: Colors.GREEN,
-                id: PatrolScheduleStatus.FINISHED,
-                label: 'Finished',
-                name: 'Finished',
-                slug: 'finished',
-                value: PatrolScheduleStatus.FINISHED,
-            },
-        ] as EnumListItem[];
-    },
-};
+//         return data;
+//     },
+//     getEnumStatuses: async (search?: string) => {
+//         return [
+//             {
+//                 color: Colors.YELLOW,
+//                 id: PatrolScheduleStatus.ONGOING,
+//                 label: 'Ongoing',
+//                 name: 'Ongoing',
+//                 slug: 'ongoing',
+//                 value: PatrolScheduleStatus.ONGOING,
+//             },
+//             {
+//                 color: Colors.GREEN,
+//                 id: PatrolScheduleStatus.FINISHED,
+//                 label: 'Finished',
+//                 name: 'Finished',
+//                 slug: 'finished',
+//                 value: PatrolScheduleStatus.FINISHED,
+//             },
+//         ] as EnumListItem[];
+//     },
+// };
