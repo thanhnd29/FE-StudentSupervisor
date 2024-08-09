@@ -19,6 +19,12 @@ export const studentInClassApi = {
         const { data } = await http.put<StudentInClass>(`${baseUrl}`, dto);
 
         return data;
+
+        update: async (dto: IUpdateStudentInClassDto) => {
+            const { data } = await http.put<StudentInClass>(`${baseUrl}`, dto);
+    
+            return data;
+        },
     },
     getAll: async () => {
         const { data } = await http.get<ResponseList<StudentInClass>>(`${baseUrl}`, {
