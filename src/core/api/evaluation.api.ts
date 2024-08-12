@@ -60,6 +60,16 @@ export const evaluationApi = {
                 name: label,
                 value: item.evaluationId,
             };
+            const list: EnumListItem[] = classes.map((item) => {
+                const label = `${moment(item.from).format('DD/MM/YYYY')} - ${moment(item.to).format('DD/MM/YYYY')}`;
+                return {
+                    id: item.evaluationId,
+                    label,
+                    color: getColorWithId(item.evaluationId),
+                    slug: label,
+                    name: label,
+                    value: item.evaluationId,
+                };
         });
 
         if (search) {
