@@ -32,6 +32,22 @@ export const classApi = {
         
         return data.data;
     },
+
+    create: async (dto: ICreateClassDto) => {
+        const { data } = await http.post<Class>(`${baseUrl}`, dto);
+
+        return data;
+    },
+    update: async (dto: IUpdateClassDto) => {
+        const { data } = await http.put<Class>(`${baseUrl}`, dto);
+
+        return data;
+    },
+    getAll: async () => {
+        const { data } = await http.get<ResponseList<Class>>(`${baseUrl}`, {
+            params: {
+                sortOrder: 'desc',
+            },
     getBySchool: async (id: number) => {
         const { data } = await http.get<ResponseList<Class>>(`${baseUrl}/school/${id}`);
 
