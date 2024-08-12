@@ -86,6 +86,23 @@ export const violationConfigApi = {
                 slug: ViolationConfigStatus.INACTIVE,
                 value: ViolationConfigStatus.INACTIVE,
             },
+
+            {
+                color: Colors.GREEN,
+                id: ViolationConfigStatus.ACTIVE,
+                label: 'Active',
+                name: 'Active',
+                slug: ViolationConfigStatus.ACTIVE,
+                value: ViolationConfigStatus.ACTIVE,
+            },
+            {
+                color: Colors.RED,
+                id: ViolationConfigStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: ViolationConfigStatus.INACTIVE,
+                value: ViolationConfigStatus.INACTIVE,
+            },
         ];
 
         return list;
