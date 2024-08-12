@@ -21,6 +21,11 @@ export interface Violation {
     violationGroupName: string;
     status: string;
     year: string;
+    students: {
+        studentId: number;
+        studentCode: string;
+        fullName: string
+    }[]
 }
 
 export enum ViolationStatus {

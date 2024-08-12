@@ -69,6 +69,7 @@ export const NKRouter = {
         detail: (id: number) => `/dashboard/violations/${id}`,
         createForStudent: () => `/dashboard/violations/create-student`,
         createForSupervisor: () => `/dashboard/violations/create-supervisor`,
+        history: (id: number) => `/dashboard/violations/${id}/history`,
     },
     violationGroup: {
         list: () => '/dashboard/violation-groups',
@@ -107,6 +108,9 @@ export const NKRouter = {
         create: () => '/dashboard/evaluations/create',
         edit: (id: number) => `/dashboard/evaluations/${id}/edit`,
         detail: (id: number) => `/dashboard/evaluations/${id}`,
+    },
+    evaluationTop: {
+        list: () => '/dashboard/evaluation-tops/',
     },
     evaluationDetail: {
         list: () => '/dashboard/evaluation-details',
@@ -162,5 +166,6 @@ export const NKRouter = {
         create: () => '/dashboard/disciplines/create',
         edit: (id: number) => `/dashboard/disciplines/${id}/edit`,
         detail: (id: number) => `/dashboard/disciplines/${id}`,
+        history: (id: number) => `/dashboard/disciplines/${id}/history`,
     },
 };

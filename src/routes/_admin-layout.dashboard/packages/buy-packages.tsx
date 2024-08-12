@@ -1,38 +1,32 @@
+import { checkoutApi } from "@/core/api/checkout.api";
 import { packageApi } from "@/core/api/package.api";
 import FieldBuilder from "@/core/components/field/FieldBuilder";
 import { FieldType } from "@/core/components/field/FieldDisplay";
 import FormBuilder from "@/core/components/form/FormBuilder";
 import { NKFormType } from "@/core/components/form/NKForm";
-import { Package } from "@/core/models/package";
 import { NKConstant } from "@/core/NKConstant";
-import { toastError } from "@/core/utils/api.helper";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import Joi from "joi";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 
 const Page = () => {
     const [packageId, setPackageId] = useState(1);
-    const [res, setRes] = useState<Package | undefined>();
+    const newWindowRef = useRef<any>(null)
 
-    useEffect(() => {
-        const fetchPackageData = async () => {
-            try {
-                const packageData = await packageApi.getById(packageId);
-                setRes(packageData);
-            } catch (error) {
-                console.error("Error fetching package data:", error);
-            }
-        };
-
-        fetchPackageData();
-    }, [packageId]);
+    const violationQuery = useQuery({
+        queryKey: ['packages', packageId],
+        queryFn: () => {
+            return packageApi.getById(Number(packageId));
+        },
+    });
 
     return (
         <div className="grid grid-cols-3 gap-3">
             <section className="col-span-1">
                 <FormBuilder
                     apiAction={(data) => {
-
+                        return checkoutApi.create(data.packageId)
                     }}
                     title="Buy Package"
                     defaultValues={{
@@ -55,13 +49,22 @@ const Page = () => {
                         }
                     ]}
                     onExtraErrorAction={() => { }}
-                    onExtraSuccessAction={() => { }}
+                    onExtraSuccessAction={(data) => {
+                        console.log(data);
+                        
+                        let windowWidth = 600;
+                        let windowHeight = 800;
+                        let yPosition = window.outerHeight / 2 - windowHeight / 2 + window.screenY;
+                        let xPosition = window.outerWidth / 2 - windowWidth / 2 + window.screenX;
+
+                        newWindowRef.current = window.open(data.data.checkoutUrl, "NewWindow", `height=${windowHeight}, width=${windowWidth}, top=${yPosition}, left=${xPosition}`)
+                    }}
                 />
             </section>
             <section className="col-span-2">
                 <FieldBuilder
                     title="Detail Package"
-                    record={res}
+                    record={violationQuery.data}
                     isPadding={false}
                     containerClassName="p-4"
                     fields={[

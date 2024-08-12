@@ -63,6 +63,28 @@ export const schoolYearApi = {
 
         return list;
     },
+    getEnumSelectYear: async ({ highSchoolId, search, withSchoolName }: { search?: string; highSchoolId?: number; withSchoolName?: boolean }) => {
+        let schoolYears = await schoolYearApi.getAll();
+
+        if (highSchoolId) {
+            schoolYears = schoolYears.filter((schoolYear) => schoolYear.schoolId === highSchoolId);
+        }
+
+        let list: EnumListItem[] = schoolYears.map((schoolYear) => ({
+            value: schoolYear.year,
+            label: schoolYear.schoolName.toString(),
+            color: getColorWithUuId(schoolYear.schoolYearId.toString()),
+            id: schoolYear.year,
+            name: withSchoolName ? `${schoolYear.schoolName} - ${schoolYear.year}` : schoolYear.year.toString(),
+            slug: schoolYear.year.toString(),
+        }));
+
+        if (search) {
+            return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
+        }
+
+        return list;
+    },
     getEnumStatuses: async (search?: string) => {
         return [
             {

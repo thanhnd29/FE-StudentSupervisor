@@ -1,10 +1,9 @@
-import { dashboardApi } from '@/core/api/dashboard.api';
+import { evaluationApi } from '@/core/api/evaluation.api';
 import { highSchoolApi } from '@/core/api/high-school.api';
 import { schoolYearApi } from '@/core/api/school-years.api';
 import { FieldType } from '@/core/components/field/FieldDisplay';
 import FormBuilder from '@/core/components/form/FormBuilder';
 import { NKFormType } from '@/core/components/form/NKForm';
-import NKFormWrapper from '@/core/components/form/NKFormWrapper';
 import TableBuilder from '@/core/components/table/TableBuilder';
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle';
 import { MonthList, WeekList } from '@/core/models/date';
@@ -35,26 +34,21 @@ const Page: React.FunctionComponent<PageProps> = () => {
 
   useEffect(() => {
     queryClient.invalidateQueries({
-      queryKey: ['violation-top-student'],
+      queryKey: ['evaluation-tops'],
     });
   }, [year, month, week, queryClient]);
 
-  useDocumentTitle('Top 5 Student Most Violations');
+  useDocumentTitle('Evaluation Top Ranking');
 
   return (
     <div className="">
       <TableBuilder
-        sourceKey="violation-top-student"
-        title="Top 5 Student Most Violations"
+        sourceKey="evaluation-tops"
+        title="Evaluation Top Ranking"
         columns={[
           {
-            key: 'studentId',
+            key: 'classId',
             title: 'ID',
-            type: FieldType.TEXT,
-          },
-          {
-            key: 'fullName',
-            title: 'Student',
             type: FieldType.TEXT,
           },
           {
@@ -63,12 +57,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
             type: FieldType.TEXT,
           },
           {
-            key: 'violationCount',
-            title: 'Violation Count',
+            key: 'totalPoints',
+            title: 'Total Points',
+            type: FieldType.TEXT,
+          },
+          {
+            key: 'rank',
+            title: 'Rank',
             type: FieldType.TEXT,
           },
         ]}
-        queryApi={() => dashboardApi.getTopStudentsMostViolations(schoolId, year, month, week)}
+        queryApi={() => evaluationApi.getRank(schoolId, year, month, week)}
         extraButtons={
           <div className="flex flex-row items-center w-full">
             <FormBuilder
@@ -152,6 +151,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
   );
 };
 
-export const Route = createFileRoute('/_admin-layout/dashboard/violation-tops/violation-top-student')({
+export const Route = createFileRoute('/_admin-layout/dashboard/evaluation-tops/')({
   component: Page,
 })

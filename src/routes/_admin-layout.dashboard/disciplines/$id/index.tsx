@@ -127,6 +127,6 @@ const Page = () => {
   );
 };
 
-export const Route = createFileRoute('/_admin-layout/dashboard/disciplines/$id')({
+export const Route = createFileRoute('/_admin-layout/dashboard/disciplines/$id/')({
   component: Page
 })

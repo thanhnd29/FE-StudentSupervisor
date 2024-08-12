@@ -1,4 +1,4 @@
-import { EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, EyeOutlined, HistoryOutlined, PlusOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Button } from 'antd';
@@ -122,6 +122,16 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size="small"
                                     onClick={() => {
                                         router.push(NKRouter.violations.detail(record.violationId));
+                                    }}
+                                />
+                            </div>
+                            <div className="col-span-1">
+                                <Button
+                                    icon={<HistoryOutlined />}
+                                    type="dashed"
+                                    size="small"
+                                    onClick={() => {
+                                        router.push(NKRouter.violations.history(record.studentCode));
                                     }}
                                 />
                             </div>

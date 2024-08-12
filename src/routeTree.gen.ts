@@ -36,6 +36,7 @@ import { Route as AdminLayoutDashboardPatrolSchedulesIndexImport } from './route
 import { Route as AdminLayoutDashboardPackagesIndexImport } from './routes/_admin-layout.dashboard/packages/index'
 import { Route as AdminLayoutDashboardHighSchoolIndexImport } from './routes/_admin-layout.dashboard/high-school/index'
 import { Route as AdminLayoutDashboardEvaluationsIndexImport } from './routes/_admin-layout.dashboard/evaluations/index'
+import { Route as AdminLayoutDashboardEvaluationTopsIndexImport } from './routes/_admin-layout.dashboard/evaluation-tops/index'
 import { Route as AdminLayoutDashboardEvaluationDetailsIndexImport } from './routes/_admin-layout.dashboard/evaluation-details/index'
 import { Route as AdminLayoutDashboardDisciplinesIndexImport } from './routes/_admin-layout.dashboard/disciplines/index'
 import { Route as AdminLayoutDashboardClassesIndexImport } from './routes/_admin-layout.dashboard/classes/index'
@@ -50,12 +51,14 @@ import { Route as AdminLayoutDashboardViolationTopsViolationInWeekImport } from 
 import { Route as AdminLayoutDashboardViolationTopsViolationInClassImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-class'
 import { Route as AdminLayoutDashboardPackagesBuyPackagesImport } from './routes/_admin-layout.dashboard/packages/buy-packages'
 import { Route as AdminLayoutDashboardHighSchoolIdImport } from './routes/_admin-layout.dashboard/high-school/$id'
-import { Route as AdminLayoutDashboardDisciplinesIdImport } from './routes/_admin-layout.dashboard/disciplines/$id'
 import { Route as AdminLayoutDashboardClassesIdImport } from './routes/_admin-layout.dashboard/classes/$id'
 import { Route as AdminLayoutDashboardAuthViewImport } from './routes/_admin-layout.dashboard/auth/view'
 import { Route as AdminLayoutDashboardAuthEditImport } from './routes/_admin-layout.dashboard/auth/edit'
 import { Route as AdminLayoutDashboardViolationsIdIndexImport } from './routes/_admin-layout.dashboard/violations/$id/index'
+import { Route as AdminLayoutDashboardDisciplinesIdIndexImport } from './routes/_admin-layout.dashboard/disciplines/$id/index'
+import { Route as AdminLayoutDashboardViolationsIdHistoryImport } from './routes/_admin-layout.dashboard/violations/$id/history'
 import { Route as AdminLayoutDashboardViolationsIdEditImport } from './routes/_admin-layout.dashboard/violations/$id/edit'
+import { Route as AdminLayoutDashboardDisciplinesIdHistoryImport } from './routes/_admin-layout.dashboard/disciplines/$id/history'
 
 // Create/Update Routes
 
@@ -205,6 +208,12 @@ const AdminLayoutDashboardEvaluationsIndexRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardEvaluationTopsIndexRoute =
+  AdminLayoutDashboardEvaluationTopsIndexImport.update({
+    path: '/dashboard/evaluation-tops/',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardEvaluationDetailsIndexRoute =
   AdminLayoutDashboardEvaluationDetailsIndexImport.update({
     path: '/dashboard/evaluation-details/',
@@ -289,12 +298,6 @@ const AdminLayoutDashboardHighSchoolIdRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
-const AdminLayoutDashboardDisciplinesIdRoute =
-  AdminLayoutDashboardDisciplinesIdImport.update({
-    path: '/dashboard/disciplines/$id',
-    getParentRoute: () => AdminLayoutRoute,
-  } as any)
-
 const AdminLayoutDashboardClassesIdRoute =
   AdminLayoutDashboardClassesIdImport.update({
     path: '/dashboard/classes/$id',
@@ -319,9 +322,27 @@ const AdminLayoutDashboardViolationsIdIndexRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardDisciplinesIdIndexRoute =
+  AdminLayoutDashboardDisciplinesIdIndexImport.update({
+    path: '/dashboard/disciplines/$id/',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardViolationsIdHistoryRoute =
+  AdminLayoutDashboardViolationsIdHistoryImport.update({
+    path: '/dashboard/violations/$id/history',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardViolationsIdEditRoute =
   AdminLayoutDashboardViolationsIdEditImport.update({
     path: '/dashboard/violations/$id/edit',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardDisciplinesIdHistoryRoute =
+  AdminLayoutDashboardDisciplinesIdHistoryImport.update({
+    path: '/dashboard/disciplines/$id/history',
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
@@ -359,10 +380,6 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/classes/$id': {
       preLoaderRoute: typeof AdminLayoutDashboardClassesIdImport
-      parentRoute: typeof AdminLayoutImport
-    }
-    '/_admin-layout/dashboard/disciplines/$id': {
-      preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIdImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/high-school/$id': {
@@ -419,6 +436,10 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/evaluation-details/': {
       preLoaderRoute: typeof AdminLayoutDashboardEvaluationDetailsIndexImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/evaluation-tops/': {
+      preLoaderRoute: typeof AdminLayoutDashboardEvaluationTopsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/evaluations/': {
@@ -501,8 +522,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutDashboardYearPackagesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/_admin-layout/dashboard/disciplines/$id/history': {
+      preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIdHistoryImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/_admin-layout/dashboard/violations/$id/edit': {
       preLoaderRoute: typeof AdminLayoutDashboardViolationsIdEditImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/violations/$id/history': {
+      preLoaderRoute: typeof AdminLayoutDashboardViolationsIdHistoryImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/disciplines/$id/': {
+      preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIdIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/$id/': {
@@ -523,7 +556,6 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardAuthEditRoute,
     AdminLayoutDashboardAuthViewRoute,
     AdminLayoutDashboardClassesIdRoute,
-    AdminLayoutDashboardDisciplinesIdRoute,
     AdminLayoutDashboardHighSchoolIdRoute,
     AdminLayoutDashboardPackagesBuyPackagesRoute,
     AdminLayoutDashboardViolationTopsViolationInClassRoute,
@@ -538,6 +570,7 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardClassesIndexRoute,
     AdminLayoutDashboardDisciplinesIndexRoute,
     AdminLayoutDashboardEvaluationDetailsIndexRoute,
+    AdminLayoutDashboardEvaluationTopsIndexRoute,
     AdminLayoutDashboardEvaluationsIndexRoute,
     AdminLayoutDashboardHighSchoolIndexRoute,
     AdminLayoutDashboardPackagesIndexRoute,
@@ -558,7 +591,10 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardViolationTypesIndexRoute,
     AdminLayoutDashboardViolationsIndexRoute,
     AdminLayoutDashboardYearPackagesIndexRoute,
+    AdminLayoutDashboardDisciplinesIdHistoryRoute,
     AdminLayoutDashboardViolationsIdEditRoute,
+    AdminLayoutDashboardViolationsIdHistoryRoute,
+    AdminLayoutDashboardDisciplinesIdIndexRoute,
     AdminLayoutDashboardViolationsIdIndexRoute,
   ]),
 ])

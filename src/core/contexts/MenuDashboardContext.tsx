@@ -326,6 +326,13 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
                 router.push(NKRouter.violationTop.topStudentInClass());
             },
         },
+        {
+            label: 'Evaluation Tops',
+            key: 'evaluation-tops',
+            onClick: () => {
+                router.push(NKRouter.evaluationTop.list());
+            },
+        },
     ]
 
     const SupervisorMenu = [

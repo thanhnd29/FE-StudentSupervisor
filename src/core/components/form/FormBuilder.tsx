@@ -34,6 +34,7 @@ export interface FormBuilderProps<T> {
     beforeSubmit?: (value: T) => boolean;
     isDebug?: boolean;
     className?: string;
+    isButton?: boolean;
 }
 
 const FormBuilder = <T,>({
@@ -48,6 +49,7 @@ const FormBuilder = <T,>({
     isDebug,
     className,
     beforeSubmit,
+    isButton = true,
 }: FormBuilderProps<T>) => {
     const formMethods = useForm<any>({
         defaultValues,
@@ -116,7 +118,7 @@ const FormBuilder = <T,>({
                 </div>
             )}
             <NKFormWrapper formMethods={formMethods} formActionError={mutate.error}>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-4 gap-4 w-full">
                     {fields
                         .filter((item) => (item.isShowField ? item.isShowField(watchValues) : true))
                         .map(({ name, label, type, fieldProps, span, ...rest }) => {
@@ -128,9 +130,11 @@ const FormBuilder = <T,>({
                         })}
                 </div>
             </NKFormWrapper>
-            <Button type="primary" htmlType="submit" loading={mutate.isPending}>
-                {btnLabel}
-            </Button>
+            {isButton && (
+                <Button type="primary" htmlType="submit" loading={mutate.isPending}>
+                    {btnLabel}
+                </Button>
+            )}
         </form>
     );
 };
