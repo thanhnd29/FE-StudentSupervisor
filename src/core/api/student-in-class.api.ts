@@ -87,3 +87,13 @@ export const studentInClassApi = {
         ] as EnumListItem[];
     },
 };
+getBySchool: async (id: number) => {
+    const { data } = await http.get<ResponseList<StudentInClass>>(`${baseUrl}/school/${id}`);
+
+    return data.data;
+},
+getById: async (id: number) => {
+    const { data } = await http.get<BaseResponse<StudentInClass>>(`${baseUrl}/${id}`);
+
+    return data.data;
+},
