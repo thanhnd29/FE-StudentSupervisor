@@ -86,6 +86,15 @@ export const evaluationApi = {
                 slug: EvaluationStatus.INACTIVE,
                 value: EvaluationStatus.INACTIVE,
             },
+
+            {
+                color: Colors.RED,
+                id: EvaluationStatus.INACTIVE,
+                label: 'Inactive',
+                name: 'Inactive',
+                slug: EvaluationStatus.INACTIVE,
+                value: EvaluationStatus.INACTIVE,
+            },
         ];
 
         return list;
