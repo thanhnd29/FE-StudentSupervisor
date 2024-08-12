@@ -28,6 +28,8 @@ export const classApi = {
             },
         });
 
+        console.log(data);
+        
         return data.data;
     },
     getBySchool: async (id: number) => {
@@ -37,6 +39,7 @@ export const classApi = {
     },
     getByClass: async (id: number) => {
         const { data } = await http.get<ResponseList<Class>>(`${baseUrl}/classes/${id}`);
+        console.log(data);
 
         return data.data;
     },

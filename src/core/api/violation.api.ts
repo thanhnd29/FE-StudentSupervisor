@@ -106,8 +106,17 @@ export const violationsApi = {
 
         return data.data;
     },
-    getByUser: async (id: number) => {
+    getByTeacher: async (id: number) => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/user/${id}/teachers`, {
+            params: {
+                sortOrder: 'desc',
+            },
+        });
+
+        return data.data;
+    },
+    getBySupervisor: async (id: number) => {
+        const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/supervisor/${id}`, {
             params: {
                 sortOrder: 'desc',
             },

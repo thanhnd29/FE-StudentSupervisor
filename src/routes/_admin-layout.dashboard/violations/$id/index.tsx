@@ -80,12 +80,14 @@ const Page = () => {
                     },
                 },
                 {
-                    key: 'teacherId',
-                    title: 'Teacher',
-                    type: FieldType.BADGE_API,
-                    apiAction(value) {
-                        return teacherApi.getEnumSelectOptions({ search: value });
-                    },
+                    key: 'createdBy',
+                    title: 'Create By',
+                    type: FieldType.TEXT,
+                },
+                {
+                    key: 'scheduleName',
+                    title: 'Schedule Name',
+                    type: FieldType.TEXT,
                 },
                 {
                     key: 'violationTypeId',

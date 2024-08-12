@@ -14,6 +14,10 @@ export const schoolConfigApi = {
         return data;
     },
 
+    update: async (dto: IUpdateSchoolConfigDto) => {
+        const { data } = await http.put<SchoolConfig>(`${baseUrl}`, dto);
+
+        return data;
     },
     getAll: async () => {
         const { data } = await http.get<ResponseList<SchoolConfig>>(`${baseUrl}`, {
@@ -29,21 +33,9 @@ export const schoolConfigApi = {
 
         return data.data;
     },
+    delete: async (id: number) => {
+        const { data } = await http.delete(`${baseUrl}/${id}`);
 
-    getAll: async () => {
-        const { data } = await http.get<ResponseList<SchoolConfig>>(`${baseUrl}`, {
-            params: {
-                sortOrder: 'desc',
-            },
-        });
-
-        return data.data || [];
-    },
-    getById: async (id: number) => {
-        const { data } = await http.get<BaseResponse<SchoolConfig>>(`${baseUrl}/${id}`);
-
-        return data.data;
-    },
-
+        return data;
     },
 };

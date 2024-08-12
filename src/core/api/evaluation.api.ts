@@ -8,7 +8,7 @@ import { Colors } from '../utils/colors.helper';
 
 export interface ICreateEvaluationDto extends Omit<Evaluation, 'evaluationId' | 'className' | 'status' | 'points'> { }
 
-export interface IUpdateEvaluationDto extends Omit<Evaluation, 'status' | 'classId'> { }
+export interface IUpdateEvaluationDto extends Pick<Evaluation, 'evaluationId' | 'classId' | 'description' | 'from' | 'to' | 'points'> { }
 
 const baseUrl = '/evaluations';
 

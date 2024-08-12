@@ -14,9 +14,6 @@ export const violationGroupApi = {
     create: async (dto: ICreateViolationGroupDto) => {
         const { data } = await http.post<ViolationGroup>(`${baseUrl}`, dto);
 
-        console.log(data);
-
-
         return data;
     },
     update: async (id: number, dto: IUpdateViolationGroupDto) => {
@@ -51,30 +48,22 @@ export const violationGroupApi = {
     getEnumSelectOptions: async (search?: string, schoolId?: number, active?: boolean) => {
         const violationGroups = schoolId ? await violationGroupApi.getBySchool(schoolId, active) : await violationGroupApi.getAll();
 
-        delete: async (id: number) => {
-            const { data } = await http.delete(`${baseUrl}/${id}`);
-    
-            return data;
-        },
-        getEnumSelectOptions: async (search?: string, schoolId?: number, active?: boolean) => {
-            const violationGroups = schoolId ? await violationGroupApi.getBySchool(schoolId, active) : await violationGroupApi.getAll();
+        const list: EnumListItem[] = violationGroups.map((item) => ({
+            id: item.violationGroupId,
+            label: item.vioGroupName,
+            color: getColorWithId(item.violationGroupId),
+            slug: item.vioGroupName,
+            name: item.vioGroupName,
+            value: item.violationGroupId,
+        }));
 
-        // const list: EnumListItem[] = violationGroups.map((item) => ({
-        //     id: item.violationGroupId,
-        //     label: item.vioGroupName,
-        //     color: getColorWithId(item.violationGroupId),
-        //     slug: item.vioGroupName,
-        //     name: item.vioGroupName,
-        //     value: item.violationGroupId,
-        // }));
+        if (search) {
+            {
+                return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
+            }
+        }
 
-        // if (search) {
-        //     {
-        //         return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
-        //     }
-        // }
-
-        // return list;
+        return list;
     },
     getEnumStatuses: async (search?: string) => {
         const list: EnumListItem[] = [

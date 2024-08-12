@@ -118,9 +118,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     evaluationId: record.evaluationId,
                                                     from: dto.from.toISOString(),
                                                     points: dto.points,
-                                                    year: dto.year,
                                                     to: dto.to.toISOString(),
-                                                    className: dto.className
+                                                    classId: dto.classId,
                                                 });
                                             }}
                                             defaultValues={{
@@ -128,9 +127,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 evaluationId: record.evaluationId,
                                                 from: new Date(record.from),
                                                 points: record.points,
-                                                year: record.year,
                                                 to: new Date(record.to),
-                                                className: record.className
+                                                classId: record.classId
                                             }}
                                             fields={[
                                                 {
@@ -144,32 +142,21 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     label: 'To',
                                                 },
                                                 {
-                                                    name: 'points',
-                                                    type: NKFormType.NUMBER,
-                                                    label: 'Point',
-                                                },
-                                                {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
                                                     label: 'Description',
                                                 },
                                                 {
-                                                    name: 'year',
+                                                    name: 'classId',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'School Year',
+                                                    label: 'Class',
                                                     fieldProps: {
                                                         apiAction: (value) =>
-                                                            schoolYearApi.getEnumSelectOptions({
+                                                            classApi.getEnumSelectOptions({
                                                                 search: value,
                                                                 highSchoolId: schoolId,
-                                                                withSchoolName: true,
                                                             }),
                                                     },
-                                                },
-                                                {
-                                                    name: 'className',
-                                                    type: NKFormType.TEXT,
-                                                    label: 'Class Name',
                                                 },
                                             ]}
                                             title=""
@@ -178,9 +165,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 evaluationId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 from: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 points: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                year: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                className: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT)
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={() => {

@@ -44,24 +44,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
 
     useDocumentTitle('Patrol Schedules');
 
-
-    const queryClient = useQueryClient();
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
-        (state: RootState) => state.user,
-    );
-
-    const getByRole = () => {
-        if (schoolId) {
-            if (isSupervisor) {
-                return patrolScheduleApi.getByUser(userId);
-            }
-            return patrolScheduleApi.getBySchool(schoolId)
-        }
-        return patrolScheduleApi.getAll()
-    };
-
-    useDocumentTitle('Patrol Schedules');
-
     return (
         <div>
             <div className="">

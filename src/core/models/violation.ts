@@ -6,11 +6,12 @@ export interface Violation {
     code: string;
     violationName: string;
     description: string;
+    scheduleName: string;
     date: string;
     createdAt: string;
-    createdBy: null;
+    createdBy: string;
     updatedAt: string;
-    updatedBy: null;
+    updatedBy: string;
     imageUrls: string[];
     studentInClassId: number;
     studentName: string;

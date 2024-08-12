@@ -14,6 +14,7 @@ export interface StudentInClass {
     status: StudentInClassStatus;
     startDate: string;
     endDate: string;
+    numberOfViolation: number;
 }
 
 export enum StudentInClassStatus {

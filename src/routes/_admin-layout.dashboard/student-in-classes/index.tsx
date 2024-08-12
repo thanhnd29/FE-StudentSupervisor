@@ -56,12 +56,9 @@ const Page = () => {
                     type: FieldType.BOOLEAN,
                 },
                 {
-                    key: 'status',
-                    title: 'Status',
-                    type: FieldType.BADGE_API,
-                    apiAction(value) {
-                        return studentInClassApi.getEnumStatuses(value);
-                    },
+                    key: 'numberOfViolation',
+                    title: 'Number Of Violation',
+                    type: FieldType.TEXT,
                 },
                 {
                     key: 'classId',
@@ -69,6 +66,14 @@ const Page = () => {
                     type: FieldType.BADGE_API,
                     apiAction(value) {
                         return classApi.getEnumSelectOptions({ search: value });
+                    },
+                },
+                {
+                    key: 'status',
+                    title: 'Status',
+                    type: FieldType.BADGE_API,
+                    apiAction(value) {
+                        return studentInClassApi.getEnumStatuses(value);
                     },
                 },
             ]}

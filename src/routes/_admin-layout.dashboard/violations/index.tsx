@@ -35,7 +35,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
     const getByRole = () => {
         if (schoolId) {
             if (isTeacher) {
-                return violationsApi.getByUser(userId);
+                return violationsApi.getByTeacher(userId);
+            }
+            if (isSupervisor) {
+                return violationsApi.getBySupervisor(userId);
             }
             return violationsApi.getBySchool(schoolId)
         }

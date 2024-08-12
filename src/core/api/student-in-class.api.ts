@@ -3,9 +3,9 @@ import { StudentInClass, StudentInClassStatus } from '../models/student-in-class
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateStudentInClassDto extends Omit<StudentInClass, 'studentInClassId' | 'status' | 'studentId'> { }
+export interface ICreateStudentInClassDto extends Omit<StudentInClass, 'studentInClassId' | 'status' | 'studentId' | 'numberOfViolation'> { }
 
-export interface IUpdateStudentInClassDto extends Omit<StudentInClass, 'status' | 'schoolId'> { }
+export interface IUpdateStudentInClassDto extends Omit<StudentInClass, 'status' | 'schoolId' | 'numberOfViolation'> { }
 
 const baseUrl = '/student-in-classes';
 
@@ -19,12 +19,6 @@ export const studentInClassApi = {
         const { data } = await http.put<StudentInClass>(`${baseUrl}`, dto);
 
         return data;
-
-        update: async (dto: IUpdateStudentInClassDto) => {
-            const { data } = await http.put<StudentInClass>(`${baseUrl}`, dto);
-    
-            return data;
-        },
     },
     getAll: async () => {
         const { data } = await http.get<ResponseList<StudentInClass>>(`${baseUrl}`, {

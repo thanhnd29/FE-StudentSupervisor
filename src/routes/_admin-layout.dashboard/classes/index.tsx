@@ -234,93 +234,95 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                     ]}
                     extraButtons={
-                        <ModalBuilder
-                            btnLabel="Create Class"
-                            btnProps={{
-                                type: 'primary',
-                                icon: <PlusOutlined />,
-                            }}
-                            title="Create Class"
-                        >
-                            {(close) => {
-                                return (
-                                    <FormBuilder
-                                        className="!p-0"
-                                        title=""
-                                        apiAction={classApi.create}
-                                        defaultValues={{
-                                            teacherID: 0,
-                                            classGroupId: 0,
-                                            code: '',
-                                            name: '',
-                                            schoolYearId: 0,
-                                            grade: 0,
-                                        }}
-                                        schema={{
-                                            code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        }}
-                                        fields={[
-                                            {
-                                                name: 'schoolYearId',
-                                                label: 'School Year',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                fieldProps: {
-                                                    apiAction: (value) =>
-                                                        schoolYearApi.getEnumSelectOptions({
-                                                            search: value,
-                                                            highSchoolId: schoolId
-                                                        }),
+                        (!isTeacher) && (
+                            <ModalBuilder
+                                btnLabel="Create Class"
+                                btnProps={{
+                                    type: 'primary',
+                                    icon: <PlusOutlined />,
+                                }}
+                                title="Create Class"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder
+                                            className="!p-0"
+                                            title=""
+                                            apiAction={classApi.create}
+                                            defaultValues={{
+                                                teacherID: 0,
+                                                classGroupId: 0,
+                                                code: '',
+                                                name: '',
+                                                schoolYearId: 0,
+                                                grade: 0,
+                                            }}
+                                            schema={{
+                                                code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            fields={[
+                                                {
+                                                    name: 'schoolYearId',
+                                                    label: 'School Year',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: (value) =>
+                                                            schoolYearApi.getEnumSelectOptions({
+                                                                search: value,
+                                                                highSchoolId: schoolId
+                                                            }),
+                                                    },
                                                 },
-                                            },
-                                            {
-                                                name: 'name',
-                                                label: 'Name',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'code',
-                                                label: 'Code',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'grade',
-                                                label: 'Grade',
-                                                type: NKFormType.NUMBER,
-                                            },
-                                            {
-                                                name: 'teacherID',
-                                                label: 'Teacher',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                fieldProps: {
-                                                    apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value, schoolId: schoolId }),
+                                                {
+                                                    name: 'name',
+                                                    label: 'Name',
+                                                    type: NKFormType.TEXT,
                                                 },
-                                            },
-                                            {
-                                                name: 'classGroupId',
-                                                label: 'Class Group',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                fieldProps: {
-                                                    apiAction: (value) => classGroupApi.getEnumSelectOptions(value),
+                                                {
+                                                    name: 'code',
+                                                    label: 'Code',
+                                                    type: NKFormType.TEXT,
                                                 },
-                                            },
-                                        ]}
-                                        onExtraSuccessAction={() => {
-                                            toast.success('Create class successfully');
-                                            queryClient.invalidateQueries({
-                                                queryKey: ['classes'],
-                                            });
-                                            close();
-                                        }}
-                                        onExtraErrorAction={toastError}
-                                    />
-                                );
-                            }}
-                        </ModalBuilder>
+                                                {
+                                                    name: 'grade',
+                                                    label: 'Grade',
+                                                    type: NKFormType.NUMBER,
+                                                },
+                                                {
+                                                    name: 'teacherID',
+                                                    label: 'Teacher',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value, schoolId: schoolId }),
+                                                    },
+                                                },
+                                                {
+                                                    name: 'classGroupId',
+                                                    label: 'Class Group',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction: (value) => classGroupApi.getEnumSelectOptions(value),
+                                                    },
+                                                },
+                                            ]}
+                                            onExtraSuccessAction={() => {
+                                                toast.success('Create class successfully');
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['classes'],
+                                                });
+                                                close();
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                        )
                     }
                 />
             </div>
