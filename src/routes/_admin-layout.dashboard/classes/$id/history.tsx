@@ -1,4 +1,4 @@
-import { dashboardApi } from '@/core/api/dashboard.api';
+import { violationsApi } from '@/core/api/violation.api';
 import { FieldType } from '@/core/components/field/FieldDisplay';
 import TableBuilder from '@/core/components/table/TableBuilder';
 import { RootState } from '@/core/store';
@@ -20,7 +20,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
   const violationQuery = useQuery({
     queryKey: ['violation', id],
     queryFn: () => {
-      return dashboardApi.getHistoryViolations(id);
+      return violationsApi.getByClass(Number(id));
     },
   });
 
@@ -57,14 +57,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
             type: FieldType.TEXT,
           },
           {
-            key: 'violationGroupName',
-            title: 'Nhóm vi phạm',
-            type: FieldType.TEXT,
-          },
-          {
             key: 'date',
             title: 'Ngày',
             type: FieldType.TIME_DATE,
+          },
+          {
+            key: 'violationGroupName',
+            title: 'nhóm vi phạm',
+            type: FieldType.TEXT,
           },
           {
             key: 'year',
@@ -78,6 +78,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
   );
 };
 
-export const Route = createFileRoute('/_admin-layout/dashboard/disciplines/$id/history')({
+export const Route = createFileRoute('/_admin-layout/dashboard/classes/$id/history')({
   component: Page,
 })

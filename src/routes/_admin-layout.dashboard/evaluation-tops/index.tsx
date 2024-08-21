@@ -25,7 +25,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
   const today = new Date()
 
   const [year, setYear] = useState<number>(Number(today.getFullYear()))
-  const [month, setMonth] = useState<number>(9)
+  const [month, setMonth] = useState<number>(0)
   const [week, setWeek] = useState<number>(0)
 
   const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
@@ -38,13 +38,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
     });
   }, [year, month, week, queryClient]);
 
-  useDocumentTitle('Evaluation Top Ranking');
+  useDocumentTitle('Xếp hạng thi đua');
 
   return (
     <div className="">
       <TableBuilder
         sourceKey="evaluation-tops"
-        title="Evaluation Top Ranking"
+        title="Xếp hạng thi đua"
         columns={[
           {
             key: 'classId',
@@ -53,17 +53,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
           },
           {
             key: 'className',
-            title: 'Class',
+            title: 'Lớp',
             type: FieldType.TEXT,
           },
           {
             key: 'totalPoints',
-            title: 'Total Points',
+            title: 'Tống điểm',
             type: FieldType.TEXT,
           },
           {
             key: 'rank',
-            title: 'Rank',
+            title: 'Xếp hạng',
             type: FieldType.TEXT,
           },
         ]}

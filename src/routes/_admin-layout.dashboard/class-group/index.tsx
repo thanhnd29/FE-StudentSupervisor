@@ -45,36 +45,37 @@ const Page: React.FunctionComponent<PageProps> = () => {
     };
 
 
-    useDocumentTitle('Class Group List');
+    useDocumentTitle('Danh sách khối');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="class-group"
-                    title="Class Group List"
+                    title="Danh sách khối"
                     columns={[
                         {
                             key: 'classGroupId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
+                        },
+                        {
+                            key: 'name',
+                            title: 'Tên Khối',
+                            type: FieldType.TEXT,
                         },
                         {
                             key: 'teacherId',
-                            title: 'Teacher',
+                            title: 'Giám thị',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return teacherApi.getEnumSelectOptions({ search: value, supervisorId: schoolId });
                             },
                         },
                         {
-                            key: 'grade',
-                            title: 'Grade',
-                            type: FieldType.TEXT,
-                        },
-                        {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction() {
                                 return classGroupApi.getEnumStatus();
@@ -100,19 +101,26 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 title=""
                                                 apiAction={(dto) => classGroupApi.update(dto)}
                                                 defaultValues={{
+                                                    name: record.name,
                                                     teacherId: record.teacherId,
                                                     schoolId: schoolId,
                                                     classGroupId: record.classGroupId
                                                 }}
                                                 schema={{
+                                                    name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 }}
                                                 fields={[
                                                     {
+                                                        name: 'name',
+                                                        label: 'Tên Khối',
+                                                        type: NKFormType.TEXT,
+                                                    },
+                                                    {
                                                         name: 'teacherId',
-                                                        label: 'Teacher',
+                                                        label: 'Giám thị',
                                                         type: NKFormType.SELECT_API_OPTION,
                                                         fieldProps: {
                                                             apiAction: (value) =>
@@ -136,7 +144,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 <CTAButton
                                     ctaApi={() => classGroupApi.delete(record.classGroupId)}
                                     isConfirm
-                                    confirmMessage="Are you sure you want to delete this class group?"
+                                    confirmMessage="Bạn có chắc chắn muốn xóa Khối này không?"
                                     extraOnError={toastError}
                                     extraOnSuccess={() => {
                                         queryClient.invalidateQueries({
@@ -168,12 +176,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     extraButtons={
                         (!isSupervisor) && (
                             <ModalBuilder
-                                btnLabel="Create Class Group"
+                                btnLabel="Tạo khối"
                                 btnProps={{
                                     type: 'primary',
                                     icon: <PlusOutlined />,
                                 }}
-                                title="Create Class Group"
+                                title="Tạo khối"
                             >
                                 {(close) => {
                                     return (
@@ -182,17 +190,24 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             title=""
                                             apiAction={classGroupApi.create}
                                             defaultValues={{
+                                                name: "",
                                                 teacherId: 0,
                                                 schoolId: schoolId
                                             }}
                                             schema={{
+                                                name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             fields={[
                                                 {
+                                                    name: 'name',
+                                                    label: 'Tên khối',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
                                                     name: 'teacherId',
-                                                    label: 'Teacher',
+                                                    label: 'Giám thị quản lý',
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
                                                         apiAction: (value) =>

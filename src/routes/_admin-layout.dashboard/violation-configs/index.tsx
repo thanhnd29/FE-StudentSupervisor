@@ -32,40 +32,41 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Violation Configs');
+    useDocumentTitle('Danh sách Cấu hình vi phạm');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="violation-configs"
-                    title="Violation Configs"
+                    title="Danh sách Cấu hình vi phạm"
                     columns={[
                         {
                             key: 'violationConfigId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'violationTypeName',
-                            title: 'Type',
+                            title: 'Loại vi phạm',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.MULTILINE_TEXT,
                         },
                         {
-                            key: 'status',
-                            title: 'Status',
-                            type: FieldType.BADGE_API,
-                            apiAction: violationConfigApi.getEnumStatuses,
+                            key: 'minusPoints',
+                            title: 'Điểm trừ',
+                            type: FieldType.TEXT,
                         },
                         {
-                            key: 'minusPoints',
-                            title: 'Minus Points',
-                            type: FieldType.TEXT,
+                            key: 'status',
+                            title: 'Trạng thái',
+                            type: FieldType.BADGE_API,
+                            apiAction: violationConfigApi.getEnumStatuses,
                         },
                     ]}
                     queryApi={schoolId ? () => violationConfigApi.getBySchool(schoolId) : violationConfigApi.getAll}

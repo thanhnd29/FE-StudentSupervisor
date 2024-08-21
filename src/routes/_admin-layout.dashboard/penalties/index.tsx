@@ -29,33 +29,34 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Penalties');
+    useDocumentTitle('Danh sách Hình phạt');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="penalties"
-                    title="Penalties"
+                    title="Danh sách Hình phạt"
                     columns={[
                         {
                             key: 'penaltyId',
                             title: 'ID',
                             type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'name',
-                            title: 'Name',
-                            type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'code',
-                            title: 'Code',
+                            title: 'Mã',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'name',
+                            title: 'Tên',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.TEXT,
                             formatter(value) {
                                 return value || 'N/A';
@@ -63,18 +64,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return penaltyApi.getEnumStatuses(value);
-                            },
-                        },
-                        {
-                            key: 'schoolId',
-                            title: 'Class',
-                            type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return highSchoolApi.getEnumSelectOptions(value);
                             },
                         },
                     ]}
@@ -87,7 +80,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Penalty"
+                                title="Cập nhật"
                             >
                                 {(close) => {
                                     return (
@@ -103,24 +96,24 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             }}
                                             fields={[
                                                 {
-                                                    name: 'name',
-                                                    type: NKFormType.TEXT,
-                                                    label: 'Name',
-                                                },
-                                                {
                                                     name: 'code',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Code',
+                                                    label: 'Mã',
+                                                },
+                                                {
+                                                    name: 'name',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Tên',
                                                 },
                                                 {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
-                                                    label: 'Description',
+                                                    label: 'Mô tả',
                                                 },
                                                 {
                                                     name: 'schoolId',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'School',
+                                                    label: 'Trường',
                                                     fieldProps: {
                                                         apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
                                                         readonly: true,
@@ -152,7 +145,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => penaltyApi.delete(record.penaltyId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this penalty?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa hình phạt này không?"
                                 extraOnError={toastError}
                                 extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
@@ -170,12 +163,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Penalty"
+                            btnLabel="Tạo hình phạt"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Penalty"
+                            title="Tạo hình phạt"
                         >
                             {(close) => {
                                 return (
@@ -184,24 +177,24 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         apiAction={penaltyApi.create}
                                         fields={[
                                             {
-                                                name: 'name',
-                                                type: NKFormType.TEXT,
-                                                label: 'Name',
-                                            },
-                                            {
                                                 name: 'code',
                                                 type: NKFormType.TEXT,
-                                                label: 'Code',
+                                                label: 'Mã',
+                                            },
+                                            {
+                                                name: 'name',
+                                                type: NKFormType.TEXT,
+                                                label: 'Tên',
                                             },
                                             {
                                                 name: 'description',
                                                 type: NKFormType.TEXTAREA,
-                                                label: 'Description',
+                                                label: 'Mô tả',
                                             },
                                             {
                                                 name: 'schoolId',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'School',
+                                                label: 'Trường',
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
                                                     readonly: true,

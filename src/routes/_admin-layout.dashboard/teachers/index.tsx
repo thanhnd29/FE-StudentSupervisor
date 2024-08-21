@@ -34,33 +34,34 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Teacher List');
+    useDocumentTitle('Danh sách giáo viên');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="teacher-list"
-                    title="Teacher List"
+                    title="Danh sách giáo viên"
                     columns={[
                         {
                             key: 'teacherId',
-                            title: 'Id',
+                            title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'code',
-                            title: 'code',
+                            title: 'Mã giáo viên',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'teacherName',
-                            title: 'Name',
+                            title: 'Tên giáo viên',
                             type: FieldType.TEXT,
                         },
                         {
                             key: '',
-                            title: 'Sex',
+                            title: 'Giới tính',
                             type: FieldType.CUSTOM,
                             formatter: (record) => {
                                 return record?.sex ? 'Female' : 'Male';
@@ -68,7 +69,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'address',
-                            title: 'Address',
+                            title: 'Địa chỉ',
                             type: FieldType.TEXT,
                             formatter: (record) => {
                                 return record ? record : 'N/A';
@@ -76,30 +77,25 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'phone',
-                            title: 'Phone',
+                            title: 'Số điện thoại',
                             type: FieldType.TEXT,
                             formatter: (record) => {
                                 return record ? record : 'N/A';
                             },
                         },
                         {
-                            key: 'schoolName',
-                            title: 'School Name',
-                            type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'status',
-                            title: 'Status',
-                            type: FieldType.BADGE_API,
-                            apiAction: teacherApi.getEnumStatuses,
-                        },
-                        {
                             key: 'roleId',
-                            title: 'Role',
+                            title: 'Vai trò',
                             type: FieldType.BADGE_API,
                             apiAction: (value) => {
                                 return RoleList;
                             },
+                        },
+                        {
+                            key: 'status',
+                            title: 'Trạng thái',
+                            type: FieldType.BADGE_API,
+                            apiAction: teacherApi.getEnumStatuses,
                         },
                     ]}
                     queryApi={schoolId ? () => teacherApi.getBySchool(schoolId) : teacherApi.getAll}
@@ -109,7 +105,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 <CTAButton
                                     ctaApi={() => teacherApi.delete(record.teacherId)}
                                     isConfirm
-                                    confirmMessage="Are you sure you want to delete this teacher?"
+                                    confirmMessage="Bạn có chắc chắn muốn xóa giáo viên này không?"
                                     extraOnError={toastError}
                                     extraOnSuccess={(data) => {
                                         queryClient.invalidateQueries({
@@ -132,13 +128,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     }}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Tên giáo viên',
                             comparator: FilterComparator.LIKE,
                             name: 'teacherName',
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Code',
+                            label: 'Mã giáo viên',
                             comparator: FilterComparator.LIKE,
                             name: 'code',
                             type: NKFormType.TEXT,
@@ -147,12 +143,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     extraButtons={
                         <>
                             <ModalBuilder
-                                btnLabel="Create Teacher"
+                                btnLabel="Thêm giáo viên"
                                 btnProps={{
                                     type: 'primary',
                                     icon: <PlusOutlined />,
                                 }}
-                                title="Create Teacher"
+                                title="Thêm giáo viên"
                             >
                                 {(close) => {
                                     return (
@@ -182,28 +178,33 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             }}
                                             fields={[
                                                 {
-                                                    name: 'teacherName',
-                                                    label: 'Name',
+                                                    name: 'code',
+                                                    label: 'Mã giáo viên',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
-                                                    name: 'code',
-                                                    label: 'Code',
+                                                    name: 'teacherName',
+                                                    label: 'Tên giáo viên',
                                                     type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    label: 'Giới tính (*nam)',
+                                                    name: 'sex',
+                                                    type: NKFormType.BOOLEAN,
                                                 },
                                                 {
                                                     name: 'phone',
-                                                    label: 'Phone',
+                                                    label: 'Số điện thoại',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'password',
-                                                    label: 'Password',
+                                                    label: 'Mật khẩu',
                                                     type: NKFormType.PASSWORD,
                                                 },
                                                 {
                                                     name: 'address',
-                                                    label: 'Address',
+                                                    label: 'Địa chỉ',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
@@ -239,12 +240,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 }}
                             </ModalBuilder>
                             <ModalBuilder
-                                btnLabel="Create Teacher Supervisors"
+                                btnLabel="Thêm giám thị"
                                 btnProps={{
                                     type: 'primary',
                                     icon: <PlusOutlined />,
                                 }}
-                                title="Create Teacher"
+                                title="Thêm giám thị"
                             >
                                 {(close) => {
                                     return (
@@ -274,28 +275,33 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             }}
                                             fields={[
                                                 {
-                                                    name: 'teacherName',
-                                                    label: 'Name',
+                                                    name: 'code',
+                                                    label: 'Mã giáo viên',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
-                                                    name: 'code',
-                                                    label: 'Code',
+                                                    name: 'teacherName',
+                                                    label: 'Tên giám thị',
                                                     type: NKFormType.TEXT,
+                                                },
+                                                {
+                                                    label: 'Giới tính (*nam)',
+                                                    name: 'sex',
+                                                    type: NKFormType.BOOLEAN,
                                                 },
                                                 {
                                                     name: 'phone',
-                                                    label: 'Phone',
+                                                    label: 'Số điện thoại',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'password',
-                                                    label: 'Password',
+                                                    label: 'Mật khẩu',
                                                     type: NKFormType.PASSWORD,
                                                 },
                                                 {
                                                     name: 'address',
-                                                    label: 'Address',
+                                                    label: 'Địa chỉ',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {

@@ -63,11 +63,15 @@ export const schoolYearApi = {
 
         return list;
     },
-    getEnumSelectYear: async ({ highSchoolId, search, withSchoolName }: { search?: string; highSchoolId?: number; withSchoolName?: boolean }) => {
+    getEnumSelectYear: async ({ highSchoolId, search, withSchoolName, status }: { search?: string; highSchoolId?: number; withSchoolName?: boolean, status?: boolean }) => {
         let schoolYears = await schoolYearApi.getAll();
 
         if (highSchoolId) {
             schoolYears = schoolYears.filter((schoolYear) => schoolYear.schoolId === highSchoolId);
+        }
+
+        if (status) {
+            schoolYears = schoolYears.filter((schoolYear) => schoolYear.status === SchoolYearStatus.ONGOING || schoolYear.status === SchoolYearStatus.FINISHED);
         }
 
         let list: EnumListItem[] = schoolYears.map((schoolYear) => ({
@@ -90,24 +94,24 @@ export const schoolYearApi = {
             {
                 color: Colors.GREEN,
                 id: SchoolYearStatus.ONGOING,
-                label: 'Ongoing',
-                name: 'Ongoing',
+                label: 'Đang diễn ra',
+                name: 'Đang diễn ra',
                 slug: 'Ongoing',
                 value: SchoolYearStatus.ONGOING,
             },
             {
                 color: Colors.RED,
                 id: SchoolYearStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: 'Inactive',
                 value: SchoolYearStatus.INACTIVE,
             },
             {
                 color: Colors.BLUE,
                 id: SchoolYearStatus.FINISHED,
-                label: 'Finished',
-                name: 'Finished',
+                label: 'Đã kết thúc',
+                name: 'Đã kết thúc',
                 slug: 'Finished',
                 value: SchoolYearStatus.FINISHED,
             },

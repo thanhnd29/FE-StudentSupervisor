@@ -16,11 +16,7 @@ export const registerSchoolApi = {
     },
 
     update: async (dto: IUpdateRegisterSchoolDto) => {
-        console.log(dto);
-
         const { data } = await http.put<RegisterSchool>(`${baseUrl}`, dto);
-
-        console.log(data);
 
         return data;
     },
@@ -53,17 +49,17 @@ export const registerSchoolApi = {
             {
                 value: RegisterSchoolStatus.ACTIVE,
                 color: Colors.GREEN,
-                label: 'Active',
+                label: 'Đang hoạt động',
                 id: RegisterSchoolStatus.ACTIVE,
-                name: 'Active',
+                name: 'Đang hoạt động',
                 slug: RegisterSchoolStatus.ACTIVE,
             },
             {
                 value: RegisterSchoolStatus.INACTIVE,
                 color: Colors.RED,
-                label: 'Inactive',
+                label: 'Đã xóa',
                 id: RegisterSchoolStatus.INACTIVE,
-                name: 'Inactive',
+                name: 'Đã xóa',
                 slug: RegisterSchoolStatus.INACTIVE,
             },
         ] as EnumListItem[];

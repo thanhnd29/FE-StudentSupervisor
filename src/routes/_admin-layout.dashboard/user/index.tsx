@@ -35,60 +35,53 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('User List');
+    useDocumentTitle('Danh sách tài khoản');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="account"
-                    title="User List"
+                    title="Danh sách tài khoản"
                     columns={[
                         {
                             key: 'userId',
                             title: 'ID',
                             type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'userName',
-                            title: 'Name',
-                            type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'code',
-                            title: 'Code',
+                            title: 'Mã người dùng',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'userName',
+                            title: 'Tên người dùng',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'phone',
-                            title: 'Phone',
+                            title: 'Số điện thoại',
                             type: FieldType.TEXT,
                         },
 
                         {
                             key: 'address',
-                            title: 'Address',
+                            title: 'Địa chỉ',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'roleId',
-                            title: 'Role',
+                            title: 'Vai trò',
                             type: FieldType.BADGE_API,
                             apiAction: async (value) => RoleList,
                         },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction: userApi.getEnumStatuses,
-                        },
-                        {
-                            key: 'schoolName',
-                            title: 'School',
-                            type: FieldType.TEXT,
-                            formatter(value) {
-                                return value || 'N/A';
-                            },
                         },
                     ]}
                     queryApi={schoolId ? () => userApi.getBySchool(schoolId) : userApi.getAll}
@@ -139,7 +132,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Account"
+                                title="Cập nhật"
                                 width={'800px'}
                             >
                                 {(close) => {
@@ -157,28 +150,28 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             }}
                                             fields={[
                                                 {
+                                                    name: 'code',
+                                                    label: 'Mã người dùng',
+                                                    type: NKFormType.TEXT,
+                                                },
+                                                {
                                                     name: 'name',
-                                                    label: 'Name',
+                                                    label: 'Tên người dùng',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'phone',
-                                                    label: 'Phone',
+                                                    label: 'Số điện thoại',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'address',
-                                                    label: 'Address',
-                                                    type: NKFormType.TEXT,
-                                                },
-                                                {
-                                                    name: 'code',
-                                                    label: 'Code',
+                                                    label: 'Địa chỉ',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'password',
-                                                    label: 'Password',
+                                                    label: 'Mật khẩu',
                                                     type: NKFormType.PASSWORD,
                                                 },
                                                 {
@@ -215,7 +208,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => userApi.delete(record.userId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this account?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa người dùng này không?"
                                 extraOnError={toastError}
                                 extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
@@ -233,13 +226,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Tên người dùng',
                             comparator: FilterComparator.LIKE,
                             name: 'name',
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Code',
+                            label: 'Mã người dùng',
                             comparator: FilterComparator.LIKE,
                             name: 'code',
                             type: NKFormType.TEXT,
@@ -247,12 +240,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Principal"
+                            btnLabel="Tạo Ban giám hiệu"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Principal"
+                            title="TTạo Ban giám hiệu"
                         >
                             {(close) => {
                                 return (
@@ -261,28 +254,28 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         apiAction={userApi.createPrincipal}
                                         fields={[
                                             {
+                                                name: 'code',
+                                                label: 'Mã người dùng',
+                                                type: NKFormType.TEXT,
+                                            },
+                                            {
                                                 name: 'name',
-                                                label: 'Name',
+                                                label: 'Tên người dùng',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
                                                 name: 'phone',
-                                                label: 'Phone',
+                                                label: 'Số điện thoại',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
                                                 name: 'address',
-                                                label: 'Address',
-                                                type: NKFormType.TEXT,
-                                            },
-                                            {
-                                                name: 'code',
-                                                label: 'Code',
+                                                label: 'Địa chỉ',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
                                                 name: 'password',
-                                                label: 'Password',
+                                                label: 'Mật khẩu',
                                                 type: NKFormType.PASSWORD,
                                             },
                                             // {

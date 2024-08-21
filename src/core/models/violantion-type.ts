@@ -10,4 +10,5 @@ export interface ViolationType {
     vioGroupName: string;
     status: string;
     description: string | null;
+    isSupervisorOnly: boolean;
 }

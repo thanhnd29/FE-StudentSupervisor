@@ -18,9 +18,9 @@ export interface ICreateViolationStudentDto {
 }
 
 export interface ICreateViolationSupervisorDto {
+    UserId: number,
     ClassId: number;
     ViolationTypeId: number;
-    TeacherId: number;
     StudentInClassId: number;
     ViolationName: string;
     Description: string;
@@ -29,9 +29,9 @@ export interface ICreateViolationSupervisorDto {
 }
 
 export interface IUpdateViolationDto {
+    UserId: number,
     ClassId: number;
     ViolationTypeId: number;
-    TeacherId: number;
     StudentInClassId: number;
     ViolationName: string;
     Description: string;
@@ -72,8 +72,15 @@ export const violationsApi = {
 
         return data;
     },
-    update: async (id: number, dto: IUpdateViolationDto) => {
-        const { data } = await http.put<Violation>(`${baseUrl}/${id}`, dto);
+    updateSupervisor: async (id: number, dto: ICreateViolationSupervisorDto) => {
+        const { data } = await http.put<Violation>(`${baseUrl}/supervisor`, dto, {
+            params: {
+                id: id
+            },
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
         return data;
     },
@@ -124,6 +131,15 @@ export const violationsApi = {
 
         return data.data;
     },
+    getByClass: async (id: number) => {
+        const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/by-class/${id}`, {
+            params: {
+                sortOrder: 'desc',
+            },
+        });
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<Violation>>(`${baseUrl}/${id}`);
 
@@ -162,48 +178,48 @@ export const violationsApi = {
             {
                 color: Colors.GREEN,
                 id: ViolationStatus.APPROVED,
-                label: 'Approved',
-                name: 'Approved',
+                label: 'Đã duyệt',
+                name: 'Đã duyệt',
                 slug: ViolationStatus.APPROVED,
                 value: ViolationStatus.APPROVED,
             },
             {
                 color: Colors.RED,
                 id: ViolationStatus.REJECTED,
-                label: 'Rejected',
-                name: 'Rejected',
+                label: 'Từ chối',
+                name: 'Từ chối',
                 slug: ViolationStatus.REJECTED,
                 value: ViolationStatus.REJECTED,
             },
             {
                 color: Colors.PURPLE,
                 id: ViolationStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: ViolationStatus.INACTIVE,
                 value: ViolationStatus.INACTIVE,
             },
             {
                 color: Colors.PINK,
                 id: ViolationStatus.PENDING,
-                label: 'Pending',
-                name: 'Pending',
+                label: 'Chờ xử lý',
+                name: 'Chờ xử lý',
                 slug: ViolationStatus.PENDING,
                 value: ViolationStatus.PENDING,
             },
             {
                 color: Colors.ORANGE,
                 id: ViolationStatus.DISCUSSING,
-                label: 'Discussing',
-                name: 'Discussing',
+                label: 'Phản đối',
+                name: 'Phản đối',
                 slug: ViolationStatus.DISCUSSING,
                 value: ViolationStatus.DISCUSSING,
             },
             {
                 color: Colors.YELLOW,
                 id: ViolationStatus.COMPLETED,
-                label: 'Completed',
-                name: 'Completed',
+                label: 'Chấp nhận',
+                name: 'Chấp nhận',
                 slug: ViolationStatus.COMPLETED,
                 value: ViolationStatus.COMPLETED,
             },

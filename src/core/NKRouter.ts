@@ -31,6 +31,7 @@ export const NKRouter = {
         create: () => '/dashboard/classes/create',
         edit: (id: number) => `/dashboard/classes/${id}/edit`,
         detail: (id: number) => `/dashboard/classes/${id}`,
+        history: (id: number) => `/dashboard/classes/${id}/history`,
     },
     schoolYear: {
         list: () => '/dashboard/school-year',
@@ -160,6 +161,7 @@ export const NKRouter = {
         create: () => '/dashboard/student-in-classes/create',
         edit: (id: number) => `/dashboard/student-in-classes/${id}/edit`,
         detail: (id: number) => `/dashboard/student-in-classes/${id}`,
+        history: (id: number) => `/dashboard/student-in-classes/${id}/history`,
     },
     discipline: {
         list: () => '/dashboard/disciplines',
@@ -168,4 +170,8 @@ export const NKRouter = {
         detail: (id: number) => `/dashboard/disciplines/${id}`,
         history: (id: number) => `/dashboard/disciplines/${id}/history`,
     },
+    payment: {
+        success: () => '/dashboard/payment/success',
+        failure: () => '/dashboard/payment/failure',
+    }
 };

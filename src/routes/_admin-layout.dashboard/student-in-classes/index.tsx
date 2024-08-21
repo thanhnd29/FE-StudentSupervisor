@@ -1,4 +1,4 @@
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, HistoryOutlined, PlusOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Button } from 'antd';
@@ -22,18 +22,23 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 import moment from 'moment';
-import { Data } from 'akar-icons';
+import { useDocumentTitle } from '@/core/hooks/useDocumentTitle';
+import { NKRouter } from '@/core/NKRouter';
+import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 
 const Page = () => {
+    const router = useNKRouter();
     const queryClient = useQueryClient();
     const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
+    useDocumentTitle('Danh sách học sinh');
+
     return (
         <TableBuilder
             sourceKey={`students-in-class`}
-            title=""
+            title="Danh sách học sinh"
             columns={[
                 {
                     key: 'studentId',
@@ -41,23 +46,13 @@ const Page = () => {
                     type: FieldType.TEXT,
                 },
                 {
-                    key: 'studentName',
-                    title: 'Name',
+                    key: 'studentCode',
+                    title: 'Mã học sinh',
                     type: FieldType.TEXT,
                 },
                 {
-                    key: 'enrollDate',
-                    title: 'Enroll Date',
-                    type: FieldType.TIME_DATE,
-                },
-                {
-                    key: 'isSupervisor',
-                    title: 'Is Supervisor',
-                    type: FieldType.BOOLEAN,
-                },
-                {
-                    key: 'numberOfViolation',
-                    title: 'Number Of Violation',
+                    key: 'studentName',
+                    title: 'Tên học sinh',
                     type: FieldType.TEXT,
                 },
                 {
@@ -69,14 +64,31 @@ const Page = () => {
                     },
                 },
                 {
+                    key: 'enrollDate',
+                    title: 'Ngày đăng ký',
+                    type: FieldType.TIME_DATE,
+                },
+                {
+                    key: 'isSupervisor',
+                    title: 'Sao đỏ',
+                    type: FieldType.BOOLEAN,
+                },
+                {
+                    key: 'numberOfViolation',
+                    title: 'Số lần vi phạm',
+                    type: FieldType.TEXT,
+                },
+                {
                     key: 'status',
-                    title: 'Status',
+                    title: 'Trạng thái',
                     type: FieldType.BADGE_API,
                     apiAction(value) {
                         return studentInClassApi.getEnumStatuses(value);
                     },
                 },
             ]}
+            isSelectYear={true}
+            schoolId={schoolId}
             queryApi={schoolId ? () => studentInClassApi.getBySchool(schoolId) : studentInClassApi.getAll}
             actionColumns={(record) => (
                 <div className="flex flex-col gap-2">
@@ -86,7 +98,7 @@ const Page = () => {
                             size: 'small',
                             icon: <EditOutlined />,
                         }}
-                        title="Edit Student"
+                        title="Cập nhật"
                     >
                         {(close) => {
                             return (
@@ -103,7 +115,7 @@ const Page = () => {
                                     }
                                     defaultValues={{
                                         studentName: record.studentName,
-                                        code: record.code,
+                                        studentCode: record.studentCode,
                                         sex: record.sex,
                                         birthday: new Date(record.birthday),
                                         address: record.address,
@@ -118,37 +130,37 @@ const Page = () => {
                                     }}
                                     fields={[
                                         {
-                                            label: 'Student',
+                                            label: 'Tên học sinh',
                                             name: 'studentName',
                                             type: NKFormType.TEXT,
                                         },
                                         {
-                                            label: 'Code',
-                                            name: 'code',
+                                            label: 'Mã học sinh',
+                                            name: 'studentCode',
                                             type: NKFormType.TEXT,
                                         },
                                         {
-                                            label: 'Sex (*male)',
+                                            label: 'Giới tính (*nam)',
                                             name: 'sex',
                                             type: NKFormType.BOOLEAN,
                                         },
                                         {
-                                            label: 'Birthday',
+                                            label: 'Ngày sinh',
                                             name: 'birthday',
                                             type: NKFormType.DATE,
                                         },
                                         {
-                                            label: 'Address',
+                                            label: 'Địa chỉ',
                                             name: 'address',
                                             type: NKFormType.TEXT,
                                         },
                                         {
-                                            label: 'Phone',
+                                            label: 'Số điện thoại',
                                             name: 'phone',
                                             type: NKFormType.TEXT,
                                         },
                                         {
-                                            label: 'Class',
+                                            label: 'Lớp',
                                             name: 'classId',
                                             type: NKFormType.SELECT_API_OPTION,
                                             fieldProps: {
@@ -158,22 +170,22 @@ const Page = () => {
                                             },
                                         },
                                         {
-                                            label: 'Enroll Date',
+                                            label: 'Ngày đăng ký',
                                             name: 'enrollDate',
                                             type: NKFormType.DATE,
                                         },
                                         {
-                                            label: 'Is Supervisor',
+                                            label: 'Sao đỏ',
                                             name: 'isSupervisor',
                                             type: NKFormType.BOOLEAN,
                                         },
                                         {
-                                            label: 'Start Date',
+                                            label: 'Ngày vào lớp',
                                             name: 'startDate',
                                             type: NKFormType.DATE,
                                         },
                                         {
-                                            label: 'End Date',
+                                            label: 'Ngày rời lớp',
                                             name: 'endDate',
                                             type: NKFormType.DATE,
                                         },
@@ -186,7 +198,7 @@ const Page = () => {
                                         studentId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                         sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
                                         birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -208,10 +220,18 @@ const Page = () => {
                             );
                         }}
                     </ModalBuilder>
+                    <Button
+                        icon={<HistoryOutlined />}
+                        type="primary"
+                        size="small"
+                        onClick={() => {
+                            router.push(NKRouter.studentInClass.history(record.studentCode));
+                        }}
+                    />
                     <CTAButton
                         ctaApi={() => studentInClassApi.delete(record.studentInClassId)}
                         isConfirm
-                        confirmMessage="Are you sure you want to delete this student?"
+                        confirmMessage="Bạn có chắc chắn muốn xóa học sinh này không?"
                         extraOnError={toastError}
                         extraOnSuccess={(data) => {
                             queryClient.invalidateQueries({
@@ -229,20 +249,26 @@ const Page = () => {
             )}
             filters={[
                 {
-                    label: 'Name',
+                    label: 'Tên học sinh',
                     comparator: FilterComparator.LIKE,
                     name: 'studentName',
+                    type: NKFormType.TEXT,
+                },
+                {
+                    label: 'Mã học sinh',
+                    comparator: FilterComparator.LIKE,
+                    name: 'studentCode',
                     type: NKFormType.TEXT,
                 },
             ]}
             extraButtons={
                 <ModalBuilder
-                    btnLabel="Create Student"
+                    btnLabel="Thêm học sinh"
                     btnProps={{
                         type: 'primary',
                         icon: <PlusOutlined />,
                     }}
-                    title="Create Student"
+                    title="Thêm học sinh"
                 >
                     {(close) => {
                         return (
@@ -267,37 +293,37 @@ const Page = () => {
                                 }
                                 fields={[
                                     {
-                                        label: 'Student',
+                                        label: 'Mã học sinh',
+                                        name: 'studentCode',
+                                        type: NKFormType.TEXT,
+                                    },
+                                    {
+                                        label: 'Tên học sinh',
                                         name: 'studentName',
                                         type: NKFormType.TEXT,
                                     },
                                     {
-                                        label: 'Code',
-                                        name: 'code',
-                                        type: NKFormType.TEXT,
-                                    },
-                                    {
-                                        label: 'Sex (*male)',
+                                        label: 'Giới tính (*nam)',
                                         name: 'sex',
                                         type: NKFormType.BOOLEAN,
                                     },
                                     {
-                                        label: 'Birthday',
+                                        label: 'Ngày sinh',
                                         name: 'birthday',
                                         type: NKFormType.DATE,
                                     },
                                     {
-                                        label: 'Address',
+                                        label: 'Địa chỉ',
                                         name: 'address',
                                         type: NKFormType.TEXT,
                                     },
                                     {
-                                        label: 'Phone',
+                                        label: 'Số điện thoại',
                                         name: 'phone',
                                         type: NKFormType.TEXT,
                                     },
                                     {
-                                        label: 'Class',
+                                        label: 'Lớp',
                                         name: 'classId',
                                         type: NKFormType.SELECT_API_OPTION,
                                         fieldProps: {
@@ -307,22 +333,22 @@ const Page = () => {
                                         },
                                     },
                                     {
-                                        label: 'Enroll Date',
+                                        label: 'Ngày đăng ký',
                                         name: 'enrollDate',
                                         type: NKFormType.DATE,
                                     },
                                     {
-                                        label: 'Is Supervisor',
+                                        label: 'Sao đỏ',
                                         name: 'isSupervisor',
                                         type: NKFormType.BOOLEAN,
                                     },
                                     {
-                                        label: 'Start Date',
+                                        label: 'Ngày vào lớp',
                                         name: 'startDate',
                                         type: NKFormType.DATE,
                                     },
                                     {
-                                        label: 'End Date',
+                                        label: 'Ngày rời lớp',
                                         name: 'endDate',
                                         type: NKFormType.DATE,
                                     },
@@ -331,7 +357,7 @@ const Page = () => {
                                 schema={{
                                     schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                     studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                     sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
                                     birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                     address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -355,7 +381,7 @@ const Page = () => {
                                 defaultValues={{
                                     schoolId: schoolId,
                                     studentName: "",
-                                    code: "",
+                                    studentCode: "",
                                     sex: false,
                                     birthday: new Date(),
                                     address: "",

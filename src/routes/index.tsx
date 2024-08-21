@@ -31,8 +31,8 @@ const Page: React.FunctionComponent = () => {
 
         resolver: joiResolver(
             joi.object({
-                phone: joi.string().required(),
-                password: joi.string().required(),
+                phone: joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                password: joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
             }),
         ),
     });
@@ -74,12 +74,12 @@ const Page: React.FunctionComponent = () => {
                                 <FieldImage src="/assets/images/logo.png" className="h-full w-full" />
                             </div>
                         </div>
-                        <div className="mb-4 flex-1 text-center text-lg font-semibold text-black">Login Account</div>
+                        <div className="mb-4 flex-1 text-center text-lg font-semibold text-black">School Rules</div>
                         <div className="flex w-full flex-col gap-4">
                             <NKTextField name="phone" label="Số điện thoại" />
                             <NKTextField name="password" label="Mật Khẩu" type="password" />
                             <Button htmlType="submit" type="primary" loading={authLoginMutation.isPending}>
-                                Sign In
+                                Đăng nhập
                             </Button>
                         </div>
                     </form>

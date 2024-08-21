@@ -1,4 +1,4 @@
-import { EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, EyeOutlined, HistoryOutlined, PlusOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Button } from 'antd';
@@ -46,202 +46,222 @@ const Page: React.FunctionComponent<PageProps> = () => {
         return classApi.getAll()
     };
 
-    useDocumentTitle('Classes');
+    useDocumentTitle('Danh sách Lớp');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="classes"
-                    title="Classes"
+                    title="Danh sách Lớp"
                     columns={[
                         {
                             key: 'classId',
                             title: 'ID',
                             type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'name',
-                            title: 'Name',
-                            type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'code',
-                            title: 'Code',
+                            title: 'Mã lớp',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'name',
+                            title: 'Tên lớp',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'grade',
-                            title: 'Grade',
+                            title: 'Khối',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'teacherName',
-                            title: 'Teacher Name',
+                            title: 'Giáo viên chủ nhiệm',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'totalPoint',
-                            title: 'Total Point',
+                            title: 'Điểm thi đua',
                             type: FieldType.NUMBER,
                         },
-                        {
-                            key: 'schoolYearId',
-                            title: 'School Year',
-                            type: FieldType.BADGE_API,
-                            apiAction(value) {
-                                return schoolYearApi.getEnumSelectOptions({
-                                    search: value,
-                                    withSchoolName: true,
-                                });
-                            },
-                        },
+                        // {
+                        //     key: 'schoolYearId',
+                        //     title: 'Niên khóa',
+                        //     type: FieldType.BADGE_API,
+                        //     apiAction(value) {
+                        //         return schoolYearApi.getEnumSelectOptions({
+                        //             search: value,
+                        //             withSchoolName: true,
+                        //         });
+                        //     },
+                        // },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction: classApi.getEnumStatuses
                         },
                     ]}
                     queryApi={getByRole}
+                    isSelectYear={true}
+                    schoolId={schoolId}
                     actionColumns={(record) => {
                         return (
-                            <div className="flex flex-col gap-2">
-                                <Button
-                                    icon={<EyeOutlined />}
-                                    type="primary"
-                                    size="small"
-                                    className="flex items-center justify-center"
-                                    onClick={() => router.push(NKRouter.classes.detail(record.classId))}
-                                />
-                                <ModalBuilder
-                                    btnLabel=""
-                                    btnProps={{
-                                        size: 'small',
-                                        icon: <EditOutlined />,
-                                    }}
-                                    title="Edit Class"
-                                >
-                                    {(close) => {
-                                        return (
-                                            <FormBuilder
-                                                className="!p-0"
-                                                title=""
-                                                apiAction={classApi.update}
-                                                defaultValues={{
-                                                    teacherID: record.teacherID,
-                                                    classGroupId: record.classGroupId,
-                                                    classId: record.classId,
-                                                    code: record.code,
-                                                    name: record.name,
-                                                    schoolYearId: record.schoolYearId,
-                                                    totalPoint: record.totalPoint,
-                                                }}
-                                                schema={{
-                                                    teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    totalPoint: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                }}
-                                                fields={[
-                                                    {
-                                                        name: 'name',
-                                                        label: 'Name',
-                                                        type: NKFormType.TEXT,
-                                                    },
-                                                    {
-                                                        name: 'code',
-                                                        label: 'Code',
-                                                        type: NKFormType.TEXT,
-                                                    },
-                                                    {
-                                                        name: 'totalPoint',
-                                                        label: 'Total Point',
-                                                        type: NKFormType.NUMBER,
-                                                    },
-                                                    {
-                                                        name: 'schoolYearId',
-                                                        label: 'School Year',
-                                                        type: NKFormType.SELECT_API_OPTION,
-                                                        fieldProps: {
-                                                            apiAction: (value) =>
-                                                                schoolYearApi.getEnumSelectOptions({
-                                                                    search: value,
-                                                                    withSchoolName: true,
-                                                                }),
-                                                        },
-                                                    },
-                                                ]}
-                                                onExtraSuccessAction={() => {
-                                                    queryClient.invalidateQueries({
-                                                        queryKey: ['classes'],
-                                                    });
-
-                                                    toast.success('Edit class successfully');
-
-                                                    close();
-                                                }}
-                                                onExtraErrorAction={toastError}
-                                            />
-                                        );
-                                    }}
-                                </ModalBuilder>
-                                <CTAButton
-                                    ctaApi={() => classApi.delete(record.classId)}
-                                    isConfirm
-                                    confirmMessage="Are you sure you want to delete this class?"
-                                    extraOnError={toastError}
-                                    extraOnSuccess={() => {
-                                        queryClient.invalidateQueries({
-                                            queryKey: ['classes'],
-                                        });
-
-                                        toast.success('Delete class successfully');
-                                    }}
-                                >
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="col-span-1">
                                     <Button
+                                        icon={<EyeOutlined />}
                                         type="primary"
-                                        danger
                                         size="small"
                                         className="flex items-center justify-center"
-                                        icon={<Trash className="h-4 w-4" />}
-                                    ></Button>
-                                </CTAButton>
+                                        onClick={() => router.push(NKRouter.classes.detail(record.classId))}
+                                    />
+                                </div>
+                                {!isTeacher && (
+                                    <div className="col-span-1">
+                                        <ModalBuilder
+                                            btnLabel=""
+                                            btnProps={{
+                                                size: 'small',
+                                                icon: <EditOutlined />,
+                                            }}
+                                            title="Cập nhật"
+                                        >
+                                            {(close) => {
+                                                return (
+                                                    <FormBuilder
+                                                        className="!p-0"
+                                                        title=""
+                                                        apiAction={classApi.update}
+                                                        defaultValues={{
+                                                            teacherId: record.teacherId,
+                                                            classGroupId: record.classGroupId,
+                                                            code: record.code,
+                                                            name: record.name,
+                                                            schoolYearId: record.schoolYearId,
+                                                            totalPoint: record.totalPoint,
+                                                        }}
+                                                        schema={{
+                                                            teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                            classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                            code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                            name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                            schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                            totalPoint: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                        }}
+                                                        fields={[
+                                                            {
+                                                                name: 'name',
+                                                                label: 'Name',
+                                                                type: NKFormType.TEXT,
+                                                            },
+                                                            {
+                                                                name: 'code',
+                                                                label: 'Code',
+                                                                type: NKFormType.TEXT,
+                                                            },
+                                                            {
+                                                                name: 'teacherId',
+                                                                label: 'Teacher',
+                                                                type: NKFormType.SELECT_API_OPTION,
+                                                                fieldProps: {
+                                                                    apiAction: (value) =>
+                                                                        teacherApi.getEnumSelectOptions({
+                                                                            search: value,
+                                                                            teacherByYear: schoolId,
+                                                                        }),
+                                                                },
+                                                            },
+                                                            {
+                                                                name: 'totalPoint',
+                                                                label: 'Total Point',
+                                                                type: NKFormType.NUMBER,
+                                                            },
+                                                        ]}
+                                                        onExtraSuccessAction={() => {
+                                                            queryClient.invalidateQueries({
+                                                                queryKey: ['classes'],
+                                                            });
+
+                                                            toast.success('Edit class successfully');
+
+                                                            close();
+                                                        }}
+                                                        onExtraErrorAction={toastError}
+                                                    />
+                                                );
+                                            }}
+                                        </ModalBuilder>
+                                    </div>
+                                )}
+                                {!isTeacher && (
+                                    <div className="col-span-1">
+                                        <CTAButton
+                                            ctaApi={() => classApi.delete(record.classId)}
+                                            isConfirm
+                                            confirmMessage="Bạn có chắc chắn muốn xóa lớp này không?"
+                                            extraOnError={toastError}
+                                            extraOnSuccess={() => {
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['classes'],
+                                                });
+
+                                                toast.success('Delete class successfully');
+                                            }}
+                                        >
+                                            <Button
+                                                type="primary"
+                                                danger
+                                                size="small"
+                                                className="flex items-center justify-center"
+                                                icon={<Trash className="h-4 w-4" />}
+                                            ></Button>
+                                        </CTAButton>
+                                    </div>
+                                )}
+                                <div className="col-span-1">
+                                    <Button
+                                        icon={<HistoryOutlined />}
+                                        type="dashed"
+                                        size="small"
+                                        className="flex items-center justify-center"
+                                        onClick={() => router.push(NKRouter.classes.history(record.classId))}
+                                    />
+                                </div>
                             </div>
                         );
                     }}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Tên lớp',
                             comparator: FilterComparator.LIKE,
                             name: 'name',
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Code',
+                            label: 'Mã lớp',
                             comparator: FilterComparator.LIKE,
                             name: 'code',
                             type: NKFormType.TEXT,
                         },
-                        {
-                            label: 'Year',
-                            comparator: FilterComparator.IN,
-                            name: 'year',
-                            type: NKFormType.TEXT,
-                        },
+                        // {
+                        //     label: 'Niên khóa',
+                        //     comparator: FilterComparator.IN,
+                        //     name: 'year',
+                        //     type: NKFormType.TEXT,
+                        // },
                     ]}
                     extraButtons={
                         (!isTeacher) && (
                             <ModalBuilder
-                                btnLabel="Create Class"
+                                btnLabel="Tạo lớp"
                                 btnProps={{
                                     type: 'primary',
                                     icon: <PlusOutlined />,
                                 }}
-                                title="Create Class"
+                                title="Tạo lớp"
                             >
                                 {(close) => {
                                     return (
@@ -250,18 +270,18 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             title=""
                                             apiAction={classApi.create}
                                             defaultValues={{
-                                                teacherID: 0,
+                                                teacherId: 0,
                                                 classGroupId: 0,
                                                 code: '',
                                                 name: '',
-                                                schoolYearId: 0,
+                                                schoolYearId: 2,
                                                 grade: 0,
                                             }}
                                             schema={{
                                                 code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                teacherID: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                teacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 classGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 grade: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
@@ -276,6 +296,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                                 search: value,
                                                                 highSchoolId: schoolId
                                                             }),
+                                                        disabled: true
                                                     },
                                                 },
                                                 {
@@ -298,7 +319,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     label: 'Teacher',
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
-                                                        apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value, schoolId: schoolId }),
+                                                        apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value, teacherByYear: schoolId }),
                                                     },
                                                 },
                                                 {

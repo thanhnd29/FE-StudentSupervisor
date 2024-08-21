@@ -39,7 +39,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
     const getByRole = () => {
         if (schoolId) {
             if (isTeacher) {
-                return disciplineApi.getByUser(userId);
+                return disciplineApi.getByTeacher(userId);
+            }
+            if (isSupervisor) {
+                return disciplineApi.getBySupervisor(userId);
             }
             return disciplineApi.getBySchool(schoolId)
         }
@@ -47,33 +50,34 @@ const Page: React.FunctionComponent<PageProps> = () => {
     };
 
 
-    useDocumentTitle('Disciplines');
+    useDocumentTitle('Kỷ luật');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="disciplines"
-                    title="Disciplines"
+                    title="Kỷ luật"
                     columns={[
                         {
                             key: 'disciplineId',
                             title: 'ID',
                             type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'studentName',
-                            title: 'Name',
-                            type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'studentCode',
-                            title: 'Code',
+                            title: 'Mã học sinh',
+                            type: FieldType.TEXT,
+                        },
+                        {
+                            key: 'studentName',
+                            title: 'Tên học sinh',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'pennaltyId',
-                            title: 'Pennalty',
+                            title: 'Hình phạt',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return penaltyApi.getEnumSelectOptions(value);
@@ -81,26 +85,28 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'startDate',
-                            title: 'Start Date',
+                            title: 'Ngày bắt đầu',
                             type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'endDate',
-                            title: 'End Date',
+                            title: 'Ngày kết thúc',
                             type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'year',
-                            title: 'Year',
+                            title: 'Niên khóa',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction: disciplineApi.getEnumStatuses
                         },
                     ]}
+                    isSelectYear={true}
+                    schoolId={schoolId}
                     queryApi={getByRole}
                     actionColumns={(record) => (
                         <div className="grid grid-cols-2 gap-2">
@@ -124,7 +130,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     }}
                                 />
                             </div>
-                            {isTeacher && (
+                            {isSupervisor && (
                                 <div className="col-span-1">
                                     <ModalBuilder
                                         btnLabel=""
@@ -132,7 +138,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             size: 'small',
                                             icon: <EditOutlined />,
                                         }}
-                                        title="Edit Discipline"
+                                        title="Cập nhật"
                                     >
                                         {(close) => {
                                             return (
@@ -164,12 +170,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                         {
                                                             name: 'startDate',
                                                             type: NKFormType.DATE,
-                                                            label: 'Start Date',
+                                                            label: 'Ngày bắt đầu',
                                                         },
                                                         {
                                                             name: 'endDate',
                                                             type: NKFormType.DATE,
-                                                            label: 'End Date',
+                                                            label: 'Ngày kết thúc',
                                                         },
                                                         // {
                                                         //     name: 'description',
@@ -207,9 +213,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                         {
                                                             name: 'pennaltyId',
                                                             type: NKFormType.SELECT_API_OPTION,
-                                                            label: 'Pennalty',
+                                                            label: 'Hình phạt',
                                                             fieldProps: {
-                                                                apiAction: (value) => penaltyApi.getEnumSelectOptions(value),
+                                                                apiAction: (value) => penaltyApi.getEnumSelectOptions(value, schoolId),
                                                             },
                                                         },
                                                     ]}
@@ -267,7 +273,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <CTAButton
                                         ctaApi={() => disciplineApi.executing(record.disciplineId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to executing this discipline?"
+                                        confirmMessage="Bạn có chắc chắn muốn thực hiện kỷ luật này không?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
@@ -288,7 +294,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <CTAButton
                                         ctaApi={() => disciplineApi.done(record.disciplineId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to done this discipline?"
+                                        confirmMessage="Bạn có chắc chắn kỷ luật này đã hoàn thành không?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
@@ -309,7 +315,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <CTAButton
                                         ctaApi={() => disciplineApi.complain(record.disciplineId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to complain this discipline?"
+                                        confirmMessage="Bạn có chắc chắn muốn khiếu nại về kỷ luật này không?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
@@ -329,25 +335,19 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Tên học sinh',
                             comparator: FilterComparator.LIKE,
                             name: 'studentName',
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Code',
+                            label: 'Mã học sinh',
                             comparator: FilterComparator.LIKE,
                             name: 'studentCode',
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Year',
-                            comparator: FilterComparator.IN,
-                            name: 'year',
-                            type: NKFormType.TEXT,
-                        },
-                        {
-                            label: 'Status',
+                            label: 'Trạng thái',
                             comparator: FilterComparator.LIKE,
                             name: 'status',
                             type: NKFormType.SELECT_API_OPTION,

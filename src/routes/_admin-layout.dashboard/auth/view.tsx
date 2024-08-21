@@ -15,7 +15,7 @@ const Page = () => {
     return (
         <div>
             <FieldBuilder
-                title="Profile"
+                title="Thông tin cá nhân"
                 record={record}
                 isPadding={false}
                 fields={[
@@ -25,33 +25,33 @@ const Page = () => {
                         type: FieldType.TEXT,
                     },
                     {
-                        key: 'name',
-                        title: 'Name',
+                        key: 'code',
+                        title: 'Mã người dùng',
                         type: FieldType.TEXT,
                     },
                     {
-                        key: 'password',
-                        title: 'Password',
+                        key: 'name',
+                        title: 'Tên người dùng',
                         type: FieldType.TEXT,
                     },
                     {
                         key: 'phone',
-                        title: 'Phone',
+                        title: 'Số điện thoại',
                         type: FieldType.TEXT,
                     },
                     {
-                        key: 'schoolName',
-                        title: 'School Name',
-                        type: FieldType.TEXT,
-                    },
-                    {
-                        key: 'code',
-                        title: 'Code',
+                        key: 'password',
+                        title: 'Mật khẩu',
                         type: FieldType.TEXT,
                     },
                     {
                         key: 'address',
-                        title: 'Address',
+                        title: 'Địa chỉ',
+                        type: FieldType.TEXT,
+                    },
+                    {
+                        key: 'schoolName',
+                        title: 'Trường',
                         type: FieldType.TEXT,
                     },
                 ]}

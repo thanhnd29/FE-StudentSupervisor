@@ -28,7 +28,7 @@ const Page = () => {
                     apiAction={(data) => {
                         return checkoutApi.create(data.packageId)
                     }}
-                    title="Buy Package"
+                    title="Mua gói"
                     defaultValues={{
                         packageId: packageId
                     }}
@@ -37,7 +37,7 @@ const Page = () => {
                     }}
                     fields={[
                         {
-                            label: "Package",
+                            label: "Gói",
                             name: "packageId",
                             type: NKFormType.SELECT_API_OPTION,
                             fieldProps: {
@@ -50,8 +50,6 @@ const Page = () => {
                     ]}
                     onExtraErrorAction={() => { }}
                     onExtraSuccessAction={(data) => {
-                        console.log(data);
-                        
                         let windowWidth = 600;
                         let windowHeight = 800;
                         let yPosition = window.outerHeight / 2 - windowHeight / 2 + window.screenY;
@@ -63,24 +61,24 @@ const Page = () => {
             </section>
             <section className="col-span-2">
                 <FieldBuilder
-                    title="Detail Package"
+                    title="Chi tiết gói"
                     record={violationQuery.data}
                     isPadding={false}
                     containerClassName="p-4"
                     fields={[
                         {
                             key: 'name',
-                            title: 'Name',
+                            title: 'Tên',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'price',
-                            title: 'Price',
+                            title: 'Giá',
                             type: FieldType.NUMBER,
                         },
                     ]}

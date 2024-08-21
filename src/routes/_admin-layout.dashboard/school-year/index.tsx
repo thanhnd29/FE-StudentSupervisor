@@ -33,49 +33,47 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('School Year List');
+    useDocumentTitle('Danh sách năm học');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="school-year"
-                    title="School Year List"
+                    title="Danh sách năm học"
                     columns={[
                         {
                             key: 'schoolYearId',
-                            title: 'Id',
+                            title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'year',
-                            title: 'Year',
+                            title: 'Niên khóa',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'startDate',
-                            title: 'Start Date',
+                            title: 'Ngày bắt đầu',
                             type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'endDate',
-                            title: 'End Date',
+                            title: 'Ngày kết thúc',
                             type: FieldType.TIME_DATE,
                         },
                         {
-                            key: 'schoolName',
-                            title: 'School Name',
-                            type: FieldType.TEXT,
-                        },
-                        {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return schoolYearApi.getEnumStatuses(value);
                             },
                         },
                     ]}
+                    isSelectYear={true}
+                    schoolId={schoolId}
                     queryApi={schoolId ? () => schoolYearApi.getBySchool(schoolId) : schoolYearApi.getAll}
                     actionColumns={(record) => {
                         return (
@@ -86,7 +84,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         size: 'small',
                                         icon: <EditOutlined />,
                                     }}
-                                    title="Edit School Year"
+                                    title="Cập nhật"
                                 >
                                     {(close) => {
                                         return (
@@ -120,18 +118,18 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 }}
                                                 fields={[
                                                     {
-                                                        name: 'endDate',
-                                                        label: 'End Date',
+                                                        name: 'startDate',
+                                                        label: 'Ngày bắt đầu',
                                                         type: NKFormType.DATE,
                                                     },
                                                     {
-                                                        name: 'startDate',
-                                                        label: 'Start Date',
+                                                        name: 'endDate',
+                                                        label: 'Ngày kết thúc',
                                                         type: NKFormType.DATE,
                                                     },
                                                     {
                                                         name: 'schoolId',
-                                                        label: 'School',
+                                                        label: 'Trường',
                                                         type: NKFormType.SELECT_API_OPTION,
                                                         fieldProps: {
                                                             apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
@@ -140,7 +138,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     },
                                                     {
                                                         name: 'year',
-                                                        label: 'Year',
+                                                        label: 'Niên khóa',
                                                         type: NKFormType.DATE_YEAR,
                                                         fieldProps: {
                                                             format: 'YYYY',
@@ -164,7 +162,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 <CTAButton
                                     ctaApi={() => schoolYearApi.delete(record.schoolYearId)}
                                     isConfirm
-                                    confirmMessage="Are you sure you want to delete this school year?"
+                                    confirmMessage="Bạn có chắc chắn muốn xóa năm học này không?"
                                     extraOnError={toastError}
                                     extraOnSuccess={(data) => {
                                         queryClient.invalidateQueries({
@@ -185,28 +183,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             </div>
                         );
                     }}
-                    filters={[
-                        {
-                            label: 'Year',
-                            comparator: FilterComparator.EQUAL,
-                            name: 'year',
-                            type: NKFormType.NUMBER,
-                        },
-                        {
-                            label: 'School Name',
-                            comparator: FilterComparator.LIKE,
-                            name: 'schoolName',
-                            type: NKFormType.TEXT,
-                        },
-                    ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create School Year"
+                            btnLabel="Tạo năm học"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create School Year"
+                            title="Tạo năm học"
                         >
                             {(close) => {
                                 return (
@@ -241,17 +225,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         fields={[
                                             {
                                                 name: 'endDate',
-                                                label: 'End Date',
+                                                label: 'Ngày kết thúc',
                                                 type: NKFormType.DATE,
                                             },
                                             {
                                                 name: 'startDate',
-                                                label: 'Start Date',
+                                                label: 'Ngày bắt đầu',
                                                 type: NKFormType.DATE,
                                             },
                                             {
                                                 name: 'schoolId',
-                                                label: 'School',
+                                                label: 'Trường',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
@@ -260,7 +244,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             },
                                             {
                                                 name: 'year',
-                                                label: 'Year',
+                                                label: 'Niên khóa',
                                                 type: NKFormType.DATE_YEAR,
                                                 fieldProps: {
                                                     format: 'YYYY',

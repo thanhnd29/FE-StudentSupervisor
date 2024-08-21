@@ -3,9 +3,11 @@ import { StudentInClass, StudentInClassStatus } from '../models/student-in-class
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateStudentInClassDto extends Omit<StudentInClass, 'studentInClassId' | 'status' | 'studentId' | 'numberOfViolation'> { }
+export interface ICreateStudentInClassDto extends Omit<StudentInClass, 'studentInClassId' | 'status' | 'studentId' | 'numberOfViolation' | 'year' | 'grade'> { }
 
-export interface IUpdateStudentInClassDto extends Omit<StudentInClass, 'status' | 'schoolId' | 'numberOfViolation'> { }
+export interface IUpdateStudentInClassDto extends Omit<StudentInClass, 'status' | 'schoolId' | 'numberOfViolation' | 'year' | 'grade'> { }
+
+export interface IChangeClassDto extends Pick<StudentInClass, 'studentInClassId' | 'classId'> { }
 
 const baseUrl = '/student-in-classes';
 
@@ -17,6 +19,14 @@ export const studentInClassApi = {
     },
     update: async (dto: IUpdateStudentInClassDto) => {
         const { data } = await http.put<StudentInClass>(`${baseUrl}`, dto);
+
+        return data;
+    },
+    changeClass: async (dto: IChangeClassDto) => {
+        const { data } = await http.post<StudentInClass>(`${baseUrl}/change-class`, {
+            studentInClassId: dto.studentInClassId,
+            newClassId: dto.classId
+        });
 
         return data;
     },
@@ -71,16 +81,16 @@ export const studentInClassApi = {
             {
                 color: Colors.GREEN,
                 id: StudentInClassStatus.ENROLLED,
-                label: 'Enrolled',
-                name: 'Enrolled',
+                label: 'Đang học',
+                name: 'Đang học',
                 slug: 'Enrolled',
                 value: StudentInClassStatus.ENROLLED,
             },
             {
                 color: Colors.RED,
                 id: StudentInClassStatus.UNENROLLED,
-                label: 'Unenrolled',
-                name: 'Unenrolled',
+                label: 'Đã nghỉ học',
+                name: 'Đã nghỉ học',
                 slug: 'Unenrolled',
                 value: StudentInClassStatus.UNENROLLED,
             },

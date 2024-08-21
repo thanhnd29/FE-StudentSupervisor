@@ -6,7 +6,7 @@ import http from './http';
 
 export interface ICreateClassDto extends Omit<Class, 'classId' | 'year' | 'status' | 'totalPoint' | 'teacherName'> { }
 
-export interface IUpdateClassDto extends Omit<Class, 'year' | 'status' | 'grade' | 'teacherName'> { }
+export interface IUpdateClassDto extends Omit<Class, 'year' | 'status' | 'grade' | 'teacherName' | 'classId'> { }
 
 const baseUrl = '/classes';
 
@@ -28,8 +28,6 @@ export const classApi = {
             },
         });
 
-        console.log(data);
-
         return data.data;
     },
     getBySchool: async (id: number) => {
@@ -39,7 +37,6 @@ export const classApi = {
     },
     getByClass: async (id: number) => {
         const { data } = await http.get<ResponseList<Class>>(`${baseUrl}/classes/${id}`);
-        console.log(data);
 
         return data.data;
     },
@@ -53,11 +50,19 @@ export const classApi = {
 
         return data;
     },
-    getEnumSelectOptions: async ({ search, highSchoolId, year }: { search?: string, highSchoolId?: number, year?: number }) => {
+    getEnumSelectOptions: async ({ search, highSchoolId, year, yearId, grade }: { search?: string, highSchoolId?: number, year?: number, yearId?: number, grade?: number }) => {
         let classes = highSchoolId ? await classApi.getBySchool(highSchoolId) : await classApi.getAll();
 
+        if (yearId) {
+            classes = classes.filter((classYear) => classYear.schoolYearId == yearId)
+        }
+
         if (year) {
-            classes = classes.filter((classYear) => classYear.schoolYearId == year)
+            classes = classes.filter((classYear) => classYear.year == year)
+        }
+
+        if (grade) {
+            classes = classes.filter((classYear) => classYear.grade == grade)
         }
 
         let list: EnumListItem[] = classes
@@ -106,16 +111,16 @@ export const classApi = {
             {
                 color: Colors.GREEN,
                 id: ClassStatus.ACTIVE,
-                label: 'Active',
-                name: 'Active',
+                label: 'Đang hoạt động',
+                name: 'Đang hoạt động',
                 slug: ClassStatus.ACTIVE,
                 value: ClassStatus.ACTIVE,
             },
             {
                 color: Colors.RED,
                 id: ClassStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: ClassStatus.INACTIVE,
                 value: ClassStatus.INACTIVE,
             },

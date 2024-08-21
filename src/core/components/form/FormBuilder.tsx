@@ -45,7 +45,7 @@ const FormBuilder = <T,>({
     defaultValues,
     onExtraSuccessAction,
     onExtraErrorAction,
-    btnLabel = 'Submit',
+    btnLabel = 'Gửi',
     isDebug,
     className,
     beforeSubmit,

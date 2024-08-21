@@ -42,28 +42,29 @@ const Page: React.FunctionComponent<PageProps> = () => {
         return patrolScheduleApi.getAll()
     };
 
-    useDocumentTitle('Patrol Schedules');
+    useDocumentTitle('Danh sách lịch trực');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="patrol-schedules"
-                    title="Patrol Schedules"
+                    title="Danh sách lịch trực"
                     columns={[
                         {
                             key: 'scheduleId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'supervisorName',
-                            title: 'Supervisor',
+                            title: 'Sao đỏ',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'classId',
-                            title: 'Class',
+                            title: 'Lớp',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return classApi.getEnumSelectOptions({ search: value });
@@ -71,26 +72,28 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'slot',
-                            title: 'Time',
+                            title: 'Tiết',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'from',
-                            title: 'From',
+                            title: 'Từ ngày',
                             type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'to',
-                            title: 'To',
+                            title: 'Đến ngày',
                             type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction: patrolScheduleApi.getEnumStatuses,
                         },
                     ]}
+                    isSelectYear={true}
+                    schoolId={schoolId}
                     queryApi={getByRole}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
@@ -100,7 +103,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Patrol Schedule"
+                                title="Cập nhật"
                             >
                                 {(close) => {
                                     return (
@@ -130,17 +133,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 {
                                                     name: 'from',
                                                     type: NKFormType.DATE,
-                                                    label: 'From',
+                                                    label: 'Từ ngày',
                                                 },
                                                 {
                                                     name: 'to',
                                                     type: NKFormType.DATE,
-                                                    label: 'To',
+                                                    label: 'Đến ngày',
                                                 },
                                                 {
                                                     name: 'classId',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Class',
+                                                    label: 'Lớp',
                                                     fieldProps: {
                                                         apiAction: (value) => classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId }),
                                                     },
@@ -148,7 +151,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 {
                                                     name: 'supervisorId',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Supervisor',
+                                                    label: 'Sao đỏ',
                                                     fieldProps: {
                                                         apiAction: (value) => studentSupervisorApi.getEnumSelectOptions(value, schoolId),
                                                     },
@@ -156,22 +159,22 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 {
                                                     name: 'name',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Name',
+                                                    label: 'Tên lịch trực',
                                                 },
                                                 {
                                                     name: 'slot',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Slot',
+                                                    label: 'Tiết',
                                                 },
                                                 {
                                                     name: 'time',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Time',
+                                                    label: 'Thời gian',
                                                 },
                                                 {
                                                     name: 'status',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Status',
+                                                    label: 'Trạng thái',
                                                     fieldProps: {
                                                         apiAction: (value) => patrolScheduleApi.getEnumStatuses(value),
                                                     },
@@ -191,14 +194,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['patrol-schedules'],
                                                 });
 
                                                 close();
 
-                                                toast.success('Update patrol schedule successfully');
+                                                toast.success(data.message || 'Successful');
                                             }}
                                             beforeSubmit={(dto) => {
                                                 if (moment(dto.from).isAfter(dto.to)) {
@@ -215,14 +218,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => patrolScheduleApi.delete(record.scheduleId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this patrol schedule?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa lịch trực này không?"
                                 extraOnError={toastError}
-                                extraOnSuccess={() => {
+                                extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
                                         queryKey: ['patrol-schedules'],
                                     });
 
-                                    toast.success('Delete patrol schedule successfully');
+                                    toast.success(data.message || 'Successful');
                                 }}
                             >
                                 <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
@@ -233,12 +236,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create"
+                            btnLabel="Tạo lịch trực"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Patrol Schedule"
+                            title="Tạo lịch trực"
                         >
                             {(close) => {
                                 return (
@@ -258,25 +261,25 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'from',
                                                 type: NKFormType.DATE,
-                                                label: 'From',
+                                                label: 'Từ ngày',
                                             },
                                             {
                                                 name: 'to',
                                                 type: NKFormType.DATE,
-                                                label: 'To',
+                                                label: 'Đến ngày',
                                             },
                                             {
                                                 name: 'classId',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Class',
+                                                label: 'Lớp',
                                                 fieldProps: {
-                                                    apiAction: (value) => classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId }),
+                                                    apiAction: (value) => classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId, year: Number(new Date().getFullYear()) }),
                                                 },
                                             },
                                             {
                                                 name: 'supervisorId',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Supervisor',
+                                                label: 'Sao đỏ',
                                                 fieldProps: {
                                                     apiAction: (value) => studentSupervisorApi.getEnumSelectOptions(value, schoolId),
                                                 },
@@ -284,17 +287,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'name',
                                                 type: NKFormType.TEXT,
-                                                label: 'Name',
+                                                label: 'Tên lịch trực',
                                             },
                                             {
                                                 name: 'slot',
                                                 type: NKFormType.TEXT,
-                                                label: 'Slot',
+                                                label: 'Tiết',
                                             },
                                             {
                                                 name: 'time',
                                                 type: NKFormType.TEXT,
-                                                label: 'Time',
+                                                label: 'Thời gian',
                                             },
                                         ]}
                                         title=""
@@ -309,14 +312,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={() => {
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['patrol-schedules'],
                                             });
 
                                             close();
 
-                                            toast.success('Create patrol schedule successfully');
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         defaultValues={{
                                             from: new Date(),

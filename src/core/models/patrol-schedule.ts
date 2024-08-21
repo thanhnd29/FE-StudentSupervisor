@@ -1,6 +1,7 @@
 export enum PatrolScheduleStatus {
     ONGOING = 'ONGOING',
     FINISHED = 'FINISHED',
+    INACTIVE = 'INACTIVE',
 }
 
 export interface PatrolSchedule {
@@ -18,4 +19,5 @@ export interface PatrolSchedule {
         ticks: number;
     }
     status: string;
+    year: number;
 }

@@ -41,6 +41,7 @@ const Page = () => {
                             key: 'evaluationDetailId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'classId',

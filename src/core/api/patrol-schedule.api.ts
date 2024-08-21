@@ -12,6 +12,8 @@ export const patrolScheduleApi = {
     create: async (dto: ICreatePatrolScheduleDto) => {
         const { data } = await http.post<PatrolSchedule>(`${baseUrl}`, dto);
 
+        console.log(data);
+
         return data;
     },
 
@@ -54,18 +56,26 @@ export const patrolScheduleApi = {
             {
                 color: Colors.YELLOW,
                 id: PatrolScheduleStatus.ONGOING,
-                label: 'Ongoing',
-                name: 'Ongoing',
+                label: 'Đang diễn ra',
+                name: 'Đang diễn ra',
                 slug: 'ongoing',
                 value: PatrolScheduleStatus.ONGOING,
             },
             {
                 color: Colors.GREEN,
                 id: PatrolScheduleStatus.FINISHED,
-                label: 'Finished',
-                name: 'Finished',
+                label: 'Đã kết thúc',
+                name: 'Đã kết thúc',
                 slug: 'finished',
                 value: PatrolScheduleStatus.FINISHED,
+            },
+            {
+                color: Colors.RED,
+                id: PatrolScheduleStatus.INACTIVE,
+                label: 'Đã xóa',
+                name: 'Đã xóa',
+                slug: 'inactive',
+                value: PatrolScheduleStatus.INACTIVE,
             },
         ] as EnumListItem[];
     },

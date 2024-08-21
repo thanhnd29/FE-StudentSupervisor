@@ -56,8 +56,17 @@ export const disciplineApi = {
 
         return data.data || [];
     },
-    getByUser: async (id: number) => {
+    getByTeacher: async (id: number) => {
         const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/user/${id}`, {
+            params: {
+                sortOrder: 'desc',
+            },
+        });
+
+        return data.data || [];
+    },
+    getBySupervisor: async (id: number) => {
+        const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/supervisor/${id}`, {
             params: {
                 sortOrder: 'desc',
             },
@@ -80,48 +89,48 @@ export const disciplineApi = {
             {
                 color: Colors.GREEN,
                 id: DisciplineStatus.DONE,
-                label: 'Done',
-                name: 'Done',
+                label: 'Đã hoàn thành',
+                name: 'Đã hoàn thành',
                 slug: DisciplineStatus.DONE,
                 value: DisciplineStatus.DONE,
             },
             {
                 color: Colors.RED,
                 id: DisciplineStatus.EXECUTING,
-                label: 'Executing',
-                name: 'Executing',
+                label: 'Đang diễn ra',
+                name: 'Đang diễn ra',
                 slug: DisciplineStatus.EXECUTING,
                 value: DisciplineStatus.EXECUTING,
             },
             {
                 color: Colors.PURPLE,
                 id: DisciplineStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: DisciplineStatus.INACTIVE,
                 value: DisciplineStatus.INACTIVE,
             },
             {
                 color: Colors.PINK,
                 id: DisciplineStatus.PENDING,
-                label: 'Pending',
-                name: 'Pending',
+                label: 'Chờ xử lý',
+                name: 'Chờ xử lý',
                 slug: DisciplineStatus.PENDING,
                 value: DisciplineStatus.PENDING,
             },
             {
                 color: Colors.ORANGE,
                 id: DisciplineStatus.COMPLAIN,
-                label: 'Complain',
-                name: 'Complain',
+                label: 'Đang khiếu nại',
+                name: 'Đang khiếu nại',
                 slug: DisciplineStatus.COMPLAIN,
                 value: DisciplineStatus.COMPLAIN,
             },
             {
                 color: Colors.YELLOW,
                 id: DisciplineStatus.FINALIZED,
-                label: 'Finalized',
-                name: 'Finalized',
+                label: 'Đã thống nhất',
+                name: 'Đã thống nhất',
                 slug: DisciplineStatus.FINALIZED,
                 value: DisciplineStatus.FINALIZED,
             },

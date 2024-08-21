@@ -4,9 +4,9 @@ import { getColorWithId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description'> { }
+export interface ICreateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description' | 'isSupervisorOnly'> { }
 
-export interface IUpdateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description'> { }
+export interface IUpdateViolationTypeDto extends Pick<ViolationType, 'vioTypeName' | 'violationGroupId' | 'description' | 'isSupervisorOnly'> { }
 
 const baseUrl = '/violation-types';
 
@@ -70,16 +70,16 @@ export const violationTypeApi = {
             {
                 color: Colors.GREEN,
                 id: ViolationTypeStatus.ACTIVE,
-                label: 'Active',
-                name: 'Active',
+                label: 'Đang hoạt động',
+                name: 'Đang hoạt động',
                 slug: ViolationTypeStatus.ACTIVE,
                 value: ViolationTypeStatus.ACTIVE,
             },
             {
                 color: Colors.RED,
                 id: ViolationTypeStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: ViolationTypeStatus.INACTIVE,
                 value: ViolationTypeStatus.INACTIVE,
             },

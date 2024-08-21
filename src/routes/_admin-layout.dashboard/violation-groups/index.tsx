@@ -34,38 +34,34 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Violation Groups');
+    useDocumentTitle('Danh sách Nhóm vi phạm');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="violation-groups"
-                    title="Violation Groups"
+                    title="Danh sách Nhóm vi phạm"
                     columns={[
                         {
                             key: 'violationGroupId',
                             title: 'ID',
                             type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'vioGroupName',
-                            title: 'Name',
-                            type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'vioGroupCode',
-                            title: 'Code',
+                            title: 'Mã',
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'schoolName',
-                            title: 'School Name',
+                            key: 'vioGroupName',
+                            title: 'Tên',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.MULTILINE_TEXT,
                             formatter(value) {
                                 return value || 'N/A';
@@ -73,7 +69,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction: violationGroupApi.getEnumStatuses,
                         },
@@ -101,18 +97,18 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             type: FieldType.TEXT,
                                         },
                                         {
-                                            key: 'code',
-                                            title: 'Code',
+                                            key: 'vioGroupCode',
+                                            title: 'Mã',
                                             type: FieldType.TEXT,
                                         },
                                         {
                                             key: 'vioGroupName',
-                                            title: 'Name',
+                                            title: 'Tên',
                                             type: FieldType.TEXT,
                                         },
                                         {
                                             key: 'description',
-                                            title: 'Description',
+                                            title: 'Mô tả',
                                             type: FieldType.MULTILINE_TEXT,
                                         },
                                     ]}
@@ -124,7 +120,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Violation Group"
+                                title="Cập nhật"
                             >
                                 {(close) => {
                                     return (
@@ -140,7 +136,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             fields={[
                                                 {
                                                     name: 'schoolId',
-                                                    label: 'School',
+                                                    label: 'Trường',
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
                                                         apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
@@ -149,17 +145,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 },
                                                 {
                                                     name: 'vioGroupCode',
-                                                    label: 'Code',
+                                                    label: 'Mã',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'vioGroupName',
-                                                    label: 'Name',
+                                                    label: 'Tên',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'description',
-                                                    label: 'Description',
+                                                    label: 'Mô tả',
                                                     type: NKFormType.TEXTAREA,
                                                 },
                                             ]}
@@ -185,7 +181,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => violationGroupApi.delete(record.violationGroupId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this violation group?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa nhóm vi phạm này không?"
                                 extraOnError={toastError}
                                 extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
@@ -203,13 +199,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Tên',
                             comparator: FilterComparator.LIKE,
                             name: 'vioGroupName',
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Code',
+                            label: 'Mã',
                             comparator: FilterComparator.LIKE,
                             name: 'code',
                             type: NKFormType.TEXT,
@@ -217,12 +213,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Violation Group"
+                            btnLabel="Thêm nhóm vi phạm"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Violation Group"
+                            title="Thêm nhóm vi phạm"
                         >
                             {(close) => {
                                 return (
@@ -232,7 +228,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         fields={[
                                             {
                                                 name: 'schoolId',
-                                                label: 'School',
+                                                label: 'Trường',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
@@ -241,17 +237,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             },
                                             {
                                                 name: 'vioGroupCode',
-                                                label: 'Code',
+                                                label: 'Mã',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
                                                 name: 'vioGroupName',
-                                                label: 'Name',
+                                                label: 'Tên',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
                                                 name: 'description',
-                                                label: 'Description',
+                                                label: 'Mô tả',
                                                 type: NKFormType.TEXTAREA,
                                             },
                                         ]}

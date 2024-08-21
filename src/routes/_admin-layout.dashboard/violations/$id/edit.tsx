@@ -20,7 +20,7 @@ import { toast } from 'react-toastify';
 
 const Page = () => {
     const { id } = Route.useParams();
-    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId } = useSelector<RootState, UserState>(
+    const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
         (state: RootState) => state.user,
     );
 
@@ -51,12 +51,10 @@ const Page = () => {
         <div>
             <FormBuilder
                 apiAction={(data) => {
-                    return violationsApi.createForStudent({
+                    return violationsApi.updateSupervisor(Number(id), {
                         ...data,
                         Date: data.Date.toISOString(),
-                        SchoolId: 0,
-                        UserId: 0,
-                        Year: 0
+                        UserId: userId,
                     });
                 }}
                 title="Update Violation"
@@ -64,7 +62,6 @@ const Page = () => {
                     ClassId: violationQuery.data.classId,
                     Date: new Date(violationQuery.data.date),
                     Description: violationQuery.data.description,
-                    TeacherId: violationQuery.data.teacherId,
                     ViolationName: violationQuery.data.violationName,
                     ViolationTypeId: violationQuery.data.violationTypeId,
                     Images: violationQuery.data.imageUrls,
@@ -74,7 +71,6 @@ const Page = () => {
                     ClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                     Date: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                     Description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                    TeacherId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                     ViolationName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                     ViolationTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                     Images: Joi.array().items(Joi.string()).required().messages(NKConstant.MESSAGE_FORMAT),
@@ -86,30 +82,10 @@ const Page = () => {
                         label: 'Name',
                         type: NKFormType.TEXT,
                     },
-
                     {
                         name: 'Description',
                         label: 'Description',
                         type: NKFormType.TEXTAREA,
-                    },
-                    {
-                        name: 'ClassId',
-                        label: 'Class',
-                        type: NKFormType.SELECT_API_OPTION,
-                        fieldProps: {
-                            apiAction: (value) => classApi.getEnumSelectOptions({ search: value }),
-                        },
-                        onChangeExtra(value) {
-                            setClassId(value);
-                        },
-                    },
-                    {
-                        name: 'StudentInClassId',
-                        label: 'Student',
-                        type: NKFormType.SELECT_API_OPTION,
-                        fieldProps: {
-                            apiAction: async (value) => studentInClassQuery.data,
-                        },
                     },
                     {
                         name: 'ViolationTypeId',
@@ -117,14 +93,6 @@ const Page = () => {
                         type: NKFormType.SELECT_API_OPTION,
                         fieldProps: {
                             apiAction: (value) => violationTypeApi.getEnumSelectOptions(schoolId, value),
-                        },
-                    },
-                    {
-                        name: 'TeacherId',
-                        label: 'Teacher',
-                        type: NKFormType.SELECT_API_OPTION,
-                        fieldProps: {
-                            apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value }),
                         },
                     },
                     {

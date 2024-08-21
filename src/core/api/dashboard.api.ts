@@ -24,7 +24,7 @@ export const dashboardApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month,
+                month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
         });
@@ -37,7 +37,7 @@ export const dashboardApi = {
                 schoolId: schoolId,
                 year: year,
                 className: validString(className),
-                month: month,
+                month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
         });
@@ -49,7 +49,7 @@ export const dashboardApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month,
+                month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
         });
@@ -61,7 +61,7 @@ export const dashboardApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month,
+                month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
         });
@@ -73,7 +73,7 @@ export const dashboardApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month,
+                month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
         });
@@ -85,7 +85,7 @@ export const dashboardApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month,
+                month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
         });
@@ -107,7 +107,7 @@ export const dashboardApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month
+                month: validNumber(month)
             }
         });
 
@@ -118,7 +118,7 @@ export const dashboardApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month,
+                month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
         });

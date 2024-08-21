@@ -34,46 +34,46 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Year Packages');
+    useDocumentTitle('Danh sách Gói đã bán');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="year-packages"
-                    title="Year Packages"
+                    title="Danh sách Gói đã bán"
                     columns={[
+                        // {
+                        //     key: 'schoolYearId',
+                        //     title: 'School Year',
+                        //     apiAction(value) {
+                        //         return highSchoolApi.getEnumSelectOptions(value);
+                        //     },
+                        //     type: FieldType.BADGE_API,
+                        // },
                         {
-                            key: 'schoolYearId',
-                            title: 'School Year',
-                            apiAction(value) {
-                                return highSchoolApi.getEnumSelectOptions(value);
-                            },
-                            type: FieldType.BADGE_API,
+                            key: 'packageName',
+                            title: 'Tên gói',
+                            type: FieldType.TEXT,
                         },
                         {
                             key: 'code',
-                            title: 'Code',
+                            title: 'Mã trường',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'schoolName',
-                            title: 'School Name',
-                            type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'packageName',
-                            title: 'Package Name',
+                            title: 'Tên trường',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'year',
-                            title: 'Year',
+                            title: 'Năm',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction: yearPackageApi.getEnumStatuses
                         },
@@ -160,20 +160,20 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     // )}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Mã trường',
                             comparator: FilterComparator.LIKE,
-                            name: 'vioTypeName',
+                            name: 'code',
                             type: NKFormType.TEXT,
                         },
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Year Package"
+                            btnLabel="Tạo gói năm"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Year Package"
+                            title="Tạo gói năm"
                         >
                             {(close) => {
                                 return (
@@ -184,7 +184,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'schoolYearId',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'School Year',
+                                                label: 'Trường',
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
                                                 },
@@ -192,7 +192,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'packageId',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Package',
+                                                label: 'Tên gói',
                                                 fieldProps: {
                                                     apiAction: (value) => packageApi.getEnumSelectOptions(value),
                                                 },
@@ -200,7 +200,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'numberOfStudent',
                                                 type: NKFormType.TEXT,
-                                                label: 'Number of Student',
+                                                label: 'Số lượng học sinh',
                                             },
                                         ]}
                                         title=""

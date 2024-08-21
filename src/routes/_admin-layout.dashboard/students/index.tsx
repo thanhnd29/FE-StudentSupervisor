@@ -33,8 +33,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     columns={[
                         {
                             key: 'studentId',
-                            title: 'Id',
+                            title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'code',

@@ -13,6 +13,8 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AdminLayoutImport } from './routes/_admin-layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as PaymentSuccessImport } from './routes/payment/success'
+import { Route as PaymentFailureImport } from './routes/payment/failure'
 import { Route as AdminLayoutDashboardIndexImport } from './routes/_admin-layout.dashboard/index'
 import { Route as AdminLayoutDashboardAnalyticsImport } from './routes/_admin-layout.dashboard/analytics'
 import { Route as AdminLayoutDashboardIdImport } from './routes/_admin-layout.dashboard/$id'
@@ -51,14 +53,16 @@ import { Route as AdminLayoutDashboardViolationTopsViolationInWeekImport } from 
 import { Route as AdminLayoutDashboardViolationTopsViolationInClassImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-class'
 import { Route as AdminLayoutDashboardPackagesBuyPackagesImport } from './routes/_admin-layout.dashboard/packages/buy-packages'
 import { Route as AdminLayoutDashboardHighSchoolIdImport } from './routes/_admin-layout.dashboard/high-school/$id'
-import { Route as AdminLayoutDashboardClassesIdImport } from './routes/_admin-layout.dashboard/classes/$id'
 import { Route as AdminLayoutDashboardAuthViewImport } from './routes/_admin-layout.dashboard/auth/view'
 import { Route as AdminLayoutDashboardAuthEditImport } from './routes/_admin-layout.dashboard/auth/edit'
 import { Route as AdminLayoutDashboardViolationsIdIndexImport } from './routes/_admin-layout.dashboard/violations/$id/index'
 import { Route as AdminLayoutDashboardDisciplinesIdIndexImport } from './routes/_admin-layout.dashboard/disciplines/$id/index'
+import { Route as AdminLayoutDashboardClassesIdIndexImport } from './routes/_admin-layout.dashboard/classes/$id/index'
 import { Route as AdminLayoutDashboardViolationsIdHistoryImport } from './routes/_admin-layout.dashboard/violations/$id/history'
 import { Route as AdminLayoutDashboardViolationsIdEditImport } from './routes/_admin-layout.dashboard/violations/$id/edit'
+import { Route as AdminLayoutDashboardStudentInClassesIdHistoryImport } from './routes/_admin-layout.dashboard/student-in-classes/$id/history'
 import { Route as AdminLayoutDashboardDisciplinesIdHistoryImport } from './routes/_admin-layout.dashboard/disciplines/$id/history'
+import { Route as AdminLayoutDashboardClassesIdHistoryImport } from './routes/_admin-layout.dashboard/classes/$id/history'
 
 // Create/Update Routes
 
@@ -69,6 +73,16 @@ const AdminLayoutRoute = AdminLayoutImport.update({
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PaymentSuccessRoute = PaymentSuccessImport.update({
+  path: '/payment/success',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PaymentFailureRoute = PaymentFailureImport.update({
+  path: '/payment/failure',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -298,12 +312,6 @@ const AdminLayoutDashboardHighSchoolIdRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
-const AdminLayoutDashboardClassesIdRoute =
-  AdminLayoutDashboardClassesIdImport.update({
-    path: '/dashboard/classes/$id',
-    getParentRoute: () => AdminLayoutRoute,
-  } as any)
-
 const AdminLayoutDashboardAuthViewRoute =
   AdminLayoutDashboardAuthViewImport.update({
     path: '/dashboard/auth/view',
@@ -328,6 +336,12 @@ const AdminLayoutDashboardDisciplinesIdIndexRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardClassesIdIndexRoute =
+  AdminLayoutDashboardClassesIdIndexImport.update({
+    path: '/dashboard/classes/$id/',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardViolationsIdHistoryRoute =
   AdminLayoutDashboardViolationsIdHistoryImport.update({
     path: '/dashboard/violations/$id/history',
@@ -340,9 +354,21 @@ const AdminLayoutDashboardViolationsIdEditRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardStudentInClassesIdHistoryRoute =
+  AdminLayoutDashboardStudentInClassesIdHistoryImport.update({
+    path: '/dashboard/student-in-classes/$id/history',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardDisciplinesIdHistoryRoute =
   AdminLayoutDashboardDisciplinesIdHistoryImport.update({
     path: '/dashboard/disciplines/$id/history',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardClassesIdHistoryRoute =
+  AdminLayoutDashboardClassesIdHistoryImport.update({
+    path: '/dashboard/classes/$id/history',
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
@@ -356,6 +382,14 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout': {
       preLoaderRoute: typeof AdminLayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/payment/failure': {
+      preLoaderRoute: typeof PaymentFailureImport
+      parentRoute: typeof rootRoute
+    }
+    '/payment/success': {
+      preLoaderRoute: typeof PaymentSuccessImport
       parentRoute: typeof rootRoute
     }
     '/_admin-layout/dashboard/$id': {
@@ -376,10 +410,6 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/auth/view': {
       preLoaderRoute: typeof AdminLayoutDashboardAuthViewImport
-      parentRoute: typeof AdminLayoutImport
-    }
-    '/_admin-layout/dashboard/classes/$id': {
-      preLoaderRoute: typeof AdminLayoutDashboardClassesIdImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/high-school/$id': {
@@ -522,8 +552,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutDashboardYearPackagesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/_admin-layout/dashboard/classes/$id/history': {
+      preLoaderRoute: typeof AdminLayoutDashboardClassesIdHistoryImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/_admin-layout/dashboard/disciplines/$id/history': {
       preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIdHistoryImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/student-in-classes/$id/history': {
+      preLoaderRoute: typeof AdminLayoutDashboardStudentInClassesIdHistoryImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/$id/edit': {
@@ -532,6 +570,10 @@ declare module '@tanstack/react-router' {
     }
     '/_admin-layout/dashboard/violations/$id/history': {
       preLoaderRoute: typeof AdminLayoutDashboardViolationsIdHistoryImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/_admin-layout/dashboard/classes/$id/': {
+      preLoaderRoute: typeof AdminLayoutDashboardClassesIdIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/disciplines/$id/': {
@@ -555,7 +597,6 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardIndexRoute,
     AdminLayoutDashboardAuthEditRoute,
     AdminLayoutDashboardAuthViewRoute,
-    AdminLayoutDashboardClassesIdRoute,
     AdminLayoutDashboardHighSchoolIdRoute,
     AdminLayoutDashboardPackagesBuyPackagesRoute,
     AdminLayoutDashboardViolationTopsViolationInClassRoute,
@@ -591,12 +632,17 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardViolationTypesIndexRoute,
     AdminLayoutDashboardViolationsIndexRoute,
     AdminLayoutDashboardYearPackagesIndexRoute,
+    AdminLayoutDashboardClassesIdHistoryRoute,
     AdminLayoutDashboardDisciplinesIdHistoryRoute,
+    AdminLayoutDashboardStudentInClassesIdHistoryRoute,
     AdminLayoutDashboardViolationsIdEditRoute,
     AdminLayoutDashboardViolationsIdHistoryRoute,
+    AdminLayoutDashboardClassesIdIndexRoute,
     AdminLayoutDashboardDisciplinesIdIndexRoute,
     AdminLayoutDashboardViolationsIdIndexRoute,
   ]),
+  PaymentFailureRoute,
+  PaymentSuccessRoute,
 ])
 
 /* prettier-ignore-end */

@@ -33,40 +33,46 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Violation Types');
+    useDocumentTitle('Danh sách Loại vi phạm');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="violation-types"
-                    title="Violation Types"
+                    title="Danh sách Loại vi phạm"
                     columns={[
                         {
                             key: 'violationTypeId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'vioTypeName',
-                            title: 'Name',
+                            title: 'Tên',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'vioGroupName',
-                            title: 'Group',
+                            title: 'Nhóm vi phạm',
                             type: FieldType.TEXT,
                         },
                         {
-                            key: 'status',
-                            title: 'Status',
-                            type: FieldType.BADGE_API,
-                            apiAction: violationTypeApi.getEnumStatuses,
+                            key: 'isSupervisorOnly',
+                            title: 'Sao đỏ',
+                            type: FieldType.BOOLEAN,
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.MULTILINE_TEXT,
+                        },
+                        {
+                            key: 'status',
+                            title: 'Trạng thái',
+                            type: FieldType.BADGE_API,
+                            apiAction: violationTypeApi.getEnumStatuses,
                         },
                     ]}
                     queryApi={schoolId ? () => violationTypeApi.getBySchool(schoolId) : violationTypeApi.getAll}
@@ -78,7 +84,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Violation Type"
+                                title="Cập nhật"
                             >
                                 {(close) => {
                                     return (
@@ -89,25 +95,31 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 description: record.description || '',
                                                 violationGroupId: record.violationGroupId,
                                                 vioTypeName: record.vioTypeName,
+                                                isSupervisorOnly: record.isSupervisorOnly
                                             }}
                                             fields={[
                                                 {
                                                     name: 'vioTypeName',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Name',
+                                                    label: 'Tên',
                                                 },
                                                 {
                                                     name: 'violationGroupId',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Group',
+                                                    label: 'Nhóm vi phạm',
                                                     fieldProps: {
                                                         apiAction: (value) => violationGroupApi.getEnumSelectOptions(value, schoolId, true),
                                                     },
                                                 },
                                                 {
+                                                    label: 'Sao đỏ',
+                                                    name: 'isSupervisorOnly',
+                                                    type: NKFormType.BOOLEAN,
+                                                },
+                                                {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
-                                                    label: 'Description',
+                                                    label: 'Mô tả',
                                                 },
                                             ]}
                                             title=""
@@ -115,6 +127,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 violationGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 vioTypeName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                isSupervisorOnly: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={(data) => {
@@ -131,7 +144,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => violationTypeApi.delete(record.violationTypeId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this violation type?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa loại vi phạm này không?"
                                 extraOnError={toastError}
                                 extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
@@ -149,7 +162,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Tên loại vi phạm',
                             comparator: FilterComparator.LIKE,
                             name: 'vioTypeName',
                             type: NKFormType.TEXT,
@@ -157,12 +170,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Violation Type"
+                            btnLabel="Thêm loại vi phạm"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Violation Type"
+                            title="Thêm loại vi phạm"
                         >
                             {(close) => {
                                 return (
@@ -173,20 +186,25 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'vioTypeName',
                                                 type: NKFormType.TEXT,
-                                                label: 'Name',
+                                                label: 'Tên',
                                             },
                                             {
                                                 name: 'violationGroupId',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Group',
+                                                label: 'Nhóm vi phạm',
                                                 fieldProps: {
                                                     apiAction: (value) => violationGroupApi.getEnumSelectOptions(value, schoolId),
                                                 },
                                             },
                                             {
+                                                label: 'Sao đỏ',
+                                                name: 'isSupervisorOnly',
+                                                type: NKFormType.BOOLEAN,
+                                            },
+                                            {
                                                 name: 'description',
                                                 type: NKFormType.TEXTAREA,
-                                                label: 'Description',
+                                                label: 'Mô tả',
                                             },
                                         ]}
                                         title=""
@@ -194,6 +212,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             violationGroupId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             vioTypeName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            isSupervisorOnly: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
                                         onExtraSuccessAction={(data) => {
@@ -208,6 +227,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             description: '',
                                             violationGroupId: 0,
                                             vioTypeName: '',
+                                            isSupervisorOnly: false
                                         }}
                                     />
                                 );

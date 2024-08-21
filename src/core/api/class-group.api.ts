@@ -5,9 +5,9 @@ import { getColorWithUuId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateClassGroupDto extends Pick<ClassGroup, 'teacherId' | 'schoolId'> { }
+export interface ICreateClassGroupDto extends Pick<ClassGroup, 'teacherId' | 'schoolId' | "name"> { }
 
-export interface IUpdateClassGroupDto extends Pick<ClassGroup, 'teacherId' | 'schoolId' | 'classGroupId'> { }
+export interface IUpdateClassGroupDto extends Pick<ClassGroup, 'teacherId' | 'schoolId' | 'classGroupId' | 'name'> { }
 export interface ISearchClassGroupDto extends Omit<ClassGroup, 'classGroupId'> {
     sortOrder: 'asc' | 'desc';
 }
@@ -67,16 +67,16 @@ export const classGroupApi = {
                 value: ClassGroupStatus.ACTIVE,
                 color: Colors.GREEN,
                 id: ClassGroupStatus.ACTIVE,
-                label: 'Active',
-                name: 'Active',
+                label: 'Đang hoạt động',
+                name: 'Đang hoạt động',
                 slug: ClassGroupStatus.ACTIVE,
             },
             {
                 value: ClassGroupStatus.INACTIVE,
                 color: Colors.RED,
                 id: ClassGroupStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: ClassGroupStatus.INACTIVE,
             },
         ] as EnumListItem[];
@@ -101,9 +101,9 @@ export const classGroupApi = {
                 value: classGroup.classGroupId,
                 color: getColorWithUuId(classGroup.classGroupId.toString()),
                 id: classGroup.classGroupId,
-                label: classGroup.classGroupName,
-                name: classGroup.classGroupName,
-                slug: classGroup.classGroupName,
+                label: classGroup.name,
+                name: classGroup.name,
+                slug: classGroup.name,
             });
         }
 

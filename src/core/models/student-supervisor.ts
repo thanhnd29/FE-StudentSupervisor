@@ -9,4 +9,11 @@ export interface StudentSupervisor {
     password: string;
     address: string;
     roleId: number;
+    status: string;
+    classId: number;
+}
+
+export enum StudentSupervisorStatus {
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
 }

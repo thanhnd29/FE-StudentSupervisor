@@ -18,6 +18,7 @@ import { FilterComparator, SortOrder } from '@/core/models/common';
 
 import FieldDisplay, { FieldType } from '../field/FieldDisplay';
 import NKForm, { NKFormType } from '../form/NKForm';
+import { schoolYearApi } from '@/core/api/school-years.api';
 
 export interface TableBuilderColumn extends ColumnType<AnyObject> {
     type: FieldType;
@@ -59,6 +60,8 @@ interface TableBuilderProps {
     actionColumns?: ((record: any) => React.ReactNode) | React.ReactNode;
     scroll?: { x?: number; y?: number };
     enabledQuery?: boolean;
+    isSelectYear?: boolean;
+    schoolId?: number;
 }
 
 const TableBuilder: React.FC<TableBuilderProps> = ({
@@ -78,7 +81,11 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
     defaultOrderBy = 'createdAt',
     scroll,
     enabledQuery = true,
+    isSelectYear = false,
+    schoolId,
 }) => {
+    const today = new Date()
+
     const [page, setPage] = React.useState(1);
     const [pageSize, setPageSize] = React.useState(pageSizes[0]);
     const [order, setOrder] = React.useState<SortOrder>(SortOrder.DESC);
@@ -92,8 +99,12 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
             return acc;
         }, {});
 
+        defaultValues.year = Number(today.getFullYear());
+
         return defaultValues;
     }, []);
+
+    const [year, setYear] = React.useState<number>(Number(today.getFullYear()))
 
     const formMethods = useForm({ defaultValues });
 
@@ -104,12 +115,20 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
     }, [extraFilter]);
 
     const pagingQuery = useQuery({
-        queryKey: [sourceKey, 'paging', page, pageSize, order, orderBy, extraFilter, formMethods.getValues()],
+        queryKey: [sourceKey, 'paging', page, pageSize, order, orderBy, extraFilter, formMethods.getValues(), year],
         queryFn: async () => {
             let res = await queryApi();
             const filterValues = flatten(formMethods.getValues()) as Record<string, any>;
 
-            // filter
+            if (filterValues.year) {
+                filterValues.year = filterValues.year.toString();
+            }
+
+            if (isSelectYear && year) {
+                res = res.filter((item: any) => {
+                    return _get(item, 'year', '') == year;
+                });
+            }
 
             Object.keys(filterValues).forEach((key) => {
                 const filter = filters.find((item) => item.name === key);
@@ -202,7 +221,7 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                                             pagingQuery.refetch();
                                         }}
                                     >
-                                        Filter
+                                        Lọc
                                     </Button>
                                     <Button
                                         className="w-full"
@@ -211,7 +230,7 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                                             formMethods.reset();
                                         }}
                                     >
-                                        Reset
+                                        Xóa
                                     </Button>
                                 </div>
                             </div>
@@ -232,6 +251,26 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                                 selectedRowGroup.length === 0 ? null : (
                                     <React.Fragment key="3">{extraBulkActions?.(selectedRowGroup, setSelectedRowGroup)}</React.Fragment>
                                 ),
+                                isSelectYear && (
+                                    <div className="w-32 h-full">
+                                        <FormProvider {...formMethods}>
+                                            <NKForm
+                                                key="year"
+                                                name="year"
+                                                label=''
+                                                type={NKFormType.SELECT_API_OPTION}
+                                                fieldProps={{
+                                                    apiAction: (value) => (
+                                                        schoolYearApi.getEnumSelectYear({ search: value, highSchoolId: schoolId, status: true })
+                                                    )
+                                                }}
+                                                onChangeExtra={(value) => {
+                                                    setYear(Number(value))
+                                                }}
+                                            />
+                                        </FormProvider>
+                                    </div>
+                                ),
                                 extraButtons,
                                 <Button
                                     key="2"
@@ -241,7 +280,7 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                                         pagingQuery.refetch();
                                     }}
                                 >
-                                    Reload
+                                    Tải lại
                                 </Button>,
                                 filters.length === 0 ? null : (
                                     <Button
@@ -252,7 +291,7 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                                         key="1"
                                         icon={<FilterOutlined rev="" />}
                                     >
-                                        Filter
+                                        Lọc
                                     </Button>
                                 ),
                             ]}
@@ -265,12 +304,12 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                             rowSelection={
                                 Boolean(extraBulkActions)
                                     ? {
-                                          type: 'checkbox',
-                                          onChange(selectedRowKeys, selectedRows, info) {
-                                              setSelectedRowGroup(selectedRows);
-                                          },
-                                          selectedRowKeys: selectedRowGroup.map((item) => item.id),
-                                      }
+                                        type: 'checkbox',
+                                        onChange(selectedRowKeys, selectedRows, info) {
+                                            setSelectedRowGroup(selectedRows);
+                                        },
+                                        selectedRowKeys: selectedRowGroup.map((item) => item.id),
+                                    }
                                     : undefined
                             }
                             sortDirections={['ascend', 'descend']}

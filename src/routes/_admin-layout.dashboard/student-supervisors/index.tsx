@@ -23,6 +23,8 @@ import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 import { studentInClassApi } from '@/core/api/student-in-class.api';
 import { highSchoolApi } from '@/core/api/high-school.api';
+import { classApi } from '@/core/api/class.api';
+import { useState } from 'react';
 
 interface PageProps { }
 
@@ -32,33 +34,36 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Student Supervisors');
+    const [classT, setClassT] = useState<number | null>(null)
+
+    useDocumentTitle('Danh sách Sao đỏ');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="student-supervisors"
-                    title="Student Supervisors"
+                    title="Danh sách Sao đỏ"
                     columns={[
                         {
                             key: 'studentSupervisorId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'code',
-                            title: 'Supervisor Code',
+                            title: 'Mã sao đỏ',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'supervisorName',
-                            title: 'Name',
+                            title: 'Tên sao đỏ',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'phone',
-                            title: 'Phone',
+                            title: 'Số điện thoại',
                             type: FieldType.TEXT,
                             formatter(value) {
                                 return value || 'N/A';
@@ -66,7 +71,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'address',
-                            title: 'Address',
+                            title: 'Địa chỉ',
                             type: FieldType.TEXT,
                             formatter(value) {
                                 return value || 'N/A';
@@ -74,7 +79,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.TEXT,
                             formatter(value) {
                                 return value || 'N/A';
@@ -82,21 +87,21 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                         {
                             key: 'password',
-                            title: 'Password',
+                            title: 'Mật khẩu',
                             type: FieldType.TEXT,
                             formatter(value) {
                                 return "***********";
                             },
                         },
                         {
-                            key: 'roleId',
-                            title: 'Role',
+                            key: 'status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
-                            apiAction() {
-                                return RoleList;
-                            },
+                            apiAction: studentSupervisorApi.getEnumStatuses
                         },
                     ]}
+                    isSelectYear={true}
+                    schoolId={schoolId}
                     queryApi={schoolId ? () => studentSupervisorApi.getBySchool(schoolId) : studentSupervisorApi.getAll}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
@@ -204,7 +209,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => studentSupervisorApi.delete(record.studentSupervisorId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this student supervisor?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa Sao đỏ này không?"
                                 extraOnError={toastError}
                                 extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
@@ -222,12 +227,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Student Supervisor"
+                            btnLabel="Tạo sao đỏ"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Student Supervisor"
+                            title="Tạo sao đỏ"
                         >
                             {(close) => {
                                 return (
@@ -236,49 +241,67 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         apiAction={studentSupervisorApi.create}
                                         fields={[
                                             {
-                                                label: 'Student',
-                                                name: 'studentInClassId',
+                                                label: 'Lớp',
+                                                name: 'classId',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction: (value) =>
-                                                        studentInClassApi.getEnumSelectOptions({
+                                                        classApi.getEnumSelectOptions({
                                                             search: value,
+                                                            highSchoolId: schoolId,
+                                                            year: Number(new Date().getFullYear())
                                                         }),
+                                                },
+                                                onChangeExtra: (value) => setClassT(value)
+                                            },
+                                            {
+                                                label: 'Học sinh',
+                                                name: 'studentInClassId',
+                                                type: NKFormType.SELECT_API_OPTION,
+                                                fieldProps: {
+                                                    apiAction: (value, formMethods) => {
+                                                        const classId = formMethods.getValues('classId');
+                                                        return studentInClassApi.getEnumSelectOptions({
+                                                            search: value,
+                                                            classId: classId
+                                                        });
+                                                    },
+                                                    disabled: !classT,
                                                 },
                                             },
                                             {
                                                 name: 'supervisorName',
                                                 type: NKFormType.TEXT,
-                                                label: 'Name',
+                                                label: 'Tên sao đỏ',
                                             },
                                             {
                                                 name: 'code',
                                                 type: NKFormType.TEXT,
-                                                label: 'Code',
-                                            },
-                                            {
-                                                name: 'description',
-                                                type: NKFormType.TEXTAREA,
-                                                label: 'Description',
+                                                label: 'Mã sao đỏ',
                                             },
                                             {
                                                 name: 'phone',
                                                 type: NKFormType.TEXT,
-                                                label: 'Phone',
+                                                label: 'Số điện thoại',
                                             },
                                             {
                                                 name: 'address',
                                                 type: NKFormType.TEXTAREA,
-                                                label: 'Address',
+                                                label: 'Địa chỉ',
                                             },
                                             {
                                                 name: 'password',
                                                 type: NKFormType.PASSWORD,
-                                                label: 'Password',
+                                                label: 'Mật khẩu',
+                                            },
+                                            {
+                                                name: 'description',
+                                                type: NKFormType.TEXTAREA,
+                                                label: 'Mô tả',
                                             },
                                             {
                                                 name: 'schoolId',
-                                                label: 'School',
+                                                label: 'Trường',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),

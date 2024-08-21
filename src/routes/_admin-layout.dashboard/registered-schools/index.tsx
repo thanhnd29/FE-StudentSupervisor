@@ -20,6 +20,7 @@ import { toastError } from '@/core/utils/api.helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
+import { FilterComparator } from '@/core/models/common';
 
 interface PageProps { }
 
@@ -29,69 +30,70 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Registered Schools');
+    useDocumentTitle('Danh sách các trường đăng ký');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="registered-schools"
-                    title="Registered Schools"
+                    title="Danh sách các trường đăng ký"
                     columns={[
                         {
                             key: 'registeredId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
-                            key: 'registeredDate',
-                            title: 'Registered Date',
-                            type: FieldType.TIME_DATE,
-                        },
-                        {
-                            key: 'description',
-                            title: 'Description',
+                            key: 'schoolCode',
+                            title: 'Mã trường',
                             type: FieldType.TEXT,
-                            formatter(value) {
-                                return value || 'N/A';
-                            },
                         },
                         {
                             key: 'schoolId',
-                            title: 'School Name',
+                            title: 'Tên trường',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return highSchoolApi.getEnumSelectOptions(value);
                             },
                         },
                         {
-                            key: 'schoolCode',
-                            title: 'School Code',
-                            type: FieldType.TEXT,
-                        },
-                        {
                             key: 'city',
-                            title: 'City',
+                            title: 'Thành phố',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'address',
-                            title: 'Address',
+                            title: 'Địa chỉ',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'phone',
-                            title: 'Phone',
+                            title: 'Số điện thoại',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'webURL',
-                            title: 'Web URL',
+                            title: 'Web trường',
                             type: FieldType.LINK_BUTTON,
                         },
                         {
+                            key: 'registeredDate',
+                            title: 'Ngày đăng ký',
+                            type: FieldType.TIME_DATE,
+                        },
+                        {
+                            key: 'description',
+                            title: 'Mô tả',
+                            type: FieldType.TEXT,
+                            formatter(value) {
+                                return value || 'N/A';
+                            },
+                        },
+                        {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return registerSchoolApi.getEnumStatus();
@@ -107,7 +109,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Registered School"
+                                title="Cập nhật"
                             >
                                 {(close) => {
                                     return (
@@ -134,49 +136,49 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             }}
                                             fields={[
                                                 {
-                                                    name: 'schoolName',
-                                                    type: NKFormType.TEXT,
-                                                    label: 'School Name',
-                                                },
-                                                {
                                                     name: 'schoolCode',
                                                     type: NKFormType.TEXT,
-                                                    label: 'School Code',
+                                                    label: 'Mã trường',
+                                                },
+                                                {
+                                                    name: 'schoolName',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Tên trường',
                                                 },
                                                 {
                                                     name: 'city',
                                                     type: NKFormType.TEXT,
-                                                    label: 'City',
+                                                    label: 'Thành phố',
                                                 },
                                                 {
                                                     name: 'address',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Address',
+                                                    label: 'Địa chỉ',
                                                 },
                                                 {
                                                     name: 'phone',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Phone',
+                                                    label: 'Số điện thoại',
                                                 },
                                                 {
                                                     name: 'webURL',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Web URL',
+                                                    label: 'Web trường',
                                                 },
                                                 {
                                                     name: 'registeredDate',
                                                     type: NKFormType.DATE,
-                                                    label: 'Registered Date',
+                                                    label: 'Ngày đăng ký',
                                                 },
                                                 {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
-                                                    label: 'Description',
+                                                    label: 'Mô tả',
                                                 },
                                                 {
                                                     name: 'status',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Status',
+                                                    label: 'Trạng thái',
                                                     fieldProps: {
                                                         apiAction: registerSchoolApi.getEnumStatus,
                                                     },
@@ -212,7 +214,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => registerSchoolApi.delete(record.registeredId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this registered school?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa trường đã đăng ký này không?"
                                 extraOnError={toastError}
                                 extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
@@ -228,14 +230,29 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             </CTAButton>
                         </div>
                     )}
+                    filters={[
+                        {
+                            label: 'Mã trường',
+                            comparator: FilterComparator.LIKE,
+                            name: 'schoolCode',
+                            type: NKFormType.TEXT,
+                        },
+                        {
+                            label: 'Trạng thái',
+                            comparator: FilterComparator.LIKE,
+                            name: 'status',
+                            type: NKFormType.SELECT_API_OPTION,
+                            apiAction: registerSchoolApi.getEnumStatus,
+                        },
+                    ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Registered School"
+                            btnLabel="Thêm trường đăng ký"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Registered School"
+                            title="Thêm trường đăng ký"
                         >
                             {(close) => {
                                 return (
@@ -249,44 +266,44 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         }}
                                         fields={[
                                             {
-                                                name: 'schoolName',
-                                                type: NKFormType.TEXT,
-                                                label: 'School Name',
-                                            },
-                                            {
                                                 name: 'schoolCode',
                                                 type: NKFormType.TEXT,
-                                                label: 'School Code',
+                                                label: 'Mã trường',
+                                            },
+                                            {
+                                                name: 'schoolName',
+                                                type: NKFormType.TEXT,
+                                                label: 'Tên trường',
                                             },
                                             {
                                                 name: 'city',
                                                 type: NKFormType.TEXT,
-                                                label: 'City',
+                                                label: 'Thành phố',
                                             },
                                             {
                                                 name: 'address',
                                                 type: NKFormType.TEXT,
-                                                label: 'Address',
+                                                label: 'Địa chỉ',
                                             },
                                             {
                                                 name: 'phone',
                                                 type: NKFormType.TEXT,
-                                                label: 'Phone',
+                                                label: 'Số điện thoại',
                                             },
                                             {
                                                 name: 'webURL',
                                                 type: NKFormType.TEXT,
-                                                label: 'Web URL',
+                                                label: 'Web trường',
                                             },
                                             {
                                                 name: 'registeredDate',
                                                 type: NKFormType.DATE,
-                                                label: 'Registered Date',
+                                                label: 'Ngày đăng ký',
                                             },
                                             {
                                                 name: 'description',
                                                 type: NKFormType.TEXTAREA,
-                                                label: 'Description',
+                                                label: 'Mô tả',
                                             },
                                         ]}
                                         title=""

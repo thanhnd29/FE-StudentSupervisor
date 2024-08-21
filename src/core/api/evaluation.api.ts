@@ -49,8 +49,8 @@ export const evaluationApi = {
             params: {
                 schoolId: schoolId,
                 year: year,
-                month: month,
-                weekNumber: validNumber(weekNumber)
+                month: validNumber(month),
+                week: validNumber(weekNumber)
             }
         });
 

@@ -26,7 +26,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
   const today = new Date()
 
   const [year, setYear] = useState<number>(Number(today.getFullYear()))
-  const [month, setMonth] = useState<number>(9)
+  const [month, setMonth] = useState<number>(0)
   const [week, setWeek] = useState<number>(0)
 
   const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
@@ -39,13 +39,13 @@ const Page: React.FunctionComponent<PageProps> = () => {
     });
   }, [year, month, week, queryClient]);
 
-  useDocumentTitle('Violation Frequent');
+  useDocumentTitle('Top 5 vi phạm thường xuyên xảy ra');
 
   return (
     <div className="">
       <TableBuilder
         sourceKey="violation-frequent"
-        title="Violation Frequent"
+        title="Top 5 vi phạm thường xuyên xảy ra"
         columns={[
           {
             key: 'violationTypeId',
@@ -54,12 +54,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
           },
           {
             key: 'violationTypeName',
-            title: 'Violation Name',
+            title: 'Loại vi phạm',
             type: FieldType.TEXT,
           },
           {
             key: 'violationCount',
-            title: 'Violation Count',
+            title: 'Số lượng',
             type: FieldType.TEXT,
           },
         ]}

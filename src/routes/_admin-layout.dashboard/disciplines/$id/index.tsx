@@ -33,96 +33,83 @@ const Page = () => {
     <FieldBuilder
       fields={[
         {
-          key: 'violationId',
-          title: 'ID',
+          key: 'studentCode',
+          title: 'Mã học sinh',
           type: FieldType.TEXT,
         },
         {
           key: 'studentName',
-          title: 'Student',
+          title: 'Tên học sinh',
           type: FieldType.TEXT,
-        },
-        {
-          key: 'studentCode',
-          title: 'Code',
-          type: FieldType.TEXT,
-        },
-        {
-          key: 'violationName',
-          title: 'Name',
-          type: FieldType.TEXT,
-        },
-        {
-          key: 'violationGroupName',
-          title: 'Group',
-          type: FieldType.TEXT,
-        },
-        {
-          key: 'date',
-          title: 'Date',
-          type: FieldType.TIME_DATE,
         },
         {
           key: 'classId',
-          title: 'Class',
+          title: 'Lớp',
           type: FieldType.BADGE_API,
           apiAction(value) {
             return classApi.getEnumSelectOptions({ search: value });
           },
         },
         {
-          key: 'description',
-          title: 'Description',
-          type: FieldType.MULTILINE_TEXT,
-          formatter(value) {
-            return value || 'N/A';
-          },
-        },
-        {
-          key: 'teacherId',
-          title: 'Teacher',
-          type: FieldType.BADGE_API,
-          apiAction(value) {
-            return teacherApi.getEnumSelectOptions({ search: value });
-          },
+          key: 'violationName',
+          title: 'Vi phạm',
+          type: FieldType.TEXT,
         },
         {
           key: 'violationTypeId',
-          title: 'Violation Type',
+          title: 'Loại vi phạm',
           type: FieldType.BADGE_API,
           apiAction(value) {
             return violationTypeApi.getEnumSelectOptions(schoolId, value);
           },
         },
         {
+          key: 'violationGroupName',
+          title: 'Nhóm vi phạm',
+          type: FieldType.TEXT,
+        },
+        {
+          key: 'date',
+          title: 'Ngày',
+          type: FieldType.TIME_DATE,
+        },
+        {
+          key: 'description',
+          title: 'Mô tả',
+          type: FieldType.MULTILINE_TEXT,
+          formatter(value) {
+            return value || 'N/A';
+          },
+        },
+        {
           key: 'imageUrls',
-          title: 'Images',
+          title: 'Hình ảnh',
           type: FieldType.MULTIPLE_IMAGES,
         },
         {
           key: 'createdAt',
-          title: 'Created At',
+          title: 'Tạo ngày',
           type: FieldType.TIME_DATE,
         },
         {
           key: 'updatedAt',
-          title: 'Updated At',
+          title: 'Cập nhật ngày',
           type: FieldType.TIME_DATE,
         },
         {
           key: 'year',
-          title: 'Year',
+          title: 'Niên khóa',
           type: FieldType.TEXT,
         },
         {
           key: 'status',
-          title: 'Status',
+          title: 'Trạng thái',
           type: FieldType.BADGE_API,
           apiAction: violationsApi.getEnumStatuses
         },
       ]}
       record={violationQuery.data}
-      title="Violation Detail"
+      title="Chi tiết vi phạm"
     />
   );
 };

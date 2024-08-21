@@ -21,6 +21,7 @@ import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 import { FilterComparator } from '@/core/models/common';
 import { classApi } from '@/core/api/class.api';
+import { useState } from 'react';
 
 interface PageProps { }
 
@@ -31,64 +32,59 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
-    useDocumentTitle('Evaluations');
+    const [yearT, setYearT] = useState<number | null>(null)
+
+    useDocumentTitle('Danh sách đánh giá');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="evaluations"
-                    title="Evaluations"
+                    title="Danh sách đánh giá"
                     columns={[
                         {
                             key: 'evaluationId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'className',
-                            title: 'Class mame',
+                            title: 'Tên lớp',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'from',
-                            title: 'From',
+                            title: 'Từ ngày',
                             type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'to',
-                            title: 'To',
+                            title: 'Đến ngày',
                             type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'points',
-                            title: 'Point',
+                            title: 'Tổng điểm',
                             type: FieldType.NUMBER,
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.MULTILINE_TEXT,
                         },
-                        {
-                            key: 'year',
-                            title: 'School Year',
-                            type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'description',
-                            title: 'Description',
-                            type: FieldType.TEXT,
-                        },
                     ]}
-                    filters={[
-                        {
-                            label: 'Year',
-                            comparator: FilterComparator.IN,
-                            name: 'year',
-                            type: NKFormType.TEXT,
-                        },
-                    ]}
+                    // filters={[
+                    //     {
+                    //         label: 'Niên khóa',
+                    //         comparator: FilterComparator.IN,
+                    //         name: 'year',
+                    //         type: NKFormType.TEXT,
+                    //     },
+                    // ]}
+                    isSelectYear={true}
+                    schoolId={schoolId}
                     queryApi={schoolId ? () => evaluationApi.getBySchool(schoolId) : evaluationApi.getAll}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
@@ -98,7 +94,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Evaluation"
+                                title="Cập nhật"
                             >
                                 {(close) => {
                                     return (
@@ -134,22 +130,22 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 {
                                                     name: 'from',
                                                     type: NKFormType.DATE,
-                                                    label: 'From',
+                                                    label: 'Từ ngày',
                                                 },
                                                 {
                                                     name: 'to',
                                                     type: NKFormType.DATE,
-                                                    label: 'To',
+                                                    label: 'Đến ngày',
                                                 },
                                                 {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
-                                                    label: 'Description',
+                                                    label: 'Mô tả',
                                                 },
                                                 {
                                                     name: 'classId',
                                                     type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Class',
+                                                    label: 'Lớp',
                                                     fieldProps: {
                                                         apiAction: (value) =>
                                                             classApi.getEnumSelectOptions({
@@ -169,12 +165,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
-                                            onExtraSuccessAction={() => {
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['evaluations'],
                                                 });
                                                 close();
-                                                toast.success('Update evaluation successfully');
+                                                toast.success(data.message || 'Successful');
                                             }}
                                         />
                                     );
@@ -201,12 +197,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Evaluation"
+                            btnLabel="Tạo bản đánh giá"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Evaluation"
+                            title="Tạo bản đánh giá"
                         >
                             {(close) => {
                                 return (
@@ -233,44 +229,47 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'year',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Year',
+                                                label: 'Niên khóa',
                                                 fieldProps: {
                                                     apiAction: (value) =>
                                                         schoolYearApi.getEnumSelectOptions({
                                                             search: value,
                                                             highSchoolId: schoolId
-                                                        }),
+                                                        })
+                                                    ,
                                                 },
+                                                onChangeExtra: (value) => setYearT(value)
                                             },
                                             {
                                                 name: 'from',
                                                 type: NKFormType.DATE,
-                                                label: 'From',
+                                                label: 'Từ ngày',
                                             },
                                             {
                                                 name: 'to',
                                                 type: NKFormType.DATE,
-                                                label: 'To',
+                                                label: 'Đến ngày',
                                             },
                                             {
                                                 name: 'classId',
                                                 type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Class',
+                                                label: 'Lớp',
                                                 fieldProps: {
                                                     apiAction: (value, formMethods) => {
                                                         const year = formMethods.getValues('year');
                                                         return classApi.getEnumSelectOptions({
                                                             search: value,
                                                             highSchoolId: schoolId,
-                                                            year: year ?? 0,
+                                                            yearId: year ?? 0,
                                                         });
                                                     },
+                                                    disabled: !yearT,
                                                 },
                                             },
                                             {
                                                 name: 'description',
                                                 type: NKFormType.TEXTAREA,
-                                                label: 'Description',
+                                                label: 'Mô tả',
                                             },
                                         ]}
                                         title=""
@@ -282,12 +281,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={() => {
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['evaluations'],
                                             });
                                             close();
-                                            toast.success('Create evaluation successfully');
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         defaultValues={{
                                             from: new Date(),

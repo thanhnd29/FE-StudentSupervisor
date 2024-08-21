@@ -3,6 +3,14 @@ import { EnumListItem } from "./common";
 
 export const MonthList: EnumListItem[] = [
     {
+        value: 0,
+        label: 'all',
+        color: Colors.BLUE,
+        id: 0,
+        name: 'all',
+        slug: 'all',
+    },
+    {
         value: 1,
         label: '1',
         color: Colors.BLUE,

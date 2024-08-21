@@ -60,7 +60,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Package',
+            label: 'Gói',
             key: 'packages',
             icon: <Package className="h-4 w-4" />,
             onClick: () => {
@@ -68,7 +68,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Year Package',
+            label: 'Gói năm',
             key: 'year-package',
             icon: <Package className="h-4 w-4" />,
             onClick: () => {
@@ -76,7 +76,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Registed Schools',
+            label: 'Trường đăng ký',
             key: 'registed-schools',
             icon: <Grab className="h-4 w-4" />,
             onClick: () => {
@@ -95,7 +95,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'Class Group',
+            label: 'Khối',
             key: 'class-group',
             icon: <Ungroup className="h-4 w-4" />,
             onClick: () => {
@@ -103,7 +103,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Class',
+            label: 'Lớp',
             key: 'class',
             icon: <Ungroup className="h-4 w-4" />,
             onClick: () => {
@@ -111,7 +111,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Students In Class',
+            label: 'Học sinh',
             key: 'students-in-class',
             icon: <UsersRound className="h-4 w-4" />,
             onClick: () => {
@@ -127,7 +127,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'School Year',
+            label: 'Niên khóa',
             key: 'school-year',
             icon: <CalendarRange className="h-4 w-4" />,
             onClick: () => {
@@ -151,7 +151,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'Teachers',
+            label: 'Giáo viên',
             key: 'teachers',
             icon: <UsersRound className="h-4 w-4" />,
             onClick: () => {
@@ -167,7 +167,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'Users',
+            label: 'Tài khoản',
             key: 'users',
             icon: <UsersRound className="h-4 w-4" />,
             onClick: () => {
@@ -175,33 +175,33 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Violations',
+            label: 'Quản lý Vi phạm',
             key: 'violations',
             icon: <Group className="h-4 w-4" />,
             children: [
                 {
-                    label: 'Violation Group',
+                    label: 'Nhóm vi phạm',
                     key: 'violation-group',
                     onClick: () => {
                         router.push(NKRouter.violationGroup.list());
                     },
                 },
                 {
-                    label: 'Violation Types',
+                    label: 'Loại vi phạm',
                     key: 'violation-types',
                     onClick: () => {
                         router.push(NKRouter.violationType.list());
                     },
                 },
                 {
-                    label: 'Violations Configs',
+                    label: 'Cấu hình vi phạm',
                     key: 'violations-configs',
                     onClick: () => {
                         router.push(NKRouter.violationConfig.list());
                     },
                 },
                 {
-                    label: 'Violations',
+                    label: 'Vi phạm',
                     key: 'violations',
                     onClick: () => {
                         router.push(NKRouter.violations.list());
@@ -234,7 +234,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'Evaluations',
+            label: 'Đánh giá',
             key: 'evaluations',
             icon: <Waves className="h-4 w-4" />,
             onClick: () => {
@@ -250,7 +250,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'Student Supervisors',
+            label: 'Sao đỏ',
             key: 'student-supervisors',
             icon: <Glasses className="h-4 w-4" />,
             onClick: () => {
@@ -258,7 +258,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Penalties',
+            label: 'Hình phạt',
             key: 'penalties',
             icon: <CircleSlash2 className="h-4 w-4" />,
             onClick: () => {
@@ -266,7 +266,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Buy Packages',
+            label: 'Mua gói',
             key: 'buy-packages',
             icon: <ShoppingCart className="h-4 w-4" />,
             onClick: () => {
@@ -285,49 +285,49 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
 
     const PrincipalMenu = [
         {
-            label: 'Violation in week',
+            label: 'Danh sách vi phạm trong năm',
             key: 'violation-in-week',
             onClick: () => {
                 router.push(NKRouter.violationTop.inWeek());
             },
         },
         {
-            label: 'Violation in class',
+            label: 'Danh sách vi phạm theo lớp',
             key: 'violation-in-class',
             onClick: () => {
                 router.push(NKRouter.violationTop.inClass());
             },
         },
         {
-            label: 'Violation in year',
+            label: 'Top 5 vi phạm thường xuyên',
             key: 'violation-in-year',
             onClick: () => {
                 router.push(NKRouter.violationTop.inYear());
             },
         },
         {
-            label: 'Violation top class',
+            label: 'Lớp vi phạm nhiều',
             key: 'violation-top-class',
             onClick: () => {
                 router.push(NKRouter.violationTop.topClass());
             },
         },
         {
-            label: 'Violation top student',
+            label: 'Top 5 học sinh vi phạm',
             key: 'violation-top-student',
             onClick: () => {
                 router.push(NKRouter.violationTop.topStudent());
             },
         },
         {
-            label: 'Violation top studentInClass',
+            label: 'Lớp có số lượng vi phạm nhiều',
             key: 'violation-top-studentInClass',
             onClick: () => {
                 router.push(NKRouter.violationTop.topStudentInClass());
             },
         },
         {
-            label: 'Evaluation Tops',
+            label: 'Xếp hạng thi đua',
             key: 'evaluation-tops',
             onClick: () => {
                 router.push(NKRouter.evaluationTop.list());
@@ -337,7 +337,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
 
     const SupervisorMenu = [
         {
-            label: 'Class Group',
+            label: 'Khối',
             key: 'class-group',
             icon: <Ungroup className="h-4 w-4" />,
             onClick: () => {
@@ -345,7 +345,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Violation',
+            label: 'Vi phạm',
             key: 'violation',
             icon: <Group className="h-4 w-4" />,
             onClick: () => {
@@ -354,14 +354,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         },
         {
             key: 'disciplines',
-            label: 'Disciplines',
+            label: 'Kỷ luật',
             icon: <ShieldHalf className="h-4 w-4" />,
             onClick: () => {
                 router.push(NKRouter.discipline.list());
             },
         },
         {
-            label: 'Patrol Schedule',
+            label: 'Lịch trực',
             key: 'patrol-schedule',
             icon: <Calendar className="h-4 w-4" />,
             onClick: () => {
@@ -372,7 +372,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
 
     const TeacherMenu = [
         {
-            label: 'Class',
+            label: 'Lớp',
             key: 'class',
             icon: <Ungroup className="h-4 w-4" />,
             onClick: () => {
@@ -380,7 +380,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             },
         },
         {
-            label: 'Violations',
+            label: 'Vi phạm',
             key: 'violations',
             onClick: () => {
                 router.push(NKRouter.violations.list());
@@ -389,7 +389,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         },
         {
             key: 'disciplines',
-            label: 'Disciplines',
+            label: 'Kỷ luật',
             icon: <ShieldHalf className="h-4 w-4" />,
             onClick: () => {
                 router.push(NKRouter.discipline.list());

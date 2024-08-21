@@ -45,61 +45,61 @@ const Page: React.FunctionComponent<PageProps> = () => {
         return violationsApi.getAll()
     };
 
-    useDocumentTitle('Violations');
+    useDocumentTitle('Danh sách Vi phạm');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="violations"
-                    title="Violations"
+                    title="Danh sách Vi phạm"
                     columns={[
                         {
                             key: 'violationId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'studentCode',
-                            title: 'Code',
+                            title: 'Mã học sinh',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'studentName',
-                            title: 'Student',
+                            title: 'Tên học sinh',
                             type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'violationName',
-                            title: 'Name',
-                            type: FieldType.TEXT,
-                        },
-                        {
-                            key: 'date',
-                            title: 'Date',
-                            type: FieldType.TIME_DATE,
                         },
                         {
                             key: 'classId',
-                            title: 'Class',
+                            title: 'Lớp',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return classApi.getEnumSelectOptions({ search: value });
                             },
                         },
                         {
-                            key: 'violationGroupName',
-                            title: 'Group',
+                            key: 'violationName',
+                            title: 'Vi phạm',
                             type: FieldType.TEXT,
                         },
                         {
+                            key: 'violationGroupName',
+                            title: 'Nhóm vi phạm',
+                            type: FieldType.TEXT,
+                        },                        {
+                            key: 'date',
+                            title: 'Vi phạm ngày',
+                            type: FieldType.TIME_DATE,
+                        },
+                        {
                             key: 'year',
-                            title: 'Year',
+                            title: 'Niên khóa',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction: violationsApi.getEnumStatuses,
                         },
@@ -112,6 +112,8 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         //     },
                         // },
                     ]}
+                    isSelectYear={true}
+                    schoolId={schoolId}
                     queryApi={getByRole}
                     actionColumns={(record) => (
                         <div className="grid grid-cols-2 gap-2">
@@ -151,7 +153,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <CTAButton
                                         ctaApi={() => violationsApi.delete(record.violationId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to delete this violation?"
+                                        confirmMessage="Bạn có chắc chắn muốn xóa vi phạm này không?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
@@ -172,7 +174,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <CTAButton
                                         ctaApi={() => violationsApi.approve(record.violationId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to approve this violation?"
+                                        confirmMessage="Bạn có chắc chắn muốn duyệt vi phạm này không?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
@@ -193,7 +195,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <CTAButton
                                         ctaApi={() => violationsApi.complete(record.violationId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to complete this violation?"
+                                        confirmMessage="Bạn có chắc chắn muốn chấp nhận vi phạm này không?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
@@ -214,7 +216,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <CTAButton
                                         ctaApi={() => violationsApi.reject(record.violationId)}
                                         isConfirm
-                                        confirmMessage="Are you sure you want to reject this violation?"
+                                        confirmMessage="Bạn có chắc chắn muốn từ chối vi phạm này không?"
                                         extraOnError={toastError}
                                         extraOnSuccess={(data) => {
                                             queryClient.invalidateQueries({
@@ -234,25 +236,19 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Vi phạm',
                             comparator: FilterComparator.LIKE,
                             name: 'violationName',
                             type: NKFormType.TEXT,
                         },
                         {
-                            label: 'Code',
+                            label: 'Mã học sinh',
                             comparator: FilterComparator.LIKE,
                             name: 'studentCode',
                             type: NKFormType.TEXT,
                         },
-                        {
-                            label: 'Year',
-                            comparator: FilterComparator.IN,
-                            name: 'year',
-                            type: NKFormType.TEXT,
-                        },
                         ...(!isTeacher ? [{
-                            label: 'Status',
+                            label: 'Trạng thái',
                             comparator: FilterComparator.LIKE,
                             name: 'status',
                             type: NKFormType.SELECT_API_OPTION,
@@ -272,7 +268,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     Create Violation Student
                                 </Button>
                             )} */}
-                            {isSupervisor && (
+                            {/* {isSupervisor && (
                                 <Button
                                     type="primary"
                                     icon={<PlusOutlined />}
@@ -282,7 +278,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                 >
                                     Create Violation Supervisor
                                 </Button>
-                            )}
+                            )} */}
                         </div>
                     }
                 />

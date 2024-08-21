@@ -9,7 +9,7 @@ export interface Class {
     grade: number;
     status: string;
     classGroupId: number;
-    teacherID: number;
+    teacherId: number;
 }
 
 export enum ClassStatus {

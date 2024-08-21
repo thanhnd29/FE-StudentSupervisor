@@ -10,4 +10,5 @@ export interface ClassGroup {
     grade: number;
     teacherId: number;
     status: ClassGroupStatus;
+    name: string;
 }

@@ -1,6 +1,6 @@
 export interface StudentInClass {
     schoolId: number;
-    code: string;
+    studentCode: string;
     sex: boolean;
     birthday: string;
     address: string;
@@ -15,6 +15,8 @@ export interface StudentInClass {
     startDate: string;
     endDate: string;
     numberOfViolation: number;
+    year: number;
+    grade: number;
 }
 
 export enum StudentInClassStatus {

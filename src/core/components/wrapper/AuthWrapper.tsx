@@ -7,15 +7,15 @@ import { useSelector } from 'react-redux';
 import { NKConstant } from '@/core/NKConstant';
 import { useNKPathname } from '@/core/routing/hooks/NKPathname';
 import { useNKRouter } from '@/core/routing/hooks/NKRouter';
-import { RootState } from '@/core/store';
-import { UserState } from '@/core/store/user';
+import { RootState, store } from '@/core/store';
+import { userActions, UserState } from '@/core/store/user';
 
 interface AuthWrapperProps {
     children: React.ReactNode;
 }
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
-    const { isAuth, isLogin } = useSelector<RootState, UserState>((state) => state.user);
+    const { isAuth, isLogin, isStudentSupervisor } = useSelector<RootState, UserState>((state) => state.user);
     const router = useNKRouter();
     const pathName = useNKPathname();
 
@@ -31,7 +31,12 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
         if (!isLogin || !isAuth) {
             router.push(NKConstant.AUTH_FAILED_FALLBACK_ROUTE);
         }
-    }, [isAuth, pathName, isLogin]);
+
+        if(isLogin && isAuth && isStudentSupervisor){
+            store.dispatch(userActions.resetState());
+        }
+
+    }, [isAuth, pathName, isLogin, isStudentSupervisor]);
 
     return <>{children}</>;
 };

@@ -20,7 +20,7 @@ import { FilterComparator } from '@/core/models/common';
 import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 import { toastError } from '@/core/utils/api.helper';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
@@ -37,8 +37,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     columns={[
                         {
                             key: 'schoolId',
-                            title: 'Id',
+                            title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'name',
@@ -137,13 +138,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                         type: NKFormType.TEXT,
                                                     },
                                                 ]}
-                                                onExtraSuccessAction={() => {
-                                                    toast.success('Update High School successfully');
+                                                onExtraSuccessAction={(data) => {
                                                     queryClient.invalidateQueries({
                                                         queryKey: ['high-school'],
                                                     });
 
                                                     close();
+
+                                                    toast.success(data.message || 'Successful');
                                                 }}
                                                 onExtraErrorAction={toastError}
                                             />
@@ -155,11 +157,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     isConfirm
                                     confirmMessage='Are you sure you want to delete this "High School"?'
                                     extraOnError={toastError}
-                                    extraOnSuccess={() => {
+                                    extraOnSuccess={(data) => {
                                         queryClient.invalidateQueries({
                                             queryKey: ['high-school'],
                                         });
-                                        toast.success('Delete High School successfully');
+
+                                        toast.success(data.message || 'Successful');
                                     }}
                                 >
                                     <Button
@@ -250,13 +253,14 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.TEXT,
                                             },
                                         ]}
-                                        onExtraSuccessAction={() => {
-                                            toast.success('Create High School successfully');
+                                        onExtraSuccessAction={(data) => {
                                             queryClient.invalidateQueries({
                                                 queryKey: ['high-school'],
                                             });
 
                                             close();
+
+                                            toast.success(data.message || 'Successful');
                                         }}
                                         onExtraErrorAction={toastError}
                                     />

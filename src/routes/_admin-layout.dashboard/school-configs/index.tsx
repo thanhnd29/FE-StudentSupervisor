@@ -37,6 +37,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             key: 'configId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'name',

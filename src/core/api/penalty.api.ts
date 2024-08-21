@@ -35,6 +35,11 @@ export const penaltyApi = {
 
         return data.data || [];
     },
+    getActive: async (id: number) => {
+        const { data } = await http.get<ResponseList<Penalty>>(`${baseUrl}/school/${id}/active`);
+
+        return data.data || [];
+    },
     getById: async (id: number) => {
         const { data } = await http.get<BaseResponse<Penalty>>(`${baseUrl}/${id}`);
 
@@ -45,8 +50,8 @@ export const penaltyApi = {
 
         return data;
     },
-    getEnumSelectOptions: async (search?: string) => {
-        const penalties = await penaltyApi.getAll();
+    getEnumSelectOptions: async (search?: string, id?: number) => {
+        const penalties = id ?  await penaltyApi.getActive(id) : await penaltyApi.getAll();
 
         const list: EnumListItem[] = penalties.map((item) => ({
             id: item.penaltyId,
@@ -68,16 +73,16 @@ export const penaltyApi = {
             {
                 color: Colors.GREEN,
                 id: PenaltyStatus.ACTIVE,
-                label: 'Active',
-                name: 'Active',
+                label: 'Đang hoạt động',
+                name: 'Đang hoạt động',
                 slug: PenaltyStatus.ACTIVE,
                 value: PenaltyStatus.ACTIVE,
             },
             {
                 color: Colors.RED,
                 id: PenaltyStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: PenaltyStatus.INACTIVE,
                 value: PenaltyStatus.INACTIVE,
             },

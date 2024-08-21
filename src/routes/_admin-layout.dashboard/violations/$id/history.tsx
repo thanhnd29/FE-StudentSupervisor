@@ -34,7 +34,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
     <div className="">
       <TableBuilder
         sourceKey="history-violation"
-        title="History Violation"
+        title="Lịch sử vi phạm"
         columns={[
           {
             key: 'violationId',
@@ -43,32 +43,32 @@ const Page: React.FunctionComponent<PageProps> = () => {
           },
           {
             key: 'studentCode',
-            title: 'Code',
+            title: 'Mã học sinh',
             type: FieldType.TEXT,
           },
           {
             key: 'studentName',
-            title: 'Student',
+            title: 'Tên học sinh',
             type: FieldType.TEXT,
           },
           {
             key: 'violationName',
-            title: 'Name',
+            title: 'Vi phạm',
             type: FieldType.TEXT,
           },
           {
             key: 'date',
-            title: 'Date',
+            title: 'Ngày',
             type: FieldType.TIME_DATE,
           },
           {
             key: 'violationGroupName',
-            title: 'Group',
+            title: 'nhóm vi phạm',
             type: FieldType.TEXT,
           },
           {
             key: 'year',
-            title: 'Year',
+            title: 'Niên khóa',
             type: FieldType.TEXT,
           },
         ]}

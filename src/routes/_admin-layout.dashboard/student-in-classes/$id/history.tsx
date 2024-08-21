@@ -78,6 +78,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
   );
 };
 
-export const Route = createFileRoute('/_admin-layout/dashboard/disciplines/$id/history')({
+export const Route = createFileRoute('/_admin-layout/dashboard/student-in-classes/$id/history')({
   component: Page,
 })

@@ -44,6 +44,11 @@ export const teacherApi = {
 
         return data.data;
     },
+    getTeacherByYear: async (id: number) => {
+        const { data } = await http.get<ResponseList<Teacher>>(`${baseUrl}/without-class/school/${id}/year/${(new Date().getFullYear()).toString()}`);
+
+        return data.data;
+    },
     getById: async (id: number) => {
         const { data } = await http.get<SchoolYear>(`${baseUrl}/${id}`);
 
@@ -54,8 +59,8 @@ export const teacherApi = {
 
         return data;
     },
-    getEnumSelectOptions: async ({search, schoolId, supervisorId} : {search?: string, schoolId?: number, supervisorId?: number}) => {
-        const teachers = schoolId ? await teacherApi.getTeacherBySchool(schoolId) : supervisorId ? await teacherApi.getSupervisorBySchool(supervisorId) : await teacherApi.getAll();
+    getEnumSelectOptions: async ({search, schoolId, supervisorId, teacherByYear} : {search?: string, schoolId?: number, supervisorId?: number, teacherByYear?: number}) => {
+        const teachers = schoolId ? await teacherApi.getTeacherBySchool(schoolId) : supervisorId ? await teacherApi.getSupervisorBySchool(supervisorId) : teacherByYear ?  await teacherApi.getTeacherByYear(teacherByYear) : await teacherApi.getAll();
 
         const list: EnumListItem[] = teachers.map((item) => ({
             id: item.teacherId,
@@ -77,16 +82,16 @@ export const teacherApi = {
             {
                 color: Colors.GREEN,
                 id: TeacherStatus.ACTIVE,
-                label: 'Active',
-                name: 'Active',
+                label: 'Đang hoạt động',
+                name: 'Đang hoạt động',
                 slug: TeacherStatus.ACTIVE,
                 value: TeacherStatus.ACTIVE,
             },
             {
                 color: Colors.RED,
                 id: TeacherStatus.INACTIVE,
-                label: 'Inactive',
-                name: 'Inactive',
+                label: 'Đã xóa',
+                name: 'Đã xóa',
                 slug: TeacherStatus.INACTIVE,
                 value: TeacherStatus.INACTIVE,
             },

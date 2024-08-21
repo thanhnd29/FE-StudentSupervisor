@@ -24,33 +24,34 @@ interface PageProps {}
 const Page: React.FunctionComponent<PageProps> = () => {
     const queryClient = useQueryClient();
 
-    useDocumentTitle('Packages');
+    useDocumentTitle('Danh sách các Gói');
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="packages"
-                    title="Packages"
+                    title="Danh sách các Gói"
                     columns={[
                         {
                             key: 'packageId',
                             title: 'ID',
                             type: FieldType.TEXT,
+                            width: '50px'
                         },
                         {
                             key: 'name',
-                            title: 'Name',
+                            title: 'Tên gói',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'description',
-                            title: 'Description',
+                            title: 'Mô tả',
                             type: FieldType.TEXT,
                         },
                         {
                             key: 'price',
-                            title: 'Price',
+                            title: 'Giá',
                             type: FieldType.NUMBER,
                         },
                         // {
@@ -63,7 +64,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         // },
                         {
                             key: 'status',
-                            title: 'Status',
+                            title: 'Trạng thái',
                             type: FieldType.BADGE_API,
                             apiAction(value) {
                                 return packageApi.getEnumStatuses(value);
@@ -79,7 +80,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     size: 'small',
                                     icon: <EditOutlined />,
                                 }}
-                                title="Edit Package"
+                                title="Cập nhật"
                             >
                                 {(close) => {
                                     return (
@@ -100,17 +101,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 {
                                                     name: 'name',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Name',
+                                                    label: 'Tên gói',
                                                 },
                                                 {
                                                     name: 'description',
                                                     type: NKFormType.TEXTAREA,
-                                                    label: 'Description',
+                                                    label: 'Mô tả',
                                                 },
                                                 {
                                                     name: 'price',
                                                     type: NKFormType.NUMBER,
-                                                    label: 'Price',
+                                                    label: 'Giá',
                                                 },
                                                 // {
                                                 //     name: 'packageTypeId',
@@ -147,7 +148,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             <CTAButton
                                 ctaApi={() => packageApi.delete(record.packageId)}
                                 isConfirm
-                                confirmMessage="Are you sure you want to delete this package?"
+                                confirmMessage="Bạn có chắc chắn muốn xóa gói này không?"
                                 extraOnError={toastError}
                                 extraOnSuccess={(data) => {
                                     queryClient.invalidateQueries({
@@ -165,7 +166,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     filters={[
                         {
-                            label: 'Name',
+                            label: 'Tên gói',
                             comparator: FilterComparator.LIKE,
                             name: 'name',
                             type: NKFormType.TEXT,
@@ -173,12 +174,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Create Package"
+                            btnLabel="Thêm gói"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Create Package"
+                            title="Thêm gói"
                         >
                             {(close) => {
                                 return (
@@ -193,17 +194,17 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'name',
                                                 type: NKFormType.TEXT,
-                                                label: 'Name',
+                                                label: 'Tên gói',
                                             },
                                             {
                                                 name: 'description',
                                                 type: NKFormType.TEXTAREA,
-                                                label: 'Description',
+                                                label: 'Mô tả',
                                             },
                                             {
                                                 name: 'price',
                                                 type: NKFormType.NUMBER,
-                                                label: 'Price',
+                                                label: 'Giá',
                                             },
                                             // {
                                             //     name: 'packageTypeId',
