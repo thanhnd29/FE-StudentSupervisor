@@ -97,6 +97,7 @@ export const NKRouter = {
         topClass: () => '/dashboard/violation-tops/violation-top-class',
         topStudent: () => '/dashboard/violation-tops/violation-top-student',
         topStudentInClass: () => '/dashboard/violation-tops/violation-top-studentInClass',
+        violationChart: () => '/dashboard/violation-tops/violation-chart',
     },
     yearPackage: {
         list: () => '/dashboard/year-packages',
@@ -173,5 +174,11 @@ export const NKRouter = {
     payment: {
         success: () => '/dashboard/payment/success',
         failure: () => '/dashboard/payment/failure',
+    },
+    order: {
+        list: () => '/dashboard/order',
+        create: () => '/dashboard/order',
+        edit: (id: number) => `/dashboard/order/${id}`,
+        detail: (id: number) => `/dashboard/order/${id}`,
     }
 };

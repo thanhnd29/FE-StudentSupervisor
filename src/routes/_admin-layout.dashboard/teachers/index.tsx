@@ -213,7 +213,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
                                                         apiAction: highSchoolApi.getEnumSelectOptions,
-                                                        readonly: true
+                                                        disabled: true
                                                     },
                                                 },
                                                 // {
@@ -310,7 +310,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
                                                         apiAction: highSchoolApi.getEnumSelectOptions,
-                                                        readonly: true
+                                                        disabled: true
                                                     },
                                                 },
                                                 // {

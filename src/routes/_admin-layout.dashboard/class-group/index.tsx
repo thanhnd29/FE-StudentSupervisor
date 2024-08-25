@@ -92,7 +92,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         size: 'small',
                                         icon: <EditOutlined />,
                                     }}
-                                    title="Edit Class Group"
+                                    title="Cập nhật"
                                 >
                                     {(close) => {
                                         return (
@@ -176,7 +176,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     extraButtons={
                         (!isSupervisor) && (
                             <ModalBuilder
-                                btnLabel="Tạo khối"
+                                btnLabel="Tạo"
                                 btnProps={{
                                     type: 'primary',
                                     icon: <PlusOutlined />,

@@ -24,7 +24,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 
-interface PageProps {}
+interface PageProps { }
 
 const Page: React.FunctionComponent<PageProps> = () => {
     const router = useNKRouter();
@@ -167,67 +167,69 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         },
                     ]}
                     extraButtons={
-                        <ModalBuilder
-                            btnLabel="Tạo gói năm"
-                            btnProps={{
-                                type: 'primary',
-                                icon: <PlusOutlined />,
-                            }}
-                            title="Tạo gói năm"
-                        >
-                            {(close) => {
-                                return (
-                                    <FormBuilder<ICreateYearPackageDto>
-                                        className="!p-0"
-                                        apiAction={yearPackageApi.create}
-                                        fields={[
-                                            {
-                                                name: 'schoolYearId',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Trường',
-                                                fieldProps: {
-                                                    apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                        !isAdmin && (
+                            <ModalBuilder
+                                btnLabel="Tạo gói năm"
+                                btnProps={{
+                                    type: 'primary',
+                                    icon: <PlusOutlined />,
+                                }}
+                                title="Tạo gói năm"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder<ICreateYearPackageDto>
+                                            className="!p-0"
+                                            apiAction={yearPackageApi.create}
+                                            fields={[
+                                                {
+                                                    name: 'schoolYearId',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    label: 'Trường',
+                                                    fieldProps: {
+                                                        apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
+                                                    },
                                                 },
-                                            },
-                                            {
-                                                name: 'packageId',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Tên gói',
-                                                fieldProps: {
-                                                    apiAction: (value) => packageApi.getEnumSelectOptions(value),
+                                                {
+                                                    name: 'packageId',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    label: 'Tên gói',
+                                                    fieldProps: {
+                                                        apiAction: (value) => packageApi.getEnumSelectOptions(value),
+                                                    },
                                                 },
-                                            },
-                                            {
-                                                name: 'numberOfStudent',
-                                                type: NKFormType.TEXT,
-                                                label: 'Số lượng học sinh',
-                                            },
-                                        ]}
-                                        title=""
-                                        schema={{
-                                            numberOfStudent: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            packageId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        }}
-                                        onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={(data) => {
-                                            queryClient.invalidateQueries({
-                                                queryKey: ['year-packages'],
-                                            });
+                                                {
+                                                    name: 'numberOfStudent',
+                                                    type: NKFormType.TEXT,
+                                                    label: 'Số lượng học sinh',
+                                                },
+                                            ]}
+                                            title=""
+                                            schema={{
+                                                numberOfStudent: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                packageId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                schoolYearId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                            onExtraSuccessAction={(data) => {
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['year-packages'],
+                                                });
 
-                                            close();
+                                                close();
 
-                                            toast.success(data.message || 'Successful');
-                                        }}
-                                        defaultValues={{
-                                            numberOfStudent: 0,
-                                            packageId: 0,
-                                            schoolYearId: 0,
-                                        }}
-                                    />
-                                );
-                            }}
-                        </ModalBuilder>
+                                                toast.success(data.message || 'Successful');
+                                            }}
+                                            defaultValues={{
+                                                numberOfStudent: 0,
+                                                packageId: 0,
+                                                schoolYearId: 0,
+                                            }}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                        )
                     }
                 />
             </div>

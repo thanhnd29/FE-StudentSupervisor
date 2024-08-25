@@ -174,11 +174,11 @@ const Page = () => {
                                             name: 'enrollDate',
                                             type: NKFormType.DATE,
                                         },
-                                        {
-                                            label: 'Sao đỏ',
-                                            name: 'isSupervisor',
-                                            type: NKFormType.BOOLEAN,
-                                        },
+                                        // {
+                                        //     label: 'Sao đỏ',
+                                        //     name: 'isSupervisor',
+                                        //     type: NKFormType.BOOLEAN,
+                                        // },
                                         {
                                             label: 'Ngày vào lớp',
                                             name: 'startDate',
@@ -328,7 +328,7 @@ const Page = () => {
                                         type: NKFormType.SELECT_API_OPTION,
                                         fieldProps: {
                                             apiAction(value) {
-                                                return classApi.getEnumSelectOptions({ search: value });
+                                                return classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId, year: Number(new Date().getFullYear()) });
                                             }
                                         },
                                     },
@@ -337,11 +337,11 @@ const Page = () => {
                                         name: 'enrollDate',
                                         type: NKFormType.DATE,
                                     },
-                                    {
-                                        label: 'Sao đỏ',
-                                        name: 'isSupervisor',
-                                        type: NKFormType.BOOLEAN,
-                                    },
+                                    // {
+                                    //     label: 'Sao đỏ',
+                                    //     name: 'isSupervisor',
+                                    //     type: NKFormType.BOOLEAN,
+                                    // },
                                     {
                                         label: 'Ngày vào lớp',
                                         name: 'startDate',

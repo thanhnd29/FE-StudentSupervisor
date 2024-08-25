@@ -73,175 +73,122 @@ const StudentInClass = ({ schoolIdT }: { schoolIdT?: number }) => {
                 },
             ]}
             queryApi={() => studentInClassApi.getAll().then((res) => res.filter((x) => x.classId === Number(classId)))}
-            actionColumns={(record) => (
-                <div className="flex flex-col gap-2">
-                    <ModalBuilder
-                        btnLabel=""
-                        btnProps={{
-                            size: 'small',
-                            icon: <EditOutlined />,
-                        }}
-                        title="Cập nhật"
-                    >
-                        {(close) => {
-                            return (
-                                <FormBuilder
-                                    className="!p-0"
-                                    apiAction={(dto) =>
-                                        studentInClassApi.update({
-                                            ...dto,
-                                            enrollDate: dto.enrollDate.toISOString(),
-                                            birthday: dto.birthday.toISOString(),
-                                            startDate: dto.startDate.toISOString(),
-                                            endDate: dto.endDate.toISOString(),
-                                        })
-                                    }
-                                    defaultValues={{
-                                        studentName: record.studentName,
-                                        code: record.code,
-                                        sex: record.sex,
-                                        birthday: new Date(record.birthday),
-                                        address: record.address,
-                                        phone: record.phone,
-                                        classId: record.classId,
-                                        enrollDate: new Date(record.enrollDate),
-                                        isSupervisor: record.isSupervisor,
-                                        startDate: new Date(record.startDate),
-                                        endDate: new Date(record.endDate),
-                                        studentId: record.studentId,
-                                        studentInClassId: record.studentInClassId,
-                                    }}
-                                    fields={[
-                                        {
-                                            label: 'Tên học sinh',
-                                            name: 'studentName',
-                                            type: NKFormType.TEXT,
-                                        },
-                                        {
-                                            label: 'Mã học sinh',
-                                            name: 'code',
-                                            type: NKFormType.TEXT,
-                                        },
-                                        {
-                                            label: 'Giới tính (*nam)',
-                                            name: 'sex',
-                                            type: NKFormType.BOOLEAN,
-                                        },
-                                        {
-                                            label: 'Ngày sinh',
-                                            name: 'birthday',
-                                            type: NKFormType.DATE,
-                                        },
-                                        {
-                                            label: 'Địa chỉ',
-                                            name: 'address',
-                                            type: NKFormType.TEXT,
-                                        },
-                                        {
-                                            label: 'Số điện thoại',
-                                            name: 'phone',
-                                            type: NKFormType.TEXT,
-                                        },
-                                        {
-                                            label: 'Lớp',
-                                            name: 'classId',
-                                            type: NKFormType.SELECT_API_OPTION,
-                                            fieldProps: {
-                                                apiAction(value) {
-                                                    return classApi.getEnumSelectOptions({ search: value });
-                                                }
-                                            },
-                                        },
-                                        {
-                                            label: 'Ngày đăng ký',
-                                            name: 'enrollDate',
-                                            type: NKFormType.DATE,
-                                        },
-                                        {
-                                            label: 'Sao đỏ',
-                                            name: 'isSupervisor',
-                                            type: NKFormType.BOOLEAN,
-                                        },
-                                        {
-                                            label: 'Ngày vào lớp',
-                                            name: 'startDate',
-                                            type: NKFormType.DATE,
-                                        },
-                                        {
-                                            label: 'Ngày rời lớp',
-                                            name: 'endDate',
-                                            type: NKFormType.DATE,
-                                        },
-                                    ]}
-                                    title=""
-                                    schema={{
-                                        classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        enrollDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        isSupervisor: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        studentId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    }}
-                                    onExtraErrorAction={toastError}
-                                    onExtraSuccessAction={(data) => {
-                                        queryClient.invalidateQueries({
-                                            queryKey: [`students-in-class`],
-                                        });
-
-                                        close();
-
-                                        toast.success(data.message || 'Successful');
-                                    }}
-                                />
-                            );
-                        }}
-                    </ModalBuilder>
-                    {isSchoolAdmin && (
+            actionColumns={!isTeacher ? (record) => {
+                return (
+                    <div className="flex flex-col gap-2">
                         <ModalBuilder
                             btnLabel=""
                             btnProps={{
-                                type: 'primary',
                                 size: 'small',
-                                icon: <UserSwitchOutlined />,
+                                icon: <EditOutlined />,
                             }}
-                            title="Chuyển lớp"
+                            title="Cập nhật"
                         >
                             {(close) => {
                                 return (
                                     <FormBuilder
                                         className="!p-0"
                                         apiAction={(dto) =>
-                                            studentInClassApi.changeClass({
+                                            studentInClassApi.update({
                                                 ...dto,
+                                                enrollDate: dto.enrollDate.toISOString(),
+                                                birthday: dto.birthday.toISOString(),
+                                                startDate: dto.startDate.toISOString(),
+                                                endDate: dto.endDate.toISOString(),
                                             })
                                         }
                                         defaultValues={{
+                                            studentName: record.studentName,
+                                            studentCode: record.studentCode,
+                                            sex: record.sex,
+                                            birthday: new Date(record.birthday),
+                                            address: record.address,
+                                            phone: record.phone,
                                             classId: record.classId,
+                                            enrollDate: new Date(record.enrollDate),
+                                            isSupervisor: record.isSupervisor,
+                                            startDate: new Date(record.startDate),
+                                            endDate: new Date(record.endDate),
+                                            studentId: record.studentId,
                                             studentInClassId: record.studentInClassId,
                                         }}
                                         fields={[
+                                            {
+                                                label: 'Tên học sinh',
+                                                name: 'studentName',
+                                                type: NKFormType.TEXT,
+                                            },
+                                            {
+                                                label: 'Mã học sinh',
+                                                name: 'studentCode',
+                                                type: NKFormType.TEXT,
+                                            },
+                                            {
+                                                label: 'Giới tính (*nam)',
+                                                name: 'sex',
+                                                type: NKFormType.BOOLEAN,
+                                            },
+                                            {
+                                                label: 'Ngày sinh',
+                                                name: 'birthday',
+                                                type: NKFormType.DATE,
+                                            },
+                                            {
+                                                label: 'Địa chỉ',
+                                                name: 'address',
+                                                type: NKFormType.TEXT,
+                                            },
+                                            {
+                                                label: 'Số điện thoại',
+                                                name: 'phone',
+                                                type: NKFormType.TEXT,
+                                            },
                                             {
                                                 label: 'Lớp',
                                                 name: 'classId',
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction(value) {
-                                                        return classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId, year: record.year, grade: record.grade });
+                                                        return classApi.getEnumSelectOptions({ search: value });
                                                     }
                                                 },
+                                            },
+                                            {
+                                                label: 'Ngày đăng ký',
+                                                name: 'enrollDate',
+                                                type: NKFormType.DATE,
+                                            },
+                                            {
+                                                label: 'Sao đỏ',
+                                                name: 'isSupervisor',
+                                                type: NKFormType.BOOLEAN,
+                                            },
+                                            {
+                                                label: 'Ngày vào lớp',
+                                                name: 'startDate',
+                                                type: NKFormType.DATE,
+                                            },
+                                            {
+                                                label: 'Ngày rời lớp',
+                                                name: 'endDate',
+                                                type: NKFormType.DATE,
                                             },
                                         ]}
                                         title=""
                                         schema={{
                                             classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            enrollDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            isSupervisor: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            studentId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
                                         onExtraSuccessAction={(data) => {
@@ -257,26 +204,81 @@ const StudentInClass = ({ schoolIdT }: { schoolIdT?: number }) => {
                                 );
                             }}
                         </ModalBuilder>
-                    )}
-                    <CTAButton
-                        ctaApi={() => studentInClassApi.delete(record.studentInClassId)}
-                        isConfirm
-                        confirmMessage="Bạn có chắc muốn xóa học sinh này không?"
-                        extraOnError={toastError}
-                        extraOnSuccess={() => {
-                            queryClient.invalidateQueries({
-                                queryKey: [`students-in-class-${classId}`],
-                            });
+                        {isSchoolAdmin && (
+                            <ModalBuilder
+                                btnLabel=""
+                                btnProps={{
+                                    type: 'primary',
+                                    size: 'small',
+                                    icon: <UserSwitchOutlined />,
+                                }}
+                                title="Chuyển lớp"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder
+                                            className="!p-0"
+                                            apiAction={(dto) =>
+                                                studentInClassApi.changeClass({
+                                                    ...dto,
+                                                })
+                                            }
+                                            defaultValues={{
+                                                classId: record.classId,
+                                                studentInClassId: record.studentInClassId,
+                                            }}
+                                            fields={[
+                                                {
+                                                    label: 'Lớp',
+                                                    name: 'classId',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    fieldProps: {
+                                                        apiAction(value) {
+                                                            return classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId, year: record.year, grade: record.grade });
+                                                        }
+                                                    },
+                                                },
+                                            ]}
+                                            title=""
+                                            schema={{
+                                                classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                            onExtraSuccessAction={(data) => {
+                                                queryClient.invalidateQueries({
+                                                    queryKey: [`students-in-class`],
+                                                });
 
-                            toast.success('Delete student successfully');
-                        }}
-                    >
-                        <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
-                            <Trash className="h-4 w-4" />
-                        </Button>
-                    </CTAButton>
-                </div>
-            )}
+                                                close();
+
+                                                toast.success(data.message || 'Successful');
+                                            }}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                        )}
+                        <CTAButton
+                            ctaApi={() => studentInClassApi.delete(record.studentInClassId)}
+                            isConfirm
+                            confirmMessage="Bạn có chắc muốn xóa học sinh này không?"
+                            extraOnError={toastError}
+                            extraOnSuccess={() => {
+                                queryClient.invalidateQueries({
+                                    queryKey: [`students-in-class-${classId}`],
+                                });
+
+                                toast.success('Delete student successfully');
+                            }}
+                        >
+                            <Button className="flex h-6 w-6 items-center justify-center p-0" danger type="primary" size="small">
+                                <Trash className="h-4 w-4" />
+                            </Button>
+                        </CTAButton>
+                    </div>
+                )
+            } : null}
             filters={[
                 {
                     label: 'Mã học sinh',
@@ -325,7 +327,7 @@ const StudentInClass = ({ schoolIdT }: { schoolIdT?: number }) => {
                                     fields={[
                                         {
                                             label: 'Mã học sinh',
-                                            name: 'code',
+                                            name: 'studentCode',
                                             type: NKFormType.TEXT,
                                         },
                                         {
@@ -388,7 +390,7 @@ const StudentInClass = ({ schoolIdT }: { schoolIdT?: number }) => {
                                     schema={{
                                         schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                         sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
                                         birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -412,7 +414,7 @@ const StudentInClass = ({ schoolIdT }: { schoolIdT?: number }) => {
                                     defaultValues={{
                                         schoolId: schoolId ?? 0,
                                         studentName: "",
-                                        code: "",
+                                        studentCode: "",
                                         sex: false,
                                         birthday: new Date(),
                                         address: "",

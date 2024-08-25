@@ -134,7 +134,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     <FormBuilder
                                                         className="!p-0"
                                                         title=""
-                                                        apiAction={classApi.update}
+                                                        apiAction={(dto) => classApi.update(record.classId, dto)}
                                                         defaultValues={{
                                                             teacherId: record.teacherId,
                                                             classGroupId: record.classGroupId,
@@ -154,40 +154,40 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                         fields={[
                                                             {
                                                                 name: 'name',
-                                                                label: 'Name',
+                                                                label: 'Tên lớp',
                                                                 type: NKFormType.TEXT,
                                                             },
                                                             {
                                                                 name: 'code',
-                                                                label: 'Code',
+                                                                label: 'Mã lớp',
                                                                 type: NKFormType.TEXT,
                                                             },
                                                             {
                                                                 name: 'teacherId',
-                                                                label: 'Teacher',
+                                                                label: 'Giáo viên chủ nhiệm',
                                                                 type: NKFormType.SELECT_API_OPTION,
                                                                 fieldProps: {
                                                                     apiAction: (value) =>
                                                                         teacherApi.getEnumSelectOptions({
                                                                             search: value,
-                                                                            teacherByYear: schoolId,
+                                                                            schoolId: schoolId,
                                                                         }),
                                                                 },
                                                             },
                                                             {
                                                                 name: 'totalPoint',
-                                                                label: 'Total Point',
+                                                                label: 'Điểm thi đua',
                                                                 type: NKFormType.NUMBER,
                                                             },
                                                         ]}
-                                                        onExtraSuccessAction={() => {
+                                                        onExtraSuccessAction={(data) => {
                                                             queryClient.invalidateQueries({
                                                                 queryKey: ['classes'],
                                                             });
 
-                                                            toast.success('Edit class successfully');
-
                                                             close();
+
+                                                            toast.success(data.message || 'Successful');
                                                         }}
                                                         onExtraErrorAction={toastError}
                                                     />
@@ -203,12 +203,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             isConfirm
                                             confirmMessage="Bạn có chắc chắn muốn xóa lớp này không?"
                                             extraOnError={toastError}
-                                            extraOnSuccess={() => {
+                                            extraOnSuccess={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['classes'],
                                                 });
 
-                                                toast.success('Delete class successfully');
+                                                toast.success(data.message || 'Successful');
                                             }}
                                         >
                                             <Button
@@ -256,7 +256,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     extraButtons={
                         (!isTeacher) && (
                             <ModalBuilder
-                                btnLabel="Tạo lớp"
+                                btnLabel="Tạo"
                                 btnProps={{
                                     type: 'primary',
                                     icon: <PlusOutlined />,
@@ -274,7 +274,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 classGroupId: 0,
                                                 code: '',
                                                 name: '',
-                                                schoolYearId: 2,
+                                                schoolYearId: 0,
                                                 grade: 0,
                                             }}
                                             schema={{
@@ -288,7 +288,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             fields={[
                                                 {
                                                     name: 'schoolYearId',
-                                                    label: 'School Year',
+                                                    label: 'Niên khóa',
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
                                                         apiAction: (value) =>
@@ -296,27 +296,26 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                                 search: value,
                                                                 highSchoolId: schoolId
                                                             }),
-                                                        disabled: true
                                                     },
                                                 },
                                                 {
                                                     name: 'name',
-                                                    label: 'Name',
+                                                    label: 'Tên lớp',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'code',
-                                                    label: 'Code',
+                                                    label: 'Mã lớp',
                                                     type: NKFormType.TEXT,
                                                 },
                                                 {
                                                     name: 'grade',
-                                                    label: 'Grade',
+                                                    label: 'Khối',
                                                     type: NKFormType.NUMBER,
                                                 },
                                                 {
-                                                    name: 'teacherID',
-                                                    label: 'Teacher',
+                                                    name: 'teacherId',
+                                                    label: 'Giáo viên chủ nhiệm',
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
                                                         apiAction: (value) => teacherApi.getEnumSelectOptions({ search: value, teacherByYear: schoolId }),
@@ -324,19 +323,21 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 },
                                                 {
                                                     name: 'classGroupId',
-                                                    label: 'Class Group',
+                                                    label: 'Thuộc nhóm lớp',
                                                     type: NKFormType.SELECT_API_OPTION,
                                                     fieldProps: {
-                                                        apiAction: (value) => classGroupApi.getEnumSelectOptions(value),
+                                                        apiAction: (value) => classGroupApi.getEnumSelectOptions(value, schoolId),
                                                     },
                                                 },
                                             ]}
-                                            onExtraSuccessAction={() => {
-                                                toast.success('Create class successfully');
+                                            onExtraSuccessAction={(data) => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['classes'],
                                                 });
+
                                                 close();
+
+                                                toast.success(data.message || 'Successful');
                                             }}
                                             onExtraErrorAction={toastError}
                                         />

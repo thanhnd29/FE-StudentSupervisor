@@ -240,12 +240,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Tạo Ban giám hiệu"
+                            btnLabel="Tạo"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="TTạo Ban giám hiệu"
+                            title="Tạo tài khoản cho Ban giám hiệu"
                         >
                             {(close) => {
                                 return (
@@ -304,7 +304,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 fieldProps: {
                                                     apiAction: (value) => highSchoolApi.getEnumSelectOptions(value),
-                                                    readonly: true
+                                                    disabled: true,
                                                 },
                                             },
                                         ]}

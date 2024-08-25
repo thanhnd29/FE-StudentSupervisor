@@ -27,11 +27,13 @@ const NKChartLabel: React.FC<NKChartLabelProps> = ({ label, value, color, precis
                 'shadow-black-500/70 bg-black': color === 'black',
             })}
         >
-            <div className="text-lg font-semibold">{label}</div>
-            <div className="mt-4 flex items-center gap-2">
+            <div className="flex flex-row items-center gap-10">
+                <div className="text-lg font-semibol text-black font-bold">{label}:</div>
+                <div className="h-9 text-3xl text-black">{value}</div>
+            </div>
+            <div className="mt-4 gap-2 w-full">
                 {prefix}
-                <div className="h-9 text-3xl">{value}</div>
-                {suffix}
+                {/* {suffix} */}
             </div>
         </div>
     );

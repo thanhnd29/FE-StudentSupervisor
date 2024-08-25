@@ -36,6 +36,7 @@ import { Route as AdminLayoutDashboardRegisteredSchoolsIndexImport } from './rou
 import { Route as AdminLayoutDashboardPenaltiesIndexImport } from './routes/_admin-layout.dashboard/penalties/index'
 import { Route as AdminLayoutDashboardPatrolSchedulesIndexImport } from './routes/_admin-layout.dashboard/patrol-schedules/index'
 import { Route as AdminLayoutDashboardPackagesIndexImport } from './routes/_admin-layout.dashboard/packages/index'
+import { Route as AdminLayoutDashboardOrderIndexImport } from './routes/_admin-layout.dashboard/order/index'
 import { Route as AdminLayoutDashboardHighSchoolIndexImport } from './routes/_admin-layout.dashboard/high-school/index'
 import { Route as AdminLayoutDashboardEvaluationsIndexImport } from './routes/_admin-layout.dashboard/evaluations/index'
 import { Route as AdminLayoutDashboardEvaluationTopsIndexImport } from './routes/_admin-layout.dashboard/evaluation-tops/index'
@@ -51,6 +52,7 @@ import { Route as AdminLayoutDashboardViolationTopsViolationTopClassImport } fro
 import { Route as AdminLayoutDashboardViolationTopsViolationInYearImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-year'
 import { Route as AdminLayoutDashboardViolationTopsViolationInWeekImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-week'
 import { Route as AdminLayoutDashboardViolationTopsViolationInClassImport } from './routes/_admin-layout.dashboard/violation-tops/violation-in-class'
+import { Route as AdminLayoutDashboardViolationTopsViolationChartImport } from './routes/_admin-layout.dashboard/violation-tops/violation-chart'
 import { Route as AdminLayoutDashboardPackagesBuyPackagesImport } from './routes/_admin-layout.dashboard/packages/buy-packages'
 import { Route as AdminLayoutDashboardHighSchoolIdImport } from './routes/_admin-layout.dashboard/high-school/$id'
 import { Route as AdminLayoutDashboardAuthViewImport } from './routes/_admin-layout.dashboard/auth/view'
@@ -210,6 +212,12 @@ const AdminLayoutDashboardPackagesIndexRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardOrderIndexRoute =
+  AdminLayoutDashboardOrderIndexImport.update({
+    path: '/dashboard/order/',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardHighSchoolIndexRoute =
   AdminLayoutDashboardHighSchoolIndexImport.update({
     path: '/dashboard/high-school/',
@@ -300,6 +308,12 @@ const AdminLayoutDashboardViolationTopsViolationInClassRoute =
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
+const AdminLayoutDashboardViolationTopsViolationChartRoute =
+  AdminLayoutDashboardViolationTopsViolationChartImport.update({
+    path: '/dashboard/violation-tops/violation-chart',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
 const AdminLayoutDashboardPackagesBuyPackagesRoute =
   AdminLayoutDashboardPackagesBuyPackagesImport.update({
     path: '/dashboard/packages/buy-packages',
@@ -377,210 +391,380 @@ const AdminLayoutDashboardClassesIdHistoryRoute =
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/_admin-layout': {
+      id: '/_admin-layout'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof AdminLayoutImport
       parentRoute: typeof rootRoute
     }
     '/payment/failure': {
+      id: '/payment/failure'
+      path: '/payment/failure'
+      fullPath: '/payment/failure'
       preLoaderRoute: typeof PaymentFailureImport
       parentRoute: typeof rootRoute
     }
     '/payment/success': {
+      id: '/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
       preLoaderRoute: typeof PaymentSuccessImport
       parentRoute: typeof rootRoute
     }
     '/_admin-layout/dashboard/$id': {
+      id: '/_admin-layout/dashboard/$id'
+      path: '/dashboard/$id'
+      fullPath: '/dashboard/$id'
       preLoaderRoute: typeof AdminLayoutDashboardIdImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/analytics': {
+      id: '/_admin-layout/dashboard/analytics'
+      path: '/dashboard/analytics'
+      fullPath: '/dashboard/analytics'
       preLoaderRoute: typeof AdminLayoutDashboardAnalyticsImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/': {
+      id: '/_admin-layout/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
       preLoaderRoute: typeof AdminLayoutDashboardIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/auth/edit': {
+      id: '/_admin-layout/dashboard/auth/edit'
+      path: '/dashboard/auth/edit'
+      fullPath: '/dashboard/auth/edit'
       preLoaderRoute: typeof AdminLayoutDashboardAuthEditImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/auth/view': {
+      id: '/_admin-layout/dashboard/auth/view'
+      path: '/dashboard/auth/view'
+      fullPath: '/dashboard/auth/view'
       preLoaderRoute: typeof AdminLayoutDashboardAuthViewImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/high-school/$id': {
+      id: '/_admin-layout/dashboard/high-school/$id'
+      path: '/dashboard/high-school/$id'
+      fullPath: '/dashboard/high-school/$id'
       preLoaderRoute: typeof AdminLayoutDashboardHighSchoolIdImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/packages/buy-packages': {
+      id: '/_admin-layout/dashboard/packages/buy-packages'
+      path: '/dashboard/packages/buy-packages'
+      fullPath: '/dashboard/packages/buy-packages'
       preLoaderRoute: typeof AdminLayoutDashboardPackagesBuyPackagesImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/_admin-layout/dashboard/violation-tops/violation-chart': {
+      id: '/_admin-layout/dashboard/violation-tops/violation-chart'
+      path: '/dashboard/violation-tops/violation-chart'
+      fullPath: '/dashboard/violation-tops/violation-chart'
+      preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationChartImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/_admin-layout/dashboard/violation-tops/violation-in-class': {
+      id: '/_admin-layout/dashboard/violation-tops/violation-in-class'
+      path: '/dashboard/violation-tops/violation-in-class'
+      fullPath: '/dashboard/violation-tops/violation-in-class'
       preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationInClassImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-tops/violation-in-week': {
+      id: '/_admin-layout/dashboard/violation-tops/violation-in-week'
+      path: '/dashboard/violation-tops/violation-in-week'
+      fullPath: '/dashboard/violation-tops/violation-in-week'
       preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationInWeekImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-tops/violation-in-year': {
+      id: '/_admin-layout/dashboard/violation-tops/violation-in-year'
+      path: '/dashboard/violation-tops/violation-in-year'
+      fullPath: '/dashboard/violation-tops/violation-in-year'
       preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationInYearImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-tops/violation-top-class': {
+      id: '/_admin-layout/dashboard/violation-tops/violation-top-class'
+      path: '/dashboard/violation-tops/violation-top-class'
+      fullPath: '/dashboard/violation-tops/violation-top-class'
       preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationTopClassImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-tops/violation-top-student': {
+      id: '/_admin-layout/dashboard/violation-tops/violation-top-student'
+      path: '/dashboard/violation-tops/violation-top-student'
+      fullPath: '/dashboard/violation-tops/violation-top-student'
       preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationTopStudentImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-tops/violation-top-studentInClass': {
+      id: '/_admin-layout/dashboard/violation-tops/violation-top-studentInClass'
+      path: '/dashboard/violation-tops/violation-top-studentInClass'
+      fullPath: '/dashboard/violation-tops/violation-top-studentInClass'
       preLoaderRoute: typeof AdminLayoutDashboardViolationTopsViolationTopStudentInClassImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/create-student': {
+      id: '/_admin-layout/dashboard/violations/create-student'
+      path: '/dashboard/violations/create-student'
+      fullPath: '/dashboard/violations/create-student'
       preLoaderRoute: typeof AdminLayoutDashboardViolationsCreateStudentImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/create-supervisor': {
+      id: '/_admin-layout/dashboard/violations/create-supervisor'
+      path: '/dashboard/violations/create-supervisor'
+      fullPath: '/dashboard/violations/create-supervisor'
       preLoaderRoute: typeof AdminLayoutDashboardViolationsCreateSupervisorImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/class-group/': {
+      id: '/_admin-layout/dashboard/class-group/'
+      path: '/dashboard/class-group'
+      fullPath: '/dashboard/class-group'
       preLoaderRoute: typeof AdminLayoutDashboardClassGroupIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/classes/': {
+      id: '/_admin-layout/dashboard/classes/'
+      path: '/dashboard/classes'
+      fullPath: '/dashboard/classes'
       preLoaderRoute: typeof AdminLayoutDashboardClassesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/disciplines/': {
+      id: '/_admin-layout/dashboard/disciplines/'
+      path: '/dashboard/disciplines'
+      fullPath: '/dashboard/disciplines'
       preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/evaluation-details/': {
+      id: '/_admin-layout/dashboard/evaluation-details/'
+      path: '/dashboard/evaluation-details'
+      fullPath: '/dashboard/evaluation-details'
       preLoaderRoute: typeof AdminLayoutDashboardEvaluationDetailsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/evaluation-tops/': {
+      id: '/_admin-layout/dashboard/evaluation-tops/'
+      path: '/dashboard/evaluation-tops'
+      fullPath: '/dashboard/evaluation-tops'
       preLoaderRoute: typeof AdminLayoutDashboardEvaluationTopsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/evaluations/': {
+      id: '/_admin-layout/dashboard/evaluations/'
+      path: '/dashboard/evaluations'
+      fullPath: '/dashboard/evaluations'
       preLoaderRoute: typeof AdminLayoutDashboardEvaluationsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/high-school/': {
+      id: '/_admin-layout/dashboard/high-school/'
+      path: '/dashboard/high-school'
+      fullPath: '/dashboard/high-school'
       preLoaderRoute: typeof AdminLayoutDashboardHighSchoolIndexImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/_admin-layout/dashboard/order/': {
+      id: '/_admin-layout/dashboard/order/'
+      path: '/dashboard/order'
+      fullPath: '/dashboard/order'
+      preLoaderRoute: typeof AdminLayoutDashboardOrderIndexImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/_admin-layout/dashboard/packages/': {
+      id: '/_admin-layout/dashboard/packages/'
+      path: '/dashboard/packages'
+      fullPath: '/dashboard/packages'
       preLoaderRoute: typeof AdminLayoutDashboardPackagesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/patrol-schedules/': {
+      id: '/_admin-layout/dashboard/patrol-schedules/'
+      path: '/dashboard/patrol-schedules'
+      fullPath: '/dashboard/patrol-schedules'
       preLoaderRoute: typeof AdminLayoutDashboardPatrolSchedulesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/penalties/': {
+      id: '/_admin-layout/dashboard/penalties/'
+      path: '/dashboard/penalties'
+      fullPath: '/dashboard/penalties'
       preLoaderRoute: typeof AdminLayoutDashboardPenaltiesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/registered-schools/': {
+      id: '/_admin-layout/dashboard/registered-schools/'
+      path: '/dashboard/registered-schools'
+      fullPath: '/dashboard/registered-schools'
       preLoaderRoute: typeof AdminLayoutDashboardRegisteredSchoolsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/school-admin/': {
+      id: '/_admin-layout/dashboard/school-admin/'
+      path: '/dashboard/school-admin'
+      fullPath: '/dashboard/school-admin'
       preLoaderRoute: typeof AdminLayoutDashboardSchoolAdminIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/school-configs/': {
+      id: '/_admin-layout/dashboard/school-configs/'
+      path: '/dashboard/school-configs'
+      fullPath: '/dashboard/school-configs'
       preLoaderRoute: typeof AdminLayoutDashboardSchoolConfigsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/school-year/': {
+      id: '/_admin-layout/dashboard/school-year/'
+      path: '/dashboard/school-year'
+      fullPath: '/dashboard/school-year'
       preLoaderRoute: typeof AdminLayoutDashboardSchoolYearIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/student-in-classes/': {
+      id: '/_admin-layout/dashboard/student-in-classes/'
+      path: '/dashboard/student-in-classes'
+      fullPath: '/dashboard/student-in-classes'
       preLoaderRoute: typeof AdminLayoutDashboardStudentInClassesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/student-supervisors/': {
+      id: '/_admin-layout/dashboard/student-supervisors/'
+      path: '/dashboard/student-supervisors'
+      fullPath: '/dashboard/student-supervisors'
       preLoaderRoute: typeof AdminLayoutDashboardStudentSupervisorsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/students/': {
+      id: '/_admin-layout/dashboard/students/'
+      path: '/dashboard/students'
+      fullPath: '/dashboard/students'
       preLoaderRoute: typeof AdminLayoutDashboardStudentsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/teachers/': {
+      id: '/_admin-layout/dashboard/teachers/'
+      path: '/dashboard/teachers'
+      fullPath: '/dashboard/teachers'
       preLoaderRoute: typeof AdminLayoutDashboardTeachersIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/times/': {
+      id: '/_admin-layout/dashboard/times/'
+      path: '/dashboard/times'
+      fullPath: '/dashboard/times'
       preLoaderRoute: typeof AdminLayoutDashboardTimesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/user/': {
+      id: '/_admin-layout/dashboard/user/'
+      path: '/dashboard/user'
+      fullPath: '/dashboard/user'
       preLoaderRoute: typeof AdminLayoutDashboardUserIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-configs/': {
+      id: '/_admin-layout/dashboard/violation-configs/'
+      path: '/dashboard/violation-configs'
+      fullPath: '/dashboard/violation-configs'
       preLoaderRoute: typeof AdminLayoutDashboardViolationConfigsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-groups/': {
+      id: '/_admin-layout/dashboard/violation-groups/'
+      path: '/dashboard/violation-groups'
+      fullPath: '/dashboard/violation-groups'
       preLoaderRoute: typeof AdminLayoutDashboardViolationGroupsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violation-types/': {
+      id: '/_admin-layout/dashboard/violation-types/'
+      path: '/dashboard/violation-types'
+      fullPath: '/dashboard/violation-types'
       preLoaderRoute: typeof AdminLayoutDashboardViolationTypesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/': {
+      id: '/_admin-layout/dashboard/violations/'
+      path: '/dashboard/violations'
+      fullPath: '/dashboard/violations'
       preLoaderRoute: typeof AdminLayoutDashboardViolationsIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/year-packages/': {
+      id: '/_admin-layout/dashboard/year-packages/'
+      path: '/dashboard/year-packages'
+      fullPath: '/dashboard/year-packages'
       preLoaderRoute: typeof AdminLayoutDashboardYearPackagesIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/classes/$id/history': {
+      id: '/_admin-layout/dashboard/classes/$id/history'
+      path: '/dashboard/classes/$id/history'
+      fullPath: '/dashboard/classes/$id/history'
       preLoaderRoute: typeof AdminLayoutDashboardClassesIdHistoryImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/disciplines/$id/history': {
+      id: '/_admin-layout/dashboard/disciplines/$id/history'
+      path: '/dashboard/disciplines/$id/history'
+      fullPath: '/dashboard/disciplines/$id/history'
       preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIdHistoryImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/student-in-classes/$id/history': {
+      id: '/_admin-layout/dashboard/student-in-classes/$id/history'
+      path: '/dashboard/student-in-classes/$id/history'
+      fullPath: '/dashboard/student-in-classes/$id/history'
       preLoaderRoute: typeof AdminLayoutDashboardStudentInClassesIdHistoryImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/$id/edit': {
+      id: '/_admin-layout/dashboard/violations/$id/edit'
+      path: '/dashboard/violations/$id/edit'
+      fullPath: '/dashboard/violations/$id/edit'
       preLoaderRoute: typeof AdminLayoutDashboardViolationsIdEditImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/$id/history': {
+      id: '/_admin-layout/dashboard/violations/$id/history'
+      path: '/dashboard/violations/$id/history'
+      fullPath: '/dashboard/violations/$id/history'
       preLoaderRoute: typeof AdminLayoutDashboardViolationsIdHistoryImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/classes/$id/': {
+      id: '/_admin-layout/dashboard/classes/$id/'
+      path: '/dashboard/classes/$id'
+      fullPath: '/dashboard/classes/$id'
       preLoaderRoute: typeof AdminLayoutDashboardClassesIdIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/disciplines/$id/': {
+      id: '/_admin-layout/dashboard/disciplines/$id/'
+      path: '/dashboard/disciplines/$id'
+      fullPath: '/dashboard/disciplines/$id'
       preLoaderRoute: typeof AdminLayoutDashboardDisciplinesIdIndexImport
       parentRoute: typeof AdminLayoutImport
     }
     '/_admin-layout/dashboard/violations/$id/': {
+      id: '/_admin-layout/dashboard/violations/$id/'
+      path: '/dashboard/violations/$id'
+      fullPath: '/dashboard/violations/$id'
       preLoaderRoute: typeof AdminLayoutDashboardViolationsIdIndexImport
       parentRoute: typeof AdminLayoutImport
     }
@@ -589,9 +773,9 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AdminLayoutRoute.addChildren([
+  AdminLayoutRoute: AdminLayoutRoute.addChildren({
     AdminLayoutDashboardIdRoute,
     AdminLayoutDashboardAnalyticsRoute,
     AdminLayoutDashboardIndexRoute,
@@ -599,6 +783,7 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardAuthViewRoute,
     AdminLayoutDashboardHighSchoolIdRoute,
     AdminLayoutDashboardPackagesBuyPackagesRoute,
+    AdminLayoutDashboardViolationTopsViolationChartRoute,
     AdminLayoutDashboardViolationTopsViolationInClassRoute,
     AdminLayoutDashboardViolationTopsViolationInWeekRoute,
     AdminLayoutDashboardViolationTopsViolationInYearRoute,
@@ -614,6 +799,7 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardEvaluationTopsIndexRoute,
     AdminLayoutDashboardEvaluationsIndexRoute,
     AdminLayoutDashboardHighSchoolIndexRoute,
+    AdminLayoutDashboardOrderIndexRoute,
     AdminLayoutDashboardPackagesIndexRoute,
     AdminLayoutDashboardPatrolSchedulesIndexRoute,
     AdminLayoutDashboardPenaltiesIndexRoute,
@@ -640,9 +826,289 @@ export const routeTree = rootRoute.addChildren([
     AdminLayoutDashboardClassesIdIndexRoute,
     AdminLayoutDashboardDisciplinesIdIndexRoute,
     AdminLayoutDashboardViolationsIdIndexRoute,
-  ]),
+  }),
   PaymentFailureRoute,
   PaymentSuccessRoute,
-])
+})
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/_admin-layout",
+        "/payment/failure",
+        "/payment/success"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/_admin-layout": {
+      "filePath": "_admin-layout.tsx",
+      "children": [
+        "/_admin-layout/dashboard/$id",
+        "/_admin-layout/dashboard/analytics",
+        "/_admin-layout/dashboard/",
+        "/_admin-layout/dashboard/auth/edit",
+        "/_admin-layout/dashboard/auth/view",
+        "/_admin-layout/dashboard/high-school/$id",
+        "/_admin-layout/dashboard/packages/buy-packages",
+        "/_admin-layout/dashboard/violation-tops/violation-chart",
+        "/_admin-layout/dashboard/violation-tops/violation-in-class",
+        "/_admin-layout/dashboard/violation-tops/violation-in-week",
+        "/_admin-layout/dashboard/violation-tops/violation-in-year",
+        "/_admin-layout/dashboard/violation-tops/violation-top-class",
+        "/_admin-layout/dashboard/violation-tops/violation-top-student",
+        "/_admin-layout/dashboard/violation-tops/violation-top-studentInClass",
+        "/_admin-layout/dashboard/violations/create-student",
+        "/_admin-layout/dashboard/violations/create-supervisor",
+        "/_admin-layout/dashboard/class-group/",
+        "/_admin-layout/dashboard/classes/",
+        "/_admin-layout/dashboard/disciplines/",
+        "/_admin-layout/dashboard/evaluation-details/",
+        "/_admin-layout/dashboard/evaluation-tops/",
+        "/_admin-layout/dashboard/evaluations/",
+        "/_admin-layout/dashboard/high-school/",
+        "/_admin-layout/dashboard/order/",
+        "/_admin-layout/dashboard/packages/",
+        "/_admin-layout/dashboard/patrol-schedules/",
+        "/_admin-layout/dashboard/penalties/",
+        "/_admin-layout/dashboard/registered-schools/",
+        "/_admin-layout/dashboard/school-admin/",
+        "/_admin-layout/dashboard/school-configs/",
+        "/_admin-layout/dashboard/school-year/",
+        "/_admin-layout/dashboard/student-in-classes/",
+        "/_admin-layout/dashboard/student-supervisors/",
+        "/_admin-layout/dashboard/students/",
+        "/_admin-layout/dashboard/teachers/",
+        "/_admin-layout/dashboard/times/",
+        "/_admin-layout/dashboard/user/",
+        "/_admin-layout/dashboard/violation-configs/",
+        "/_admin-layout/dashboard/violation-groups/",
+        "/_admin-layout/dashboard/violation-types/",
+        "/_admin-layout/dashboard/violations/",
+        "/_admin-layout/dashboard/year-packages/",
+        "/_admin-layout/dashboard/classes/$id/history",
+        "/_admin-layout/dashboard/disciplines/$id/history",
+        "/_admin-layout/dashboard/student-in-classes/$id/history",
+        "/_admin-layout/dashboard/violations/$id/edit",
+        "/_admin-layout/dashboard/violations/$id/history",
+        "/_admin-layout/dashboard/classes/$id/",
+        "/_admin-layout/dashboard/disciplines/$id/",
+        "/_admin-layout/dashboard/violations/$id/"
+      ]
+    },
+    "/payment/failure": {
+      "filePath": "payment/failure.tsx"
+    },
+    "/payment/success": {
+      "filePath": "payment/success.tsx"
+    },
+    "/_admin-layout/dashboard/$id": {
+      "filePath": "_admin-layout.dashboard/$id.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/analytics": {
+      "filePath": "_admin-layout.dashboard/analytics.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/": {
+      "filePath": "_admin-layout.dashboard/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/auth/edit": {
+      "filePath": "_admin-layout.dashboard/auth/edit.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/auth/view": {
+      "filePath": "_admin-layout.dashboard/auth/view.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/high-school/$id": {
+      "filePath": "_admin-layout.dashboard/high-school/$id.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/packages/buy-packages": {
+      "filePath": "_admin-layout.dashboard/packages/buy-packages.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-tops/violation-chart": {
+      "filePath": "_admin-layout.dashboard/violation-tops/violation-chart.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-tops/violation-in-class": {
+      "filePath": "_admin-layout.dashboard/violation-tops/violation-in-class.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-tops/violation-in-week": {
+      "filePath": "_admin-layout.dashboard/violation-tops/violation-in-week.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-tops/violation-in-year": {
+      "filePath": "_admin-layout.dashboard/violation-tops/violation-in-year.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-tops/violation-top-class": {
+      "filePath": "_admin-layout.dashboard/violation-tops/violation-top-class.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-tops/violation-top-student": {
+      "filePath": "_admin-layout.dashboard/violation-tops/violation-top-student.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-tops/violation-top-studentInClass": {
+      "filePath": "_admin-layout.dashboard/violation-tops/violation-top-studentInClass.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violations/create-student": {
+      "filePath": "_admin-layout.dashboard/violations/create-student.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violations/create-supervisor": {
+      "filePath": "_admin-layout.dashboard/violations/create-supervisor.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/class-group/": {
+      "filePath": "_admin-layout.dashboard/class-group/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/classes/": {
+      "filePath": "_admin-layout.dashboard/classes/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/disciplines/": {
+      "filePath": "_admin-layout.dashboard/disciplines/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/evaluation-details/": {
+      "filePath": "_admin-layout.dashboard/evaluation-details/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/evaluation-tops/": {
+      "filePath": "_admin-layout.dashboard/evaluation-tops/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/evaluations/": {
+      "filePath": "_admin-layout.dashboard/evaluations/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/high-school/": {
+      "filePath": "_admin-layout.dashboard/high-school/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/order/": {
+      "filePath": "_admin-layout.dashboard/order/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/packages/": {
+      "filePath": "_admin-layout.dashboard/packages/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/patrol-schedules/": {
+      "filePath": "_admin-layout.dashboard/patrol-schedules/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/penalties/": {
+      "filePath": "_admin-layout.dashboard/penalties/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/registered-schools/": {
+      "filePath": "_admin-layout.dashboard/registered-schools/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/school-admin/": {
+      "filePath": "_admin-layout.dashboard/school-admin/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/school-configs/": {
+      "filePath": "_admin-layout.dashboard/school-configs/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/school-year/": {
+      "filePath": "_admin-layout.dashboard/school-year/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/student-in-classes/": {
+      "filePath": "_admin-layout.dashboard/student-in-classes/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/student-supervisors/": {
+      "filePath": "_admin-layout.dashboard/student-supervisors/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/students/": {
+      "filePath": "_admin-layout.dashboard/students/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/teachers/": {
+      "filePath": "_admin-layout.dashboard/teachers/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/times/": {
+      "filePath": "_admin-layout.dashboard/times/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/user/": {
+      "filePath": "_admin-layout.dashboard/user/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-configs/": {
+      "filePath": "_admin-layout.dashboard/violation-configs/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-groups/": {
+      "filePath": "_admin-layout.dashboard/violation-groups/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violation-types/": {
+      "filePath": "_admin-layout.dashboard/violation-types/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violations/": {
+      "filePath": "_admin-layout.dashboard/violations/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/year-packages/": {
+      "filePath": "_admin-layout.dashboard/year-packages/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/classes/$id/history": {
+      "filePath": "_admin-layout.dashboard/classes/$id/history.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/disciplines/$id/history": {
+      "filePath": "_admin-layout.dashboard/disciplines/$id/history.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/student-in-classes/$id/history": {
+      "filePath": "_admin-layout.dashboard/student-in-classes/$id/history.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violations/$id/edit": {
+      "filePath": "_admin-layout.dashboard/violations/$id/edit.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violations/$id/history": {
+      "filePath": "_admin-layout.dashboard/violations/$id/history.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/classes/$id/": {
+      "filePath": "_admin-layout.dashboard/classes/$id/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/disciplines/$id/": {
+      "filePath": "_admin-layout.dashboard/disciplines/$id/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/violations/$id/": {
+      "filePath": "_admin-layout.dashboard/violations/$id/index.tsx",
+      "parent": "/_admin-layout"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

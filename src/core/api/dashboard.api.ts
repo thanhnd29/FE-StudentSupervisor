@@ -1,4 +1,4 @@
-import { ResponseList } from '../models/common';
+import { BaseResponse, ResponseList } from '../models/common';
 import { Violation } from '../models/violation';
 import http from './http';
 
@@ -16,6 +16,15 @@ const validString = (string: number | string): string | number => {
         return "";
     }
     return string;
+}
+
+export interface Chart {
+    title: string,
+    unit: string,
+    values: {
+        name: string,
+        data: number,
+    }[]
 }
 
 export const dashboardApi = {
@@ -127,6 +136,16 @@ export const dashboardApi = {
     },
     getHistoryViolations: async (code: string) => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/students/${code}`);
+
+        return data.data;
+    },
+    getViolationChart: async (schoolId: number, year: number) => {
+        const { data } = await http.get<BaseResponse<Chart>>(`${baseUrl}/monthly-violations`, {
+            params: {
+                schoolId,
+                year
+            }
+        });
 
         return data.data;
     },

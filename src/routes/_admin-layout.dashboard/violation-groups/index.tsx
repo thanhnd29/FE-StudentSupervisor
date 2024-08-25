@@ -213,12 +213,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Thêm nhóm vi phạm"
+                            btnLabel="Tạo"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Thêm nhóm vi phạm"
+                            title="Tạo nhóm vi phạm"
                         >
                             {(close) => {
                                 return (

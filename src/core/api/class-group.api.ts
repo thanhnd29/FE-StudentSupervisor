@@ -87,8 +87,8 @@ export const classGroupApi = {
 
         return list;
     },
-    getEnumSelectOptions: async (search?: string) => {
-        const classGroups = await classGroupApi.getAll();
+    getEnumSelectOptions: async (search?: string, schoolId?: number) => {
+        const classGroups = schoolId ? await classGroupApi.getBySchool(schoolId) : await classGroupApi.getAll();
 
         const list = [] as EnumListItem[];
 

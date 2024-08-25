@@ -185,7 +185,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     }}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Tạo năm học"
+                            btnLabel="Tạo"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,

@@ -5,7 +5,7 @@ import { Colors } from '../utils/colors.helper';
 import http from './http';
 
 export interface ICreateStudentSupervisorDto
-    extends Pick<StudentSupervisor, 'address' | 'code' | 'description' | 'supervisorName' | 'phone' | 'password' | 'studentInClassId' | 'schoolId'> { }
+    extends Pick<StudentSupervisor, 'address' | 'code' | 'description' | 'supervisorName' | 'phone' | 'password' | 'studentInClassId' | 'schoolId' | 'classId'> { }
 
 export interface IUpdateStudentSupervisorDto
     extends Pick<StudentSupervisor, 'address' | 'code' | 'description' | 'supervisorName' | 'phone' | 'password' | 'studentInClassId' | 'schoolId'> { }
@@ -14,14 +14,14 @@ const baseUrl = '/student-supervisors';
 
 export const studentSupervisorApi = {
     create: async (dto: ICreateStudentSupervisorDto) => {
-        const { data } = await http.post<StudentSupervisor>(`${baseUrl}/create-account`, dto);        
+        const { data } = await http.post<BaseResponse<StudentSupervisor>>(`${baseUrl}/create-account`, dto);        
 
-        return data;
+        return data.data;
     },
     update: async (id: number, dto: IUpdateStudentSupervisorDto) => {
-        const { data } = await http.put<StudentSupervisor>(`${baseUrl}/${id}`, dto);
+        const { data } = await http.put<BaseResponse<StudentSupervisor>>(`${baseUrl}/${id}`, dto);
 
-        return data;
+        return data.data;
     },
     getAll: async () => {
         const { data } = await http.get<ResponseList<StudentSupervisor>>(`${baseUrl}`, {

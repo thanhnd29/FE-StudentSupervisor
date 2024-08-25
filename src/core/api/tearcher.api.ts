@@ -1,4 +1,4 @@
-import { EnumListItem, ResponseList } from '../models/common';
+import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
 import { SchoolYear } from '../models/schoolYears';
 import { Teacher, TeacherStatus } from '../models/teacher';
 import { getColorWithId } from '../utils/api.helper';
@@ -11,14 +11,17 @@ const baseUrl = '/teachers';
 
 export const teacherApi = {
     create: async (dto: ICreateTeacherDto) => {
-        const { data } = await http.post<Teacher>(baseUrl, dto);
+        const { data } = await http.post<BaseResponse<Teacher>>(baseUrl, dto);
 
-        return data;
+        console.log(data.data);
+        
+
+        return data.data;
     },
     createSupervisors: async (dto: ICreateTeacherDto) => {
-        const { data } = await http.post<Teacher>(`${baseUrl}/supervisors`, dto);
+        const { data } = await http.post<BaseResponse<Teacher>>(`${baseUrl}/supervisors`, dto);
 
-        return data;
+        return data.data;
     },
     getAll: async () => {
         const { data } = await http.get<ResponseList<Teacher>>(`${baseUrl}`, {

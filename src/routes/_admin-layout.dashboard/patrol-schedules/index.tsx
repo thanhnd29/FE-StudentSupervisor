@@ -76,6 +76,11 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TEXT,
                         },
                         {
+                            key: 'time',
+                            title: 'Thời gian',
+                            type: FieldType.TEXT,
+                        },
+                        {
                             key: 'from',
                             title: 'Từ ngày',
                             type: FieldType.TIME_DATE,
@@ -236,7 +241,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Tạo lịch trực"
+                            btnLabel="Tạo"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
@@ -305,7 +310,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             userId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             slot: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            time: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            time: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             from: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                             supervisorId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -329,7 +334,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             userId: userId,
                                             name: "",
                                             slot: 0,
-                                            time: 0
+                                            time: ""
                                         }}
                                     />
                                 );

@@ -10,7 +10,10 @@ const baseUrl = '/patrol-schedules';
 
 export const patrolScheduleApi = {
     create: async (dto: ICreatePatrolScheduleDto) => {
-        const { data } = await http.post<PatrolSchedule>(`${baseUrl}`, dto);
+        const { data } = await http.post<PatrolSchedule>(`${baseUrl}`, {
+            ...dto,
+            time: dto.time.ticks
+        });
 
         console.log(data);
 

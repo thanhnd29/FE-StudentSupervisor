@@ -272,7 +272,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'supervisorName',
                                                 type: NKFormType.TEXT,
-                                                label: 'Tên sao đỏ',
+                                                label: 'Tên tài khoản',
                                             },
                                             {
                                                 name: 'code',
@@ -319,6 +319,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             supervisorName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             studentInClassId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
                                         onExtraSuccessAction={(data) => {
@@ -339,6 +340,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             supervisorName: '',
                                             schoolId: schoolId || 0,
                                             studentInClassId: 0,
+                                            classId: 0,
                                         }}
                                         isDebug
                                     />

@@ -16,7 +16,7 @@ export interface PatrolSchedule {
     name: string;
     slot: number;
     time: {
-        ticks: number;
+        ticks: string;
     }
     status: string;
     year: number;

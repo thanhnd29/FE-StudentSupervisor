@@ -22,6 +22,7 @@ import { NKRouter } from '../NKRouter';
 import { useNKRouter } from '../routing/hooks/NKRouter';
 import { RootState } from '../store';
 import { UserState } from '../store/user';
+import { DollarOutlined } from '@ant-design/icons';
 
 export interface IMenuItem {
     key: string;
@@ -81,6 +82,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             icon: <Grab className="h-4 w-4" />,
             onClick: () => {
                 router.push(NKRouter.registerSchool.list());
+            },
+        },
+        {
+            label: 'Doanh thu',
+            key: 'orders',
+            icon: <DollarOutlined className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.order.list());
             },
         },
     ];
@@ -281,6 +290,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //         router.push(NKRouter.registerSchool.list());
         //     },
         // },
+        {
+            label: 'Doanh thu',
+            key: 'orders',
+            icon: <DollarOutlined className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.order.list());
+            },
+        },
     ]
 
     const PrincipalMenu = [
@@ -331,6 +348,13 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             key: 'evaluation-tops',
             onClick: () => {
                 router.push(NKRouter.evaluationTop.list());
+            },
+        },
+        {
+            label: 'Biểu đồ vi phạm',
+            key: 'violation-chart',
+            onClick: () => {
+                router.push(NKRouter.violationTop.violationChart());
             },
         },
     ]

@@ -36,67 +36,73 @@ const Page = () => {
         fields={[
           {
             key: 'studentCode',
-            title: 'Code',
-            type: FieldType.TEXT,
-            span: 2
-          },
-          {
-            key: 'studentName',
-            title: 'Student',
-            type: FieldType.TEXT,
-            span: 2
-          },
-          {
-            key: 'violationName',
-            title: 'Vi phạm',
-            type: FieldType.TEXT,
-            span: 2
-          },
-          {
-            key: 'violationGroupName',
-            title: 'Nhóm vi phạm',
-            type: FieldType.TEXT,
-            span: 2
-          },
-          {
-            key: 'date',
-            title: 'Date',
-            type: FieldType.TIME_DATE,
-            span: 2
-          },
-          {
-            key: 'description',
-            title: 'Mô tả',
-            type: FieldType.MULTILINE_TEXT,
-            formatter(value) {
-              return value || 'N/A';
-            },
-            span: 2
-          },
-        ]}
-        record={violationQuery.data}
-        title="Violation Detail"
-      />
-      <FieldBuilder
-        fields={[
-          {
-            key: 'studentCode',
             title: 'Mã học sinh',
             type: FieldType.TEXT,
+            span: 2
           },
           {
             key: 'studentName',
             title: 'Tên học sinh',
             type: FieldType.TEXT,
+            span: 2
           },
           {
-            key: 'classId',
-            title: 'Lớp',
-            type: FieldType.BADGE_API,
-            apiAction(value) {
-              return classApi.getEnumSelectOptions({ search: value });
-            },
+            key: 'classCode',
+            title: 'Mã lớp',
+            type: FieldType.TEXT,
+            span: 2
           },
+          {
+            key: 'className',
+            title: 'Lớp',
+            type: FieldType.TEXT,
+            span: 2
+          },
+        ]}
+        record={violationQuery.data}
+        title="Thông tin học sinh"
+      />
+      <FieldBuilder
+        fields={[
+          {
+            key: 'createdBy',
+            title: 'Người tạo vi phạm',
+            type: FieldType.TEXT,
+          },
+          {
+            key: 'date',
+            title: 'Tạo ngày',
+            type: FieldType.TIME_DATE,
+          },
+        ]}
+        record={violationQuery.data}
+        title="Người tạo"
+      />
+      <FieldBuilder
+        fields={[
+          // {
+          //   key: 'studentCode',
+          //   title: 'Mã học sinh',
+          //   type: FieldType.TEXT,
+          // },
+          // {
+          //   key: 'studentName',
+          //   title: 'Tên học sinh',
+          //   type: FieldType.TEXT,
+          // },
+          // {
+          //   key: 'classId',
+          //   title: 'Lớp',
+          //   type: FieldType.BADGE_API,
+          //   apiAction(value) {
+          //     return classApi.getEnumSelectOptions({ search: value });
+          //   },
+          // },
+          // {
+          //   key: 'createdBy',
+          //   title: 'Người tạo vi phạm',
+          //   type: FieldType.TEXT,
+          // },
           {
             key: 'violationName',
             title: 'Vi phạm',
@@ -115,10 +121,15 @@ const Page = () => {
             title: 'Nhóm vi phạm',
             type: FieldType.TEXT,
           },
+          // {
+          //   key: 'date',
+          //   title: 'Ngày',
+          //   type: FieldType.TIME_DATE,
+          // },
           {
-            key: 'date',
-            title: 'Ngày',
-            type: FieldType.TIME_DATE,
+            key: 'imageUrls',
+            title: 'Hình ảnh',
+            type: FieldType.MULTIPLE_IMAGES,
           },
           {
             key: 'description',
@@ -129,23 +140,13 @@ const Page = () => {
             },
           },
           {
-            key: 'imageUrls',
-            title: 'Hình ảnh',
-            type: FieldType.MULTIPLE_IMAGES,
-          },
-          {
             key: 'createdAt',
-            title: 'Tạo ngày',
+            title: 'Ngày tạo',
             type: FieldType.TIME_DATE,
           },
           {
-            key: 'createdBy',
-            title: 'Người tạo',
-            type: FieldType.TEXT,
-          },
-          {
             key: 'updatedAt',
-            title: 'Cập nhật ngày',
+            title: 'Ngày cập nhật',
             type: FieldType.TIME_DATE,
           },
           {

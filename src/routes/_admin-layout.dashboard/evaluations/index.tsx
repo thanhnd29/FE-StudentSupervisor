@@ -197,7 +197,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     )}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Tạo bản đánh giá"
+                            btnLabel="Tạo"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,

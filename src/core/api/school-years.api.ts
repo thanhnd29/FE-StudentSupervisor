@@ -46,6 +46,7 @@ export const schoolYearApi = {
 
         if (highSchoolId) {
             schoolYears = schoolYears.filter((schoolYear) => schoolYear.schoolId === highSchoolId);
+            console.log(schoolYears);
         }
 
         let list: EnumListItem[] = schoolYears.map((schoolYear) => ({
@@ -58,6 +59,7 @@ export const schoolYearApi = {
         }));
 
         if (search) {
+            console.log(search);
             return list.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
         }
 

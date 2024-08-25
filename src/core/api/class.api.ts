@@ -14,10 +14,16 @@ export const classApi = {
     create: async (dto: ICreateClassDto) => {
         const { data } = await http.post<Class>(`${baseUrl}`, dto);
 
+        console.log(data);
+
         return data;
     },
-    update: async (dto: IUpdateClassDto) => {
-        const { data } = await http.put<Class>(`${baseUrl}`, dto);
+    update: async (id: number, dto: IUpdateClassDto) => {
+        const { data } = await http.put<Class>(`${baseUrl}`, dto, {
+            params: {
+                id
+            }
+        });
 
         return data;
     },
@@ -32,6 +38,16 @@ export const classApi = {
     },
     getBySchool: async (id: number) => {
         const { data } = await http.get<ResponseList<Class>>(`${baseUrl}/school/${id}`);
+
+        return data.data;
+    },
+    getBySupervisor: async (id: number) => {
+        const { data } = await http.get<ResponseList<Class>>(`${baseUrl}/by-supervisor`, {
+            params: {
+                userId: id,
+                year: Number(new Date().getFullYear())
+            }
+        });
 
         return data.data;
     },

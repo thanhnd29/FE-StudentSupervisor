@@ -170,12 +170,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     ]}
                     extraButtons={
                         <ModalBuilder
-                            btnLabel="Thêm loại vi phạm"
+                            btnLabel="Tạo"
                             btnProps={{
                                 type: 'primary',
                                 icon: <PlusOutlined />,
                             }}
-                            title="Thêm loại vi phạm"
+                            title="Tạo loại vi phạm"
                         >
                             {(close) => {
                                 return (
@@ -193,7 +193,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 type: NKFormType.SELECT_API_OPTION,
                                                 label: 'Nhóm vi phạm',
                                                 fieldProps: {
-                                                    apiAction: (value) => violationGroupApi.getEnumSelectOptions(value, schoolId),
+                                                    apiAction: (value) => violationGroupApi.getEnumSelectOptions(value, schoolId, true),
                                                 },
                                             },
                                             {
