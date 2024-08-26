@@ -73,7 +73,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
               size: 'small',
               icon: <EyeOutlined />,
             }}
-            title="Detail Violations"
+            title="Danh sách học sinh"
           >
             <TableBuilder
               sourceKey=""
@@ -87,12 +87,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                 },
                 {
                   key: 'studentCode',
-                  title: 'Code',
+                  title: 'Mã học sinh',
                   type: FieldType.TEXT,
                 },
                 {
                   key: 'fullName',
-                  title: 'Name',
+                  title: 'Tên',
                   type: FieldType.TEXT,
                 },
               ]}

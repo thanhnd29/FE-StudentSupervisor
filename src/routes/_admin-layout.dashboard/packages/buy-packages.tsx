@@ -5,10 +5,12 @@ import { FieldType } from "@/core/components/field/FieldDisplay";
 import FormBuilder from "@/core/components/form/FormBuilder";
 import { NKFormType } from "@/core/components/form/NKForm";
 import { NKConstant } from "@/core/NKConstant";
+import { toastError } from "@/core/utils/api.helper";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import Joi from "joi";
 import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 const Page = () => {
     const [packageId, setPackageId] = useState(1);
@@ -48,7 +50,7 @@ const Page = () => {
                             onChangeExtra: (value) => setPackageId(value),
                         }
                     ]}
-                    onExtraErrorAction={() => { }}
+                    onExtraErrorAction={toastError}
                     onExtraSuccessAction={(data) => {
                         let windowWidth = 600;
                         let windowHeight = 800;

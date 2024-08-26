@@ -7,7 +7,7 @@ export const MonthList: EnumListItem[] = [
         label: 'all',
         color: Colors.BLUE,
         id: 0,
-        name: 'all',
+        name: 'Tất cả',
         slug: 'all',
     },
     {
@@ -114,7 +114,7 @@ export const WeekList: EnumListItem[] = [
         label: 'all',
         color: Colors.BLUE,
         id: 0,
-        name: 'all',
+        name: 'Tất cả',
         slug: 'all',
     },
     {

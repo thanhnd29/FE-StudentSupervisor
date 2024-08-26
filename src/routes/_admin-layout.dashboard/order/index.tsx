@@ -27,14 +27,16 @@ const Page: React.FunctionComponent<PageProps> = () => {
         return orderApi.getByAdmin()
     };
 
-    useDocumentTitle('Doanh thu');
+    const title = isAdmin ? "Doanh thu" : "Hóa đơn"
+
+    useDocumentTitle(title);
 
     return (
         <div>
             <div className="">
                 <TableBuilder
                     sourceKey="orders"
-                    title="Doanh thu"
+                    title={title}
                     columns={[
                         {
                             key: 'orderId',
@@ -55,16 +57,16 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         {
                             key: 'total',
                             title: 'Tổng tiền',
-                            type: FieldType.TEXT,
+                            type: FieldType.NUMBER,
                         },
                         {
                             key: 'amountPaid',
-                            title: 'Số tiền phải trả',
-                            type: FieldType.TEXT,
+                            title: 'Số tiền đã trả',
+                            type: FieldType.NUMBER,
                         },
                         {
                             key: 'amountRemaining',
-                            title: 'Số tiền hoàn trả',
+                            title: 'Số tiền chưa trả',
                             type: FieldType.NUMBER,
                         },
                         {
@@ -73,15 +75,10 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             type: FieldType.TIME_DATE,
                         },
                         {
-                          key: 'status',
-                          title: 'Trạng thái',
-                          type: FieldType.BADGE_API,
-                          apiAction: orderApi.getEnumStatuses
-                        },
-                        {
-                            key: 'totalRevenue',
-                            title: 'Thành tiền',
-                            type: FieldType.TEXT,
+                            key: 'status',
+                            title: 'Trạng thái',
+                            type: FieldType.BADGE_API,
+                            apiAction: orderApi.getEnumStatuses
                         },
                     ]}
                     queryApi={getByRole}
@@ -92,5 +89,5 @@ const Page: React.FunctionComponent<PageProps> = () => {
 };
 
 export const Route = createFileRoute('/_admin-layout/dashboard/order/')({
-  component: Page,
+    component: Page,
 })

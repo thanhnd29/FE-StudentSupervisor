@@ -13,20 +13,25 @@ const baseUrl = '/student-in-classes';
 
 export const studentInClassApi = {
     create: async (dto: ICreateStudentInClassDto) => {
-        const { data } = await http.post<StudentInClass>(`${baseUrl}`, dto);
+        const { data } = await http.post<StudentInClass>(`${baseUrl}`, {
+            ...dto,
+            name: dto.studentName,
+            code: dto.studentCode
+        });
 
         return data;
     },
     update: async (dto: IUpdateStudentInClassDto) => {
-        const { data } = await http.put<StudentInClass>(`${baseUrl}`, dto);
+        const { data } = await http.put<StudentInClass>(`${baseUrl}`, {
+            ...dto,
+            name: dto.studentName,
+            code: dto.studentCode
+        });
 
         return data;
     },
     changeClass: async (dto: IChangeClassDto) => {
-        const { data } = await http.post<StudentInClass>(`${baseUrl}/change-class`, {
-            studentInClassId: dto.studentInClassId,
-            newClassId: dto.classId
-        });
+        const { data } = await http.post<StudentInClass>(`${baseUrl}/change-class?studentInClassId=${dto.studentInClassId}&newClassId=${dto.classId}`);
 
         return data;
     },

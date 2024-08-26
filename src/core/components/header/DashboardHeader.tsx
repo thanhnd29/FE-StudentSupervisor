@@ -86,7 +86,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ setCollapsed }) => {
                             // },
                             {
                                 type: 'item',
-                                label: 'Profile',
+                                label: 'Hồ sơ',
                                 key: 'profile',
                                 onClick: () => {
                                     router.push(NKRouter.auth.view());
@@ -94,7 +94,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ setCollapsed }) => {
                             },
                             {
                                 type: 'item',
-                                label: 'Update',
+                                label: 'Cập nhật',
                                 key: 'update',
                                 onClick: () => {
                                     router.push(NKRouter.auth.edit());
@@ -102,7 +102,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ setCollapsed }) => {
                             },
                             {
                                 type: 'item',
-                                label: 'Logout',
+                                label: 'Đăng xuất',
                                 key: 'logout',
                                 onClick: () => {
                                     logoutMutation.mutate();

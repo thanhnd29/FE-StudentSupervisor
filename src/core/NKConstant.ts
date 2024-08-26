@@ -13,6 +13,7 @@ export const NKConstant = {
         'string.base': 'là một chuỗi kí tự',
         'string.min': 'sử dụng {#limit} ký tự trở lên',
         'string.max': 'sử dụng {#limit} ký tự trở xuống',
+        'string.length': 'chỉ được {#limit} số',
         'string.alphanum': 'bao gồm cả chữ và số',
         'string.email': 'email không hợp lệ',
         'string.pattern.base': 'theo mẫu',

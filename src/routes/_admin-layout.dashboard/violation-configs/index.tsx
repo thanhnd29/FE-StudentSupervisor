@@ -104,7 +104,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             title=""
                                             schema={{
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                minusPoints: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                minusPoints: Joi.number().required().min(1).max(30).messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={(data) => {

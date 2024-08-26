@@ -238,7 +238,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                         })
                                                     ,
                                                 },
-                                                onChangeExtra: (value) => setYearT(value)
+                                                onChangeExtra: (value) => {
+                                                    setYearT(value)
+                                                    queryClient.invalidateQueries({
+                                                        queryKey: ['options', 'classId'],
+                                                    });
+                                                }
                                             },
                                             {
                                                 name: 'from',
@@ -263,6 +268,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                             yearId: year ?? 0,
                                                         });
                                                     },
+                                                    queryKey: "classId",
                                                     disabled: !yearT,
                                                 },
                                             },

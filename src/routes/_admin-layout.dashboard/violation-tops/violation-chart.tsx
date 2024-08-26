@@ -76,12 +76,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
         isButton={false}
       />
       <NKChartLabel
-        label="Total Violations"
+        label="Tổng số vi phạm"
         value={data.values.reduce((acc, item) => acc + item.data, 0)}
         color="white"
         prefix={
           <ChartBasicLine
-            title={data.title}
+            title="Số lượng vi phạm theo tháng"
             values={data.values}
             unit={data.unit}
           />

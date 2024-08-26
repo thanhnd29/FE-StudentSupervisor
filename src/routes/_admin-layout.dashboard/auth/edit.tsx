@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import { NKConstant } from '@/core/NKConstant';
 
 const Page = () => {
-  const { name, phone, password, address, userId, schoolId, code } = useSelector<RootState, UserState>(
+  const { name, phone, password, address, userId, schoolId, code, isAdmin } = useSelector<RootState, UserState>(
     (state: RootState) => state.user,
   );
 
@@ -21,7 +21,6 @@ const Page = () => {
   return (
     <div>
       <FormBuilder<IUpdateAuthDto>
-        className="!p-0"
         apiAction={(dto) => userApi.update(record.userId.toString(), {
           schoolId: record.schoolId,
           code: record.code,
@@ -36,39 +35,41 @@ const Page = () => {
         fields={[
           {
             name: 'name',
-            label: 'Name',
+            label: 'Tên',
             type: NKFormType.TEXT,
           },
           {
             name: 'phone',
-            label: 'Phone',
+            label: 'Số điện thoại',
             type: NKFormType.TEXT,
           },
           {
             name: 'address',
-            label: 'Address',
+            label: 'Địa chỉ',
             type: NKFormType.TEXT,
           },
           {
             name: 'password',
-            label: 'Password',
+            label: 'Mật khẩu',
             type: NKFormType.PASSWORD,
           },
         ]}
-        title="Update Profile"
+        title="Cập nhật hồ sơ"
         schema={{
           name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-          phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+          phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
           address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
           password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
         }}
         onExtraErrorAction={toastError}
-        onExtraSuccessAction={() => {
+        onExtraSuccessAction={(data) => {
           queryClient.invalidateQueries({
             queryKey: ['account'],
           });
-          toast.success('Update account successfully');
+          
+          toast.success(data.message || "successful");
         }}
+        isButton={!isAdmin}
       />
     </div>
   );

@@ -95,7 +95,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 description: record.description,
                                                 name: record.name,
                                                 price: record.price,
-                                                packageTypeId: record.packageTypeId,
                                             }}
                                             fields={[
                                                 {
@@ -128,8 +127,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             schema={{
                                                 description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                price: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                packageTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                price: Joi.number().required().min(1).messages(NKConstant.MESSAGE_FORMAT),
                                             }}
                                             onExtraErrorAction={toastError}
                                             onExtraSuccessAction={(data) => {
@@ -221,8 +219,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         schema={{
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            price: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            packageTypeId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            price: Joi.number().required().min(1).messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         onExtraErrorAction={toastError}
                                         onExtraSuccessAction={(data) => {
@@ -238,7 +235,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             description: '',
                                             name: '',
                                             price: 0,
-                                            packageTypeId: 0,
                                         }}
                                     />
                                 );

@@ -252,7 +252,12 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                             year: Number(new Date().getFullYear())
                                                         }),
                                                 },
-                                                onChangeExtra: (value) => setClassT(value)
+                                                onChangeExtra: (value) => {
+                                                    setClassT(value)
+                                                    queryClient.invalidateQueries({
+                                                        queryKey: ['options', 'studentInClassId'],
+                                                    });
+                                                }
                                             },
                                             {
                                                 label: 'Học sinh',
@@ -266,6 +271,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                             classId: classId
                                                         });
                                                     },
+                                                    queryKey: "studentInClassId",
                                                     disabled: !classT,
                                                 },
                                             },
@@ -314,7 +320,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
                                             code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             supervisorName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),

@@ -120,6 +120,9 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     scheduleId: record.scheduleId,
                                                     from: dto.from.toISOString(),
                                                     to: dto.to.toISOString(),
+                                                    time: {
+                                                        ticks: dto.time
+                                                    }
                                                 });
                                             }}
                                             defaultValues={{
@@ -174,16 +177,16 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 {
                                                     name: 'time',
                                                     type: NKFormType.TEXT,
-                                                    label: 'Thời gian',
+                                                    label: 'Thời gian *Ví dụ: 7:00',
                                                 },
-                                                {
-                                                    name: 'status',
-                                                    type: NKFormType.SELECT_API_OPTION,
-                                                    label: 'Trạng thái',
-                                                    fieldProps: {
-                                                        apiAction: (value) => patrolScheduleApi.getEnumStatuses(value),
-                                                    },
-                                                },
+                                                // {
+                                                //     name: 'status',
+                                                //     type: NKFormType.SELECT_API_OPTION,
+                                                //     label: 'Trạng thái',
+                                                //     fieldProps: {
+                                                //         apiAction: (value) => patrolScheduleApi.getEnumStatuses(value),
+                                                //     },
+                                                // },
                                             ]}
                                             title=""
                                             schema={{
@@ -194,7 +197,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 userId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 slot: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                time: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                time: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 status: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             }}
@@ -302,7 +305,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             {
                                                 name: 'time',
                                                 type: NKFormType.TEXT,
-                                                label: 'Thời gian',
+                                                label: 'Thời gian *Ví dụ: 7:00',
                                             },
                                         ]}
                                         title=""

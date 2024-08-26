@@ -64,7 +64,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             title: 'Giới tính',
                             type: FieldType.CUSTOM,
                             formatter: (record) => {
-                                return record?.sex ? 'Female' : 'Male';
+                                return record?.sex ? 'Nữ' : 'Nam';
                             },
                         },
                         {
@@ -170,7 +170,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
                                                 schoolAdminId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -267,7 +267,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
                                                 schoolAdminId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),

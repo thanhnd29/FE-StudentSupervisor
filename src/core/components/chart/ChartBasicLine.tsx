@@ -24,6 +24,7 @@ const ChartBasicLine: React.FC<ChartBasicLineProps> = ({ title, values, unit }) 
                                 return formatNumber(value);
                             },
                         },
+                        cssClass: "text-black"
                     },
                     chart: {
                         height: 350,
@@ -41,6 +42,11 @@ const ChartBasicLine: React.FC<ChartBasicLineProps> = ({ title, values, unit }) 
                     title: {
                         text: title,
                         align: 'left',
+                        style: {
+                            fontFamily: 'Helvetica',
+                            fontWeight: 'bold',
+                            fontSize: '20px'
+                        }
                     },
                     grid: {
                         row: {

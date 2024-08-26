@@ -4,8 +4,8 @@ import { getColorWithId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreatePackageDto extends Pick<Package, 'description' | 'name' | 'price' | 'packageTypeId'> {}
-export interface IUpdatePackageDto extends Pick<Package, 'description' | 'name' | 'price' | 'packageTypeId'> {}
+export interface ICreatePackageDto extends Pick<Package, 'description' | 'name' | 'price'> { }
+export interface IUpdatePackageDto extends Pick<Package, 'description' | 'name' | 'price'> { }
 
 const baseUrl = '/packages';
 
@@ -16,7 +16,17 @@ export const packageApi = {
         return data;
     },
     update: async (id: number, dto: IUpdatePackageDto) => {
-        const { data } = await http.put<Package>(`${baseUrl}/${id}`, dto);
+        console.log(id, dto);
+
+
+        const { data } = await http.put<Package>(`${baseUrl}/${id}`, dto, {
+            params: {
+                id
+            }
+        });
+
+        console.log(data);
+
 
         return data;
     },

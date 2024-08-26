@@ -108,7 +108,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     endDate: new Date(record.endDate),
                                                     startDate: new Date(record.startDate),
                                                     schoolId: record.schoolId,
-                                                    year: new Date(record.year),
+                                                    year: new Date().setUTCFullYear(record.year),
                                                 }}
                                                 schema={{
                                                     endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),

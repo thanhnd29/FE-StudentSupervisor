@@ -218,11 +218,7 @@ const StudentInClass = ({ schoolIdT }: { schoolIdT?: number }) => {
                                     return (
                                         <FormBuilder
                                             className="!p-0"
-                                            apiAction={(dto) =>
-                                                studentInClassApi.changeClass({
-                                                    ...dto,
-                                                })
-                                            }
+                                            apiAction={studentInClassApi.changeClass}
                                             defaultValues={{
                                                 classId: record.classId,
                                                 studentInClassId: record.studentInClassId,

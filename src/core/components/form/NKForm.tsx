@@ -31,6 +31,7 @@ export enum NKFormType {
     DATE_MONTH = 'date_month',
     DATE_QUARTER = 'date_quarter',
     DATE_YEAR = 'date_year',
+    TIME = 'time',
     SELECT_API_OPTION = 'select_api_option',
     SELECT_MULTI_API_OPTION = 'select_multi_api_option',
     SELECT_ICON = 'select_icon',
@@ -58,6 +59,7 @@ export type FieldProps = NKFieldWrapperProps &
         | NKFieldsProps<NKFormType.DATE_MONTH, NKDatePickerProps>
         | NKFieldsProps<NKFormType.DATE_QUARTER, NKDatePickerProps>
         | NKFieldsProps<NKFormType.DATE_YEAR, NKDatePickerProps>
+        | NKFieldsProps<NKFormType.TIME, NKDatePickerProps>
         | NKRequireFieldsProps<NKFormType.SELECT_API_OPTION, NKSelectApiOptionProps>
         | NKFieldsProps<NKFormType.UPLOAD_IMAGE, NKUploadImageProps>
         | NKFieldsProps<NKFormType.MULTI_UPLOAD_IMAGE, NKUploadMultipleImageProps>
@@ -105,6 +107,8 @@ const NKForm: React.FC<FieldProps> = ({ label, name, type, fieldProps, ...rest }
             return <NKDatePicker name={name} label={label} picker="quarter" {...fieldProps} {...rest} />;
         case NKFormType.DATE_YEAR:
             return <NKDatePicker name={name} label={label} picker="year" {...fieldProps} {...rest} />;
+        case NKFormType.TIME:
+            return <NKDatePicker name={name} label={label} picker="time" {...fieldProps} {...rest} />;
         case NKFormType.UPLOAD_IMAGE:
             return <NKUploadImage name={name} label={label} maxCount={1} {...fieldProps} {...rest} />;
         case NKFormType.NUMBER:

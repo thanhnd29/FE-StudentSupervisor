@@ -21,7 +21,10 @@ export const patrolScheduleApi = {
     },
 
     update: async (dto: IUpdatePatrolScheduleDto) => {
-        const { data } = await http.put<PatrolSchedule>(`${baseUrl}`, dto);
+        const { data } = await http.put<PatrolSchedule>(`${baseUrl}`, {
+            ...dto,
+            time: dto.time.ticks
+        });
 
         return data;
     },

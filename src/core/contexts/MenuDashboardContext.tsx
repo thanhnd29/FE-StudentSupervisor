@@ -22,7 +22,7 @@ import { NKRouter } from '../NKRouter';
 import { useNKRouter } from '../routing/hooks/NKRouter';
 import { RootState } from '../store';
 import { UserState } from '../store/user';
-import { DollarOutlined } from '@ant-design/icons';
+import { BarChartOutlined, DollarOutlined, ExclamationCircleOutlined, LineChartOutlined, TeamOutlined, TrophyOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
 
 export interface IMenuItem {
     key: string;
@@ -291,7 +291,7 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         //     },
         // },
         {
-            label: 'Doanh thu',
+            label: 'Hóa đơn',
             key: 'orders',
             icon: <DollarOutlined className="h-4 w-4" />,
             onClick: () => {
@@ -302,22 +302,33 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
 
     const PrincipalMenu = [
         {
-            label: 'Danh sách vi phạm trong năm',
-            key: 'violation-in-week',
+            label: 'Biểu đồ vi phạm',
+            key: 'violation-chart',
+            icon: <LineChartOutlined className="h-4 w-4" />,
             onClick: () => {
-                router.push(NKRouter.violationTop.inWeek());
+                router.push(NKRouter.violationTop.violationChart());
             },
         },
         {
-            label: 'Danh sách vi phạm theo lớp',
-            key: 'violation-in-class',
+            label: 'Xếp hạng thi đua',
+            key: 'evaluation-tops',
+            icon: <TrophyOutlined className="h-4 w-4" />,
             onClick: () => {
-                router.push(NKRouter.violationTop.inClass());
+                router.push(NKRouter.evaluationTop.list());
+            },
+        },
+        {
+            label: 'Top 5 học sinh vi phạm',
+            key: 'violation-top-student',
+            icon: <UserOutlined className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.violationTop.topStudent());
             },
         },
         {
             label: 'Top 5 vi phạm thường xuyên',
             key: 'violation-in-year',
+            icon: <ExclamationCircleOutlined className="h-4 w-4" />,
             onClick: () => {
                 router.push(NKRouter.violationTop.inYear());
             },
@@ -325,36 +336,25 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
         {
             label: 'Lớp vi phạm nhiều',
             key: 'violation-top-class',
+            icon: <TeamOutlined className="h-4 w-4" />,
             onClick: () => {
                 router.push(NKRouter.violationTop.topClass());
             },
         },
         {
-            label: 'Top 5 học sinh vi phạm',
-            key: 'violation-top-student',
-            onClick: () => {
-                router.push(NKRouter.violationTop.topStudent());
-            },
-        },
-        {
             label: 'Lớp có số lượng vi phạm nhiều',
             key: 'violation-top-studentInClass',
+            icon: <BarChartOutlined className="h-4 w-4" />,
             onClick: () => {
                 router.push(NKRouter.violationTop.topStudentInClass());
             },
         },
         {
-            label: 'Xếp hạng thi đua',
-            key: 'evaluation-tops',
+            label: 'Danh sách vi phạm theo lớp',
+            key: 'violation-in-class',
+            icon: <UnorderedListOutlined className="h-4 w-4" />,
             onClick: () => {
-                router.push(NKRouter.evaluationTop.list());
-            },
-        },
-        {
-            label: 'Biểu đồ vi phạm',
-            key: 'violation-chart',
-            onClick: () => {
-                router.push(NKRouter.violationTop.violationChart());
+                router.push(NKRouter.violationTop.inClass());
             },
         },
     ]

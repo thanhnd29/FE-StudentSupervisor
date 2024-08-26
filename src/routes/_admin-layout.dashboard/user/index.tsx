@@ -187,7 +187,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             title=""
                                             schema={{
                                                 name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
                                                 address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
@@ -311,7 +311,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         title=""
                                         schema={{
                                             name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
                                             address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             password: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),

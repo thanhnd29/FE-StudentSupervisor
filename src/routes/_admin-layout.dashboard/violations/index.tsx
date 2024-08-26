@@ -137,7 +137,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     }}
                                 />
                             </div>
-                            {isSupervisor && (
+                            {/* {isSupervisor && (
                                 <div className="col-span-1">
                                     <Button
                                         icon={<EditOutlined />}
@@ -147,7 +147,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                         }}
                                     />
                                 </div>
-                            )}
+                            )} */}
                             {isSupervisor && (
                                 <div className="col-span-1">
                                     <CTAButton

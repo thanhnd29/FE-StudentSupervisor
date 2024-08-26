@@ -103,7 +103,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                     code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     imageUrl: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                     name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                                    phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                    phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
                                                     webUrl: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                                 }}
                                                 fields={[
@@ -218,7 +218,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             code: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             imageUrl: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                             name: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            phone: Joi.string().required().length(9).messages(NKConstant.MESSAGE_FORMAT),
                                             webUrl: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         fields={[
