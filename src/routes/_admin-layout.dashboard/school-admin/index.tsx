@@ -274,7 +274,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             },
                                             {
                                                 name: 'phone',
-                                                label: 'Số điện thoại (*Nếu số điện thoại là 0xx thì nhập là 84xx)',
+                                                label: 'Số điện thoại',
                                                 type: NKFormType.TEXT,
                                             },
                                             {
