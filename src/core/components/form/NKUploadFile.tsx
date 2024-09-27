@@ -3,7 +3,7 @@ import * as React from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { useMutation } from '@tanstack/react-query';
 import { Upload, UploadProps } from 'antd';
-import { CompoundedComponent } from 'antd/lib/float-button/interface';
+// import { CompoundedComponent } from 'antd/lib/float-button/interface';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FaRegFile } from 'react-icons/fa';
 

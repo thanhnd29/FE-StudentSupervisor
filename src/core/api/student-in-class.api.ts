@@ -21,6 +21,15 @@ export const studentInClassApi = {
 
         return data;
     },
+    import: async (file: File | any) => {
+        const { data } = await http.post<StudentInClass>(`${baseUrl}/import-students`, file, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        return data;
+    },
     update: async (dto: IUpdateStudentInClassDto) => {
         const { data } = await http.put<StudentInClass>(`${baseUrl}`, {
             ...dto,

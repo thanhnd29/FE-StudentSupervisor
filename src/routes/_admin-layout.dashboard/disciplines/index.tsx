@@ -26,6 +26,9 @@ import { UserState } from '@/core/store/user';
 import { FilterComparator } from '@/core/models/common';
 import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 import { NKRouter } from '@/core/NKRouter';
+import { useEffect, useState } from 'react';
+import { MonthList, SemesterList, WeekList } from '@/core/models/date';
+import { schoolYearApi } from '@/core/api/school-years.api';
 
 interface PageProps { }
 
@@ -36,19 +39,31 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
+    const today = new Date()
+
+    const [year, setYear] = useState<number>(Number(today.getFullYear()))
+    const [month, setMonth] = useState<number>(0)
+    const [semesterName, setSemesterName] = useState<string>("")
+    const [week, setWeek] = useState<number>(0)
+
     const getByRole = () => {
         if (schoolId) {
             if (isTeacher) {
-                return disciplineApi.getByTeacher(userId);
+                return disciplineApi.getByTeacher(userId, year, semesterName, month, week);
             }
             if (isSupervisor) {
-                return disciplineApi.getBySupervisor(userId);
+                return disciplineApi.getBySupervisor(userId, year, semesterName, month, week);
             }
-            return disciplineApi.getBySchool(schoolId)
+            return disciplineApi.getBySchool(schoolId, year, semesterName, month, week)
         }
         return disciplineApi.getAll()
     };
 
+    useEffect(() => {
+        queryClient.invalidateQueries({
+            queryKey: ['disciplines'],
+        });
+    }, [year, month, week, semesterName, queryClient]);
 
     useDocumentTitle('Kỷ luật');
 
@@ -105,8 +120,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             apiAction: disciplineApi.getEnumStatuses
                         },
                     ]}
-                    isSelectYear={true}
-                    schoolId={schoolId}
                     queryApi={getByRole}
                     actionColumns={(record) => (
                         <div className="grid grid-cols-2 gap-2">
@@ -144,7 +157,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                             return (
                                                 <FormBuilder<IUpdateDisciplineDto>
                                                     className="!p-0"
-                                                    apiAction={(dto) => disciplineApi.update(record.disciplineId ,dto)}
+                                                    apiAction={(dto) => disciplineApi.update(record.disciplineId, dto)}
                                                     defaultValues={{
                                                         startDate: record.startDate,
                                                         endDate: record.endDate,
@@ -354,111 +367,88 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             apiAction: disciplineApi.getEnumStatuses
                         },
                     ]}
-                // extraButtons={
-                //     <ModalBuilder
-                //         btnLabel="Create Discipline"
-                //         btnProps={{
-                //             type: 'primary',
-                //             icon: <PlusOutlined />,
-                //         }}
-                //         title="Create Discipline"
-                //     >
-                //         {(close) => {
-                //             return (
-                //                 <FormBuilder
-                //                     className="!p-0"
-                //                     apiAction={(dto) =>
-                //                         disciplineApi.create({
-                //                             ...dto,
-                //                             startDate: dto.startDate.toISOString(),
-                //                             endDate: dto.endDate.toISOString(),
-                //                         })
-                //                     }
-                //                     fields={[
-                //                         {
-                //                             name: 'studentName',
-                //                             type: NKFormType.TEXT,
-                //                             label: 'Name',
-                //                         },
-                //                         {
-                //                             name: 'studentCode',
-                //                             type: NKFormType.TEXT,
-                //                             label: 'Code',
-                //                         },
-                //                         {
-                //                             name: 'startDate',
-                //                             type: NKFormType.DATE,
-                //                             label: 'Start Date',
-                //                         },
-                //                         {
-                //                             name: 'endDate',
-                //                             type: NKFormType.DATE,
-                //                             label: 'End Date',
-                //                         },
-                //                         {
-                //                             name: 'description',
-                //                             type: NKFormType.TEXTAREA,
-                //                             label: 'Description',
-                //                         },
-                //                         {
-                //                             name: 'violationId',
-                //                             type: NKFormType.SELECT_API_OPTION,
-                //                             label: 'Violation',
-                //                             fieldProps: {
-                //                                 apiAction: (value) => violationsApi.getEnumSelectOptions(value),
-                //                             },
-                //                         },
-                //                         {
-                //                             name: 'pennaltyId',
-                //                             type: NKFormType.SELECT_API_OPTION,
-                //                             label: 'Pennalty',
-                //                             fieldProps: {
-                //                                 apiAction: (value) => penaltyApi.getEnumSelectOptions(value),
-                //                             },
-                //                         },
-                //                     ]}
-                //                     title=""
-                //                     schema={{
-                //                         description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                //                         studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                //                         endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                //                         studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                //                         pennaltyId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                //                         startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                //                         violationId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                //                     }}
-                //                     onExtraErrorAction={toastError}
-                //                     onExtraSuccessAction={(data) => {
-                //                         queryClient.invalidateQueries({
-                //                             queryKey: ['disciplines'],
-                //                         });
-
-                //                         close();
-
-                //                         toast.success(data.message || 'Successful');
-                //                     }}
-                //                     defaultValues={{
-                //                         studentCode: '',
-                //                         description: '',
-                //                         endDate: moment(new Date()).add(1, 'days').toDate(),
-                //                         startDate: new Date(),
-                //                         studentName: '',
-                //                         violationId: 0,
-                //                         pennaltyId: 0,
-                //                     }}
-                //                     beforeSubmit={(dto) => {
-                //                         if (moment(dto.startDate).isAfter(dto.endDate)) {
-                //                             toast.error('Start Date must be before End Date');
-                //                             return false;
-                //                         }
-
-                //                         return true;
-                //                     }}
-                //                 />
-                //             );
-                //         }}
-                //     </ModalBuilder>
-                // }
+                    extraButtons={
+                        <div className="flex flex-row items-center w-full">
+                            <FormBuilder
+                                title=""
+                                apiAction={() => { }}
+                                defaultValues={{
+                                    year: year,
+                                    month: month,
+                                    weekNumber: week ?? 0,
+                                    semesterName: "Học kỳ 1",
+                                    school: schoolId
+                                }}
+                                schema={{
+                                    year: Joi.number(),
+                                    month: Joi.number(),
+                                    weekNumber: Joi.number(),
+                                    semesterName: Joi.string(),
+                                    school: Joi.number()
+                                }}
+                                isButton={false}
+                                className="flex items-center w-[40rem] !bg-transparent"
+                                fields={[
+                                    {
+                                        name: 'year',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: (value) => (
+                                                schoolYearApi.getEnumSelectYear({ search: value, highSchoolId: schoolId })
+                                            )
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setYear(Number(value))
+                                        }
+                                    },
+                                    {
+                                        name: 'semesterName',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await SemesterList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            ),
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setSemesterName(value)
+                                        }
+                                    },
+                                    {
+                                        name: 'month',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await MonthList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            )
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setMonth(Number(value))
+                                        }
+                                    },
+                                    {
+                                        name: 'weekNumber',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await WeekList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            ),
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setWeek(Number(value))
+                                        }
+                                    },
+                                ]}
+                            />
+                        </div>
+                    }
                 />
             </div>
         </div>

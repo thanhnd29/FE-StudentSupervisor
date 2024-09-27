@@ -211,7 +211,6 @@ const TableBuilder: React.FC<TableBuilderProps> = ({
                                         />
                                     );
                                 })}
-
                                 <div className="flex gap-4">
                                     <Button
                                         className="w-full"

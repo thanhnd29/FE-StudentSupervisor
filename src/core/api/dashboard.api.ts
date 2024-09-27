@@ -11,7 +11,7 @@ export const validNumber = (number: number | string): string | number => {
     return number;
 }
 
-const validString = (string: number | string): string | number => {
+export const validString = (string: number | string): string | number => {
     if (typeof string === 'number') {
         return "";
     }
@@ -53,11 +53,12 @@ export const dashboardApi = {
 
         return data.data;
     },
-    getFrequentViolations: async (schoolId: number, year: number, month: number, weekNumber: number) => {
+    getFrequentViolations: async (schoolId: number, year: number, semesterName: string, month: number, weekNumber: number) => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/top-5-frequent-violations`, {
             params: {
                 schoolId: schoolId,
                 year: year,
+                semesterName: semesterName,
                 month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
@@ -65,11 +66,12 @@ export const dashboardApi = {
 
         return data.data;
     },
-    getClassesMostViolation: async (schoolId: number, year: number, month: number, weekNumber: number) => {
+    getClassesMostViolation: async (schoolId: number, year: number, semesterName: string, month: number, weekNumber: number) => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/classes-most-violations`, {
             params: {
                 schoolId: schoolId,
                 year: year,
+                semesterName: semesterName,
                 month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
@@ -77,11 +79,12 @@ export const dashboardApi = {
 
         return data.data;
     },
-    getTopStudentsMostViolations: async (schoolId: number, year: number, month: number, weekNumber: number) => {
+    getTopStudentsMostViolations: async (schoolId: number, year: number, semesterName: string, month: number, weekNumber: number) => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/top-5-students-most-violations`, {
             params: {
                 schoolId: schoolId,
                 year: year,
+                semesterName: semesterName,
                 month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }
@@ -89,11 +92,12 @@ export const dashboardApi = {
 
         return data.data;
     },
-    getTopClassStudentsMostViolations: async (schoolId: number, year: number, month: number, weekNumber: number) => {
+    getTopClassStudentsMostViolations: async (schoolId: number, year: number, semesterName: string, month: number, weekNumber: number) => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/class-with-most-students-violations`, {
             params: {
                 schoolId: schoolId,
                 year: year,
+                semesterName: semesterName,
                 month: validNumber(month),
                 weekNumber: validNumber(weekNumber)
             }

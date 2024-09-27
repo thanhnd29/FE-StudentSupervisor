@@ -23,6 +23,7 @@ import { useNKRouter } from '../routing/hooks/NKRouter';
 import { RootState } from '../store';
 import { UserState } from '../store/user';
 import { BarChartOutlined, DollarOutlined, ExclamationCircleOutlined, LineChartOutlined, TeamOutlined, TrophyOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
+import { MdCalendarToday } from 'react-icons/md';
 
 export interface IMenuItem {
     key: string;
@@ -141,6 +142,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
             icon: <CalendarRange className="h-4 w-4" />,
             onClick: () => {
                 router.push(NKRouter.schoolYear.list());
+            },
+        },
+        {
+            label: 'Học kỳ',
+            key: 'semester',
+            icon: <MdCalendarToday className="h-4 w-4" />,
+            onClick: () => {
+                router.push(NKRouter.semester.list());
             },
         },
         // {
@@ -349,14 +358,14 @@ export const MenuDashboardProvider: React.FC<MenuDashboardProviderProps> = ({ ch
                 router.push(NKRouter.violationTop.topStudentInClass());
             },
         },
-        {
-            label: 'Danh sách vi phạm theo lớp',
-            key: 'violation-in-class',
-            icon: <UnorderedListOutlined className="h-4 w-4" />,
-            onClick: () => {
-                router.push(NKRouter.violationTop.inClass());
-            },
-        },
+        // {
+        //     label: 'Danh sách vi phạm theo lớp',
+        //     key: 'violation-in-class',
+        //     icon: <UnorderedListOutlined className="h-4 w-4" />,
+        //     onClick: () => {
+        //         router.push(NKRouter.violationTop.inClass());
+        //     },
+        // },
     ]
 
     const SupervisorMenu = [

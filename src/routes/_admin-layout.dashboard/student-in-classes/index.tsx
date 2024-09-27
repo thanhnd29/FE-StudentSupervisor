@@ -262,140 +262,183 @@ const Page = () => {
                 },
             ]}
             extraButtons={
-                <ModalBuilder
-                    btnLabel="Thêm học sinh"
-                    btnProps={{
-                        type: 'primary',
-                        icon: <PlusOutlined />,
-                    }}
-                    title="Thêm học sinh"
-                >
-                    {(close) => {
-                        return (
-                            <FormBuilder
-                                className="!p-0"
-                                beforeSubmit={(dto) => {
-                                    if (moment(dto.startDate).isAfter(dto.endDate)) {
-                                        toast.error('Start Date must be before end date');
-                                        return false;
-                                    }
-
-                                    return true;
-                                }}
-                                apiAction={(dto) =>
-                                    studentInClassApi.create({
-                                        ...dto,
-                                        enrollDate: dto.enrollDate.toISOString(),
-                                        birthday: dto.birthday.toISOString(),
-                                        startDate: dto.startDate.toISOString(),
-                                        endDate: dto.endDate.toISOString(),
-                                    })
-                                }
-                                fields={[
-                                    {
-                                        label: 'Mã học sinh',
-                                        name: 'studentCode',
-                                        type: NKFormType.TEXT,
-                                    },
-                                    {
-                                        label: 'Tên học sinh',
-                                        name: 'studentName',
-                                        type: NKFormType.TEXT,
-                                    },
-                                    {
-                                        label: 'Giới tính (*nam)',
-                                        name: 'sex',
-                                        type: NKFormType.BOOLEAN,
-                                    },
-                                    {
-                                        label: 'Ngày sinh',
-                                        name: 'birthday',
-                                        type: NKFormType.DATE,
-                                    },
-                                    {
-                                        label: 'Địa chỉ',
-                                        name: 'address',
-                                        type: NKFormType.TEXT,
-                                    },
-                                    {
-                                        label: 'Số điện thoại',
-                                        name: 'phone',
-                                        type: NKFormType.TEXT,
-                                    },
-                                    {
-                                        label: 'Lớp',
-                                        name: 'classId',
-                                        type: NKFormType.SELECT_API_OPTION,
-                                        fieldProps: {
-                                            apiAction(value) {
-                                                return classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId, year: Number(new Date().getFullYear()) });
-                                            }
+                <>
+                    <ModalBuilder
+                        btnLabel="Thêm hàng loạt"
+                        btnProps={{
+                            type: 'primary',
+                            icon: <PlusOutlined />,
+                        }}
+                        title="Thêm hàng loạt"
+                    >
+                        {(close) => {
+                            return (
+                                <FormBuilder
+                                    className="!p-0"
+                                    title=""
+                                    apiAction={studentInClassApi.import}
+                                    defaultValues={{
+                                        file: null
+                                    }}
+                                    schema={{
+                                        file: Joi.any().optional().messages(NKConstant.MESSAGE_FORMAT),
+                                    }}
+                                    fields={[
+                                        {
+                                            name: 'file',
+                                            label: 'Chọn file excel',
+                                            type: NKFormType.UPLOAD_FILE_DIRECT,
                                         },
-                                    },
-                                    {
-                                        label: 'Ngày đăng ký',
-                                        name: 'enrollDate',
-                                        type: NKFormType.DATE,
-                                    },
-                                    // {
-                                    //     label: 'Sao đỏ',
-                                    //     name: 'isSupervisor',
-                                    //     type: NKFormType.BOOLEAN,
-                                    // },
-                                    {
-                                        label: 'Ngày vào lớp',
-                                        name: 'startDate',
-                                        type: NKFormType.DATE,
-                                    },
-                                    {
-                                        label: 'Ngày rời lớp',
-                                        name: 'endDate',
-                                        type: NKFormType.DATE,
-                                    },
-                                ]}
-                                title=""
-                                schema={{
-                                    schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    enrollDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    isSupervisor: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                    endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                }}
-                                onExtraErrorAction={toastError}
-                                onExtraSuccessAction={(data) => {
-                                    queryClient.invalidateQueries({
-                                        queryKey: [`students-in-class`],
-                                    });
+                                    ]}
+                                    onExtraSuccessAction={(data) => {
+                                        queryClient.invalidateQueries({
+                                            queryKey: ['teacher-list'],
+                                        });
 
-                                    close();
+                                        close();
 
-                                    toast.success(data.message || 'Successful');
-                                }}
-                                defaultValues={{
-                                    schoolId: schoolId,
-                                    studentName: "",
-                                    studentCode: "",
-                                    sex: false,
-                                    birthday: new Date(),
-                                    address: "",
-                                    phone: "",
-                                    classId: 0,
-                                    enrollDate: new Date(),
-                                    isSupervisor: false,
-                                    startDate: new Date(),
-                                    endDate: new Date(),
-                                }}
-                            />
-                        );
-                    }}
-                </ModalBuilder>
+                                        toast.success(data.message || 'Successful');
+                                    }}
+                                    onExtraErrorAction={toastError}
+                                />
+                            );
+                        }}
+                    </ModalBuilder>
+                    <ModalBuilder
+                        btnLabel="Thêm học sinh"
+                        btnProps={{
+                            type: 'primary',
+                            icon: <PlusOutlined />,
+                        }}
+                        title="Thêm học sinh"
+                    >
+                        {(close) => {
+                            return (
+                                <FormBuilder
+                                    className="!p-0"
+                                    beforeSubmit={(dto) => {
+                                        if (moment(dto.startDate).isAfter(dto.endDate)) {
+                                            toast.error('Start Date must be before end date');
+                                            return false;
+                                        }
+
+                                        return true;
+                                    }}
+                                    apiAction={(dto) =>
+                                        studentInClassApi.create({
+                                            ...dto,
+                                            enrollDate: dto.enrollDate.toISOString(),
+                                            birthday: dto.birthday.toISOString(),
+                                            startDate: dto.startDate.toISOString(),
+                                            endDate: dto.endDate.toISOString(),
+                                        })
+                                    }
+                                    fields={[
+                                        {
+                                            label: 'Mã học sinh',
+                                            name: 'studentCode',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Tên học sinh',
+                                            name: 'studentName',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Giới tính (*nam)',
+                                            name: 'sex',
+                                            type: NKFormType.BOOLEAN,
+                                        },
+                                        {
+                                            label: 'Ngày sinh',
+                                            name: 'birthday',
+                                            type: NKFormType.DATE,
+                                        },
+                                        {
+                                            label: 'Địa chỉ',
+                                            name: 'address',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Số điện thoại',
+                                            name: 'phone',
+                                            type: NKFormType.TEXT,
+                                        },
+                                        {
+                                            label: 'Lớp',
+                                            name: 'classId',
+                                            type: NKFormType.SELECT_API_OPTION,
+                                            fieldProps: {
+                                                apiAction(value) {
+                                                    return classApi.getEnumSelectOptions({ search: value, highSchoolId: schoolId, year: Number(new Date().getFullYear()) });
+                                                }
+                                            },
+                                        },
+                                        {
+                                            label: 'Ngày đăng ký',
+                                            name: 'enrollDate',
+                                            type: NKFormType.DATE,
+                                        },
+                                        // {
+                                        //     label: 'Sao đỏ',
+                                        //     name: 'isSupervisor',
+                                        //     type: NKFormType.BOOLEAN,
+                                        // },
+                                        {
+                                            label: 'Ngày vào lớp',
+                                            name: 'startDate',
+                                            type: NKFormType.DATE,
+                                        },
+                                        {
+                                            label: 'Ngày rời lớp',
+                                            name: 'endDate',
+                                            type: NKFormType.DATE,
+                                        },
+                                    ]}
+                                    title=""
+                                    schema={{
+                                        schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        studentName: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        studentCode: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        sex: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        birthday: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        address: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        phone: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        enrollDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        isSupervisor: Joi.boolean().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                        endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                    }}
+                                    onExtraErrorAction={toastError}
+                                    onExtraSuccessAction={(data) => {
+                                        queryClient.invalidateQueries({
+                                            queryKey: [`students-in-class`],
+                                        });
+
+                                        close();
+
+                                        toast.success(data.message || 'Successful');
+                                    }}
+                                    defaultValues={{
+                                        schoolId: schoolId,
+                                        studentName: "",
+                                        studentCode: "",
+                                        sex: false,
+                                        birthday: new Date(),
+                                        address: "",
+                                        phone: "",
+                                        classId: 0,
+                                        enrollDate: new Date(),
+                                        isSupervisor: false,
+                                        startDate: new Date(),
+                                        endDate: new Date(),
+                                    }}
+                                />
+                            );
+                        }}
+                    </ModalBuilder>
+                </>
             }
         />
     );

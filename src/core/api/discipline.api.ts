@@ -1,6 +1,7 @@
 import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
 import { Discipline, DisciplineStatus } from '../models/discipline';
 import { Colors } from '../utils/colors.helper';
+import { validNumber } from './dashboard.api';
 import http from './http';
 
 export interface ICreateDisciplineDto extends Omit<Discipline, 'disciplineId' | 'status' | 'year'> { }
@@ -51,24 +52,40 @@ export const disciplineApi = {
             return [];
         }
     },
-    getBySchool: async (id: number) => {
-        const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/school/${id}`);
-
-        return data.data || [];
-    },
-    getByTeacher: async (id: number) => {
-        const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/user/${id}`, {
+    getBySchool: async (id: number, year: number, semesterName: string, month: number, weekNumber: number) => {
+        const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/school/${id}` , {
             params: {
                 sortOrder: 'desc',
+                year: year,
+                semesterName: semesterName,
+                month: validNumber(month),
+                weekNumber: validNumber(weekNumber)
             },
         });
 
         return data.data || [];
     },
-    getBySupervisor: async (id: number) => {
+    getByTeacher: async (id: number, year: number, semesterName: string, month: number, weekNumber: number) => {
+        const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/user/${id}`, {
+            params: {
+                sortOrder: 'desc',
+                year: year,
+                semesterName: semesterName,
+                month: validNumber(month),
+                weekNumber: validNumber(weekNumber)
+            },
+        });
+
+        return data.data || [];
+    },
+    getBySupervisor: async (id: number, year: number, semesterName: string, month: number, weekNumber: number) => {
         const { data } = await http.get<ResponseList<Discipline>>(`${baseUrl}/supervisor/${id}`, {
             params: {
                 sortOrder: 'desc',
+                year: year,
+                semesterName: semesterName,
+                month: validNumber(month),
+                weekNumber: validNumber(weekNumber)
             },
         });
 

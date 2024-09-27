@@ -150,3 +150,30 @@ export const WeekList: EnumListItem[] = [
         slug: '4',
     },
 ];
+
+export const SemesterList: EnumListItem[] = [
+    {
+        value: "",
+        label: 'all',
+        color: Colors.BLUE,
+        id: "",
+        name: 'Tất cả',
+        slug: 'all',
+    },
+    {
+        value: 'Học kỳ 1',
+        label: 'Học kỳ 1',
+        color: Colors.BLUE,
+        id: 'Học kỳ 1',
+        name: 'Học kỳ 1',
+        slug: 'Học kỳ 1',
+    },
+    {
+        value: 'Học kỳ 1',
+        label: 'Học kỳ 2',
+        color: Colors.BLUE,
+        id: 'Học kỳ 2',
+        name: 'Học kỳ 2',
+        slug: 'Học kỳ 2',
+    },
+];

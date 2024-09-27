@@ -21,7 +21,8 @@ import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
 import { FilterComparator } from '@/core/models/common';
 import { classApi } from '@/core/api/class.api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { MonthList, SemesterList, WeekList } from '@/core/models/date';
 
 interface PageProps { }
 
@@ -33,6 +34,19 @@ const Page: React.FunctionComponent<PageProps> = () => {
     );
 
     const [yearT, setYearT] = useState<number | null>(null)
+
+    const today = new Date()
+
+    const [year, setYear] = useState<number>(Number(today.getFullYear()))
+    const [month, setMonth] = useState<number>(0)
+    const [semesterName, setSemesterName] = useState<string>("")
+    const [week, setWeek] = useState<number>(0)
+
+    useEffect(() => {
+        queryClient.invalidateQueries({
+            queryKey: ['evaluations'],
+        });
+    }, [year, month, week, semesterName, queryClient]);
 
     useDocumentTitle('Danh sách đánh giá');
 
@@ -83,9 +97,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     //         type: NKFormType.TEXT,
                     //     },
                     // ]}
-                    isSelectYear={true}
-                    schoolId={schoolId}
-                    queryApi={schoolId ? () => evaluationApi.getBySchool(schoolId) : evaluationApi.getAll}
+                    queryApi={schoolId ? () => evaluationApi.getBySchool(schoolId, year, semesterName, month, week) : evaluationApi.getAll}
                     actionColumns={(record) => (
                         <div className="flex flex-col gap-2">
                             <ModalBuilder
@@ -196,115 +208,195 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         </div>
                     )}
                     extraButtons={
-                        <ModalBuilder
-                            btnLabel="Tạo"
-                            btnProps={{
-                                type: 'primary',
-                                icon: <PlusOutlined />,
-                            }}
-                            title="Tạo bản đánh giá"
-                        >
-                            {(close) => {
-                                return (
-                                    <FormBuilder
-                                        className="!p-0"
-                                        beforeSubmit={(dto) => {
-                                            if (moment(dto.from).isAfter(dto.to)) {
-                                                toast.error('From date must be before to date');
-                                                return false;
-                                            }
-
-                                            return true;
-                                        }}
-                                        apiAction={(dto) => {
-                                            return evaluationApi.create({
-                                                description: dto.description,
-                                                from: dto.from.toISOString(),
-                                                classId: dto.classId,
-                                                year: dto.year,
-                                                to: dto.to.toISOString(),
-                                            });
-                                        }}
-                                        fields={[
-                                            {
-                                                name: 'year',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Niên khóa',
-                                                fieldProps: {
-                                                    apiAction: (value) =>
-                                                        schoolYearApi.getEnumSelectOptions({
-                                                            search: value,
-                                                            highSchoolId: schoolId
-                                                        })
-                                                    ,
-                                                },
-                                                onChangeExtra: (value) => {
-                                                    setYearT(value)
-                                                    queryClient.invalidateQueries({
-                                                        queryKey: ['options', 'classId'],
-                                                    });
+                        <div className="flex flex-row items-center w-full">
+                            <FormBuilder
+                                title=""
+                                apiAction={() => { }}
+                                defaultValues={{
+                                    year: year,
+                                    month: month,
+                                    weekNumber: week ?? 0,
+                                    semesterName: "Học kỳ 1",
+                                    school: schoolId
+                                }}
+                                schema={{
+                                    year: Joi.number(),
+                                    month: Joi.number(),
+                                    weekNumber: Joi.number(),
+                                    semesterName: Joi.string(),
+                                    school: Joi.number()
+                                }}
+                                isButton={false}
+                                className="flex items-center w-[40rem] !bg-transparent"
+                                fields={[
+                                    {
+                                        name: 'year',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: (value) => (
+                                                schoolYearApi.getEnumSelectYear({ search: value, highSchoolId: schoolId })
+                                            )
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setYear(Number(value))
+                                        }
+                                    },
+                                    {
+                                        name: 'semesterName',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await SemesterList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            ),
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setSemesterName(value)
+                                        }
+                                    },
+                                    {
+                                        name: 'month',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await MonthList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            )
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setMonth(Number(value))
+                                        }
+                                    },
+                                    {
+                                        name: 'weekNumber',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await WeekList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            ),
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setWeek(Number(value))
+                                        }
+                                    },
+                                ]}
+                            />
+                            <ModalBuilder
+                                btnLabel="Tạo"
+                                btnProps={{
+                                    type: 'primary',
+                                    icon: <PlusOutlined />,
+                                }}
+                                title="Tạo bản đánh giá"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder
+                                            className="!p-0"
+                                            beforeSubmit={(dto) => {
+                                                if (moment(dto.from).isAfter(dto.to)) {
+                                                    toast.error('From date must be before to date');
+                                                    return false;
                                                 }
-                                            },
-                                            {
-                                                name: 'from',
-                                                type: NKFormType.DATE,
-                                                label: 'Từ ngày',
-                                            },
-                                            {
-                                                name: 'to',
-                                                type: NKFormType.DATE,
-                                                label: 'Đến ngày',
-                                            },
-                                            {
-                                                name: 'classId',
-                                                type: NKFormType.SELECT_API_OPTION,
-                                                label: 'Lớp',
-                                                fieldProps: {
-                                                    apiAction: (value, formMethods) => {
-                                                        const year = formMethods.getValues('year');
-                                                        return classApi.getEnumSelectOptions({
-                                                            search: value,
-                                                            highSchoolId: schoolId,
-                                                            yearId: year ?? 0,
-                                                        });
+
+                                                return true;
+                                            }}
+                                            apiAction={(dto) => {
+                                                return evaluationApi.create({
+                                                    description: dto.description,
+                                                    from: dto.from.toISOString(),
+                                                    classId: dto.classId,
+                                                    year: dto.year,
+                                                    to: dto.to.toISOString(),
+                                                });
+                                            }}
+                                            fields={[
+                                                {
+                                                    name: 'year',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    label: 'Niên khóa',
+                                                    fieldProps: {
+                                                        apiAction: (value) =>
+                                                            schoolYearApi.getEnumSelectOptions({
+                                                                search: value,
+                                                                highSchoolId: schoolId
+                                                            })
+                                                        ,
                                                     },
-                                                    queryKey: "classId",
-                                                    disabled: !yearT,
+                                                    onChangeExtra: (value) => {
+                                                        setYearT(value)
+                                                        queryClient.invalidateQueries({
+                                                            queryKey: ['options', 'classId'],
+                                                        });
+                                                    }
                                                 },
-                                            },
-                                            {
-                                                name: 'description',
-                                                type: NKFormType.TEXTAREA,
-                                                label: 'Mô tả',
-                                            },
-                                        ]}
-                                        title=""
-                                        schema={{
-                                            description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            from: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            year: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
-                                            to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
-                                        }}
-                                        onExtraErrorAction={toastError}
-                                        onExtraSuccessAction={(data) => {
-                                            queryClient.invalidateQueries({
-                                                queryKey: ['evaluations'],
-                                            });
-                                            close();
-                                            toast.success(data.message || 'Successful');
-                                        }}
-                                        defaultValues={{
-                                            from: new Date(),
-                                            to: new Date(),
-                                            description: '',
-                                            classId: 0,
-                                            year: 0,
-                                        }}
-                                    />
-                                );
-                            }}
-                        </ModalBuilder>
+                                                {
+                                                    name: 'from',
+                                                    type: NKFormType.DATE,
+                                                    label: 'Từ ngày',
+                                                },
+                                                {
+                                                    name: 'to',
+                                                    type: NKFormType.DATE,
+                                                    label: 'Đến ngày',
+                                                },
+                                                {
+                                                    name: 'classId',
+                                                    type: NKFormType.SELECT_API_OPTION,
+                                                    label: 'Lớp',
+                                                    fieldProps: {
+                                                        apiAction: (value, formMethods) => {
+                                                            const year = formMethods.getValues('year');
+                                                            return classApi.getEnumSelectOptions({
+                                                                search: value,
+                                                                highSchoolId: schoolId,
+                                                                yearId: year ?? 0,
+                                                            });
+                                                        },
+                                                        queryKey: "classId",
+                                                        disabled: !yearT,
+                                                    },
+                                                },
+                                                {
+                                                    name: 'description',
+                                                    type: NKFormType.TEXTAREA,
+                                                    label: 'Mô tả',
+                                                },
+                                            ]}
+                                            title=""
+                                            schema={{
+                                                description: Joi.string().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                from: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                classId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                year: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
+                                                to: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                            onExtraSuccessAction={(data) => {
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['evaluations'],
+                                                });
+                                                close();
+                                                toast.success(data.message || 'Successful');
+                                            }}
+                                            defaultValues={{
+                                                from: new Date(),
+                                                to: new Date(),
+                                                description: '',
+                                                classId: 0,
+                                                year: 0,
+                                            }}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                        </div>
                     }
                 />
             </div>

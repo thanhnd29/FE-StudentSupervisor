@@ -34,8 +34,16 @@ export const evaluationApi = {
 
         return data.data;
     },
-    getBySchool: async (id: number) => {
-        const { data } = await http.get<ResponseList<Evaluation>>(`${baseUrl}/school/${id}`);
+    getBySchool: async (id: number, year: number, semesterName: string, month: number, weekNumber: number) => {
+        const { data } = await http.get<ResponseList<Evaluation>>(`${baseUrl}/school/${id}`, {
+            params: {
+                sortOrder: 'desc',
+                year: year,
+                semesterName: semesterName,
+                month: validNumber(month),
+                weekNumber: validNumber(weekNumber)
+            },
+        });
 
         return data.data;
     },
@@ -44,18 +52,17 @@ export const evaluationApi = {
 
         return data.data;
     },
-    getRank: async (schoolId: number, year: number, month: number, weekNumber: number) => {
+    getRank: async (schoolId: number, year: number, semesterName: string, month: number, weekNumber: number) => {
         const { data } = await http.get<ResponseList<EvaluationTop>>(`${baseUrl}/GetEvaluationRankings`, {
             params: {
                 schoolId: schoolId,
                 year: year,
+                semesterName: semesterName,
                 month: validNumber(month),
                 week: validNumber(weekNumber)
             }
         });
 
-        console.log(data);
-        
         return data.data;
     },
     delete: async (id: number) => {

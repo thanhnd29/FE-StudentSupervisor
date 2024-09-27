@@ -180,5 +180,11 @@ export const NKRouter = {
         create: () => '/dashboard/order',
         edit: (id: number) => `/dashboard/order/${id}`,
         detail: (id: number) => `/dashboard/order/${id}`,
+    },
+    semester: {
+        list: () => '/dashboard/semester',
+        create: () => '/dashboard/semester/create',
+        edit: (id: number) => `/dashboard/semester/${id}/edit`,
+        detail: (id: number) => `/dashboard/semester/${id}`,
     }
 };

@@ -7,7 +7,7 @@ import { FaRegFile } from 'react-icons/fa';
 
 import NKFieldWrapper, { NKFieldWrapperProps } from './NKFieldWrapper';
 
-export interface NKUploadFileDirectProps extends UploadProps {}
+export interface NKUploadFileDirectProps extends UploadProps { }
 
 type Props = NKUploadFileDirectProps & NKFieldWrapperProps;
 
@@ -24,31 +24,38 @@ const NKUploadFileDirect: React.FC<Props> = ({ label, name, isShow = true, label
 
     return (
         <NKFieldWrapper labelClassName={labelClassName} isShow={isShow} label={label} name={name}>
-            <Controller
-                name={name}
-                control={formMethods.control}
-                render={({ field }) => (
-                    <Upload
-                        name={field.name}
-                        listType="picture-card"
-                        showUploadList={false}
-                        {...rest}
-                        action={async (file) => {
-                            field.onChange(file);
+            <div className="flex gap-12 items-center">
+                <Controller
+                    name={name}
+                    control={formMethods.control}
+                    render={({ field }) => (
+                        <Upload
+                            name={field.name}
+                            listType="picture-card"
+                            showUploadList={false}
+                            {...rest}
+                            action={async (file) => {
+                                field.onChange(file);
 
-                            return '';
-                        }}
-                    >
-                        {Boolean(value) ? (
-                            <div className="inline-flex border border-dashed border-gray-200 p-2 text-2xl">
-                                <FaRegFile />
-                            </div>
-                        ) : (
-                            uploadButton
-                        )}
-                    </Upload>
+                                return '';
+                            }}
+                        >
+                            {Boolean(value) ? (
+                                <div className="inline-flex border border-dashed border-gray-200 p-2 text-2xl">
+                                    <FaRegFile />
+                                </div>
+                            ) : (
+                                uploadButton
+                            )}
+                        </Upload>
+                    )}
+                />
+                {Boolean(value) ? (
+                    <div className='text-lg'>{value.name}</div>
+                ) : (
+                    <></>
                 )}
-            />
+            </div>
         </NKFieldWrapper>
     );
 };

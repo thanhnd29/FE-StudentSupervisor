@@ -29,6 +29,7 @@ import { Route as AdminLayoutDashboardTeachersIndexImport } from './routes/_admi
 import { Route as AdminLayoutDashboardStudentsIndexImport } from './routes/_admin-layout.dashboard/students/index'
 import { Route as AdminLayoutDashboardStudentSupervisorsIndexImport } from './routes/_admin-layout.dashboard/student-supervisors/index'
 import { Route as AdminLayoutDashboardStudentInClassesIndexImport } from './routes/_admin-layout.dashboard/student-in-classes/index'
+import { Route as AdminLayoutDashboardSemesterIndexImport } from './routes/_admin-layout.dashboard/semester/index'
 import { Route as AdminLayoutDashboardSchoolYearIndexImport } from './routes/_admin-layout.dashboard/school-year/index'
 import { Route as AdminLayoutDashboardSchoolConfigsIndexImport } from './routes/_admin-layout.dashboard/school-configs/index'
 import { Route as AdminLayoutDashboardSchoolAdminIndexImport } from './routes/_admin-layout.dashboard/school-admin/index'
@@ -167,6 +168,12 @@ const AdminLayoutDashboardStudentSupervisorsIndexRoute =
 const AdminLayoutDashboardStudentInClassesIndexRoute =
   AdminLayoutDashboardStudentInClassesIndexImport.update({
     path: '/dashboard/student-in-classes/',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutDashboardSemesterIndexRoute =
+  AdminLayoutDashboardSemesterIndexImport.update({
+    path: '/dashboard/semester/',
     getParentRoute: () => AdminLayoutRoute,
   } as any)
 
@@ -635,6 +642,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutDashboardSchoolYearIndexImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/_admin-layout/dashboard/semester/': {
+      id: '/_admin-layout/dashboard/semester/'
+      path: '/dashboard/semester'
+      fullPath: '/dashboard/semester'
+      preLoaderRoute: typeof AdminLayoutDashboardSemesterIndexImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/_admin-layout/dashboard/student-in-classes/': {
       id: '/_admin-layout/dashboard/student-in-classes/'
       path: '/dashboard/student-in-classes'
@@ -773,63 +787,526 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  AdminLayoutRoute: AdminLayoutRoute.addChildren({
-    AdminLayoutDashboardIdRoute,
-    AdminLayoutDashboardAnalyticsRoute,
-    AdminLayoutDashboardIndexRoute,
-    AdminLayoutDashboardAuthEditRoute,
-    AdminLayoutDashboardAuthViewRoute,
-    AdminLayoutDashboardHighSchoolIdRoute,
+interface AdminLayoutRouteChildren {
+  AdminLayoutDashboardIdRoute: typeof AdminLayoutDashboardIdRoute
+  AdminLayoutDashboardAnalyticsRoute: typeof AdminLayoutDashboardAnalyticsRoute
+  AdminLayoutDashboardIndexRoute: typeof AdminLayoutDashboardIndexRoute
+  AdminLayoutDashboardAuthEditRoute: typeof AdminLayoutDashboardAuthEditRoute
+  AdminLayoutDashboardAuthViewRoute: typeof AdminLayoutDashboardAuthViewRoute
+  AdminLayoutDashboardHighSchoolIdRoute: typeof AdminLayoutDashboardHighSchoolIdRoute
+  AdminLayoutDashboardPackagesBuyPackagesRoute: typeof AdminLayoutDashboardPackagesBuyPackagesRoute
+  AdminLayoutDashboardViolationTopsViolationChartRoute: typeof AdminLayoutDashboardViolationTopsViolationChartRoute
+  AdminLayoutDashboardViolationTopsViolationInClassRoute: typeof AdminLayoutDashboardViolationTopsViolationInClassRoute
+  AdminLayoutDashboardViolationTopsViolationInWeekRoute: typeof AdminLayoutDashboardViolationTopsViolationInWeekRoute
+  AdminLayoutDashboardViolationTopsViolationInYearRoute: typeof AdminLayoutDashboardViolationTopsViolationInYearRoute
+  AdminLayoutDashboardViolationTopsViolationTopClassRoute: typeof AdminLayoutDashboardViolationTopsViolationTopClassRoute
+  AdminLayoutDashboardViolationTopsViolationTopStudentRoute: typeof AdminLayoutDashboardViolationTopsViolationTopStudentRoute
+  AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute: typeof AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute
+  AdminLayoutDashboardViolationsCreateStudentRoute: typeof AdminLayoutDashboardViolationsCreateStudentRoute
+  AdminLayoutDashboardViolationsCreateSupervisorRoute: typeof AdminLayoutDashboardViolationsCreateSupervisorRoute
+  AdminLayoutDashboardClassGroupIndexRoute: typeof AdminLayoutDashboardClassGroupIndexRoute
+  AdminLayoutDashboardClassesIndexRoute: typeof AdminLayoutDashboardClassesIndexRoute
+  AdminLayoutDashboardDisciplinesIndexRoute: typeof AdminLayoutDashboardDisciplinesIndexRoute
+  AdminLayoutDashboardEvaluationDetailsIndexRoute: typeof AdminLayoutDashboardEvaluationDetailsIndexRoute
+  AdminLayoutDashboardEvaluationTopsIndexRoute: typeof AdminLayoutDashboardEvaluationTopsIndexRoute
+  AdminLayoutDashboardEvaluationsIndexRoute: typeof AdminLayoutDashboardEvaluationsIndexRoute
+  AdminLayoutDashboardHighSchoolIndexRoute: typeof AdminLayoutDashboardHighSchoolIndexRoute
+  AdminLayoutDashboardOrderIndexRoute: typeof AdminLayoutDashboardOrderIndexRoute
+  AdminLayoutDashboardPackagesIndexRoute: typeof AdminLayoutDashboardPackagesIndexRoute
+  AdminLayoutDashboardPatrolSchedulesIndexRoute: typeof AdminLayoutDashboardPatrolSchedulesIndexRoute
+  AdminLayoutDashboardPenaltiesIndexRoute: typeof AdminLayoutDashboardPenaltiesIndexRoute
+  AdminLayoutDashboardRegisteredSchoolsIndexRoute: typeof AdminLayoutDashboardRegisteredSchoolsIndexRoute
+  AdminLayoutDashboardSchoolAdminIndexRoute: typeof AdminLayoutDashboardSchoolAdminIndexRoute
+  AdminLayoutDashboardSchoolConfigsIndexRoute: typeof AdminLayoutDashboardSchoolConfigsIndexRoute
+  AdminLayoutDashboardSchoolYearIndexRoute: typeof AdminLayoutDashboardSchoolYearIndexRoute
+  AdminLayoutDashboardSemesterIndexRoute: typeof AdminLayoutDashboardSemesterIndexRoute
+  AdminLayoutDashboardStudentInClassesIndexRoute: typeof AdminLayoutDashboardStudentInClassesIndexRoute
+  AdminLayoutDashboardStudentSupervisorsIndexRoute: typeof AdminLayoutDashboardStudentSupervisorsIndexRoute
+  AdminLayoutDashboardStudentsIndexRoute: typeof AdminLayoutDashboardStudentsIndexRoute
+  AdminLayoutDashboardTeachersIndexRoute: typeof AdminLayoutDashboardTeachersIndexRoute
+  AdminLayoutDashboardTimesIndexRoute: typeof AdminLayoutDashboardTimesIndexRoute
+  AdminLayoutDashboardUserIndexRoute: typeof AdminLayoutDashboardUserIndexRoute
+  AdminLayoutDashboardViolationConfigsIndexRoute: typeof AdminLayoutDashboardViolationConfigsIndexRoute
+  AdminLayoutDashboardViolationGroupsIndexRoute: typeof AdminLayoutDashboardViolationGroupsIndexRoute
+  AdminLayoutDashboardViolationTypesIndexRoute: typeof AdminLayoutDashboardViolationTypesIndexRoute
+  AdminLayoutDashboardViolationsIndexRoute: typeof AdminLayoutDashboardViolationsIndexRoute
+  AdminLayoutDashboardYearPackagesIndexRoute: typeof AdminLayoutDashboardYearPackagesIndexRoute
+  AdminLayoutDashboardClassesIdHistoryRoute: typeof AdminLayoutDashboardClassesIdHistoryRoute
+  AdminLayoutDashboardDisciplinesIdHistoryRoute: typeof AdminLayoutDashboardDisciplinesIdHistoryRoute
+  AdminLayoutDashboardStudentInClassesIdHistoryRoute: typeof AdminLayoutDashboardStudentInClassesIdHistoryRoute
+  AdminLayoutDashboardViolationsIdEditRoute: typeof AdminLayoutDashboardViolationsIdEditRoute
+  AdminLayoutDashboardViolationsIdHistoryRoute: typeof AdminLayoutDashboardViolationsIdHistoryRoute
+  AdminLayoutDashboardClassesIdIndexRoute: typeof AdminLayoutDashboardClassesIdIndexRoute
+  AdminLayoutDashboardDisciplinesIdIndexRoute: typeof AdminLayoutDashboardDisciplinesIdIndexRoute
+  AdminLayoutDashboardViolationsIdIndexRoute: typeof AdminLayoutDashboardViolationsIdIndexRoute
+}
+
+const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
+  AdminLayoutDashboardIdRoute: AdminLayoutDashboardIdRoute,
+  AdminLayoutDashboardAnalyticsRoute: AdminLayoutDashboardAnalyticsRoute,
+  AdminLayoutDashboardIndexRoute: AdminLayoutDashboardIndexRoute,
+  AdminLayoutDashboardAuthEditRoute: AdminLayoutDashboardAuthEditRoute,
+  AdminLayoutDashboardAuthViewRoute: AdminLayoutDashboardAuthViewRoute,
+  AdminLayoutDashboardHighSchoolIdRoute: AdminLayoutDashboardHighSchoolIdRoute,
+  AdminLayoutDashboardPackagesBuyPackagesRoute:
     AdminLayoutDashboardPackagesBuyPackagesRoute,
+  AdminLayoutDashboardViolationTopsViolationChartRoute:
     AdminLayoutDashboardViolationTopsViolationChartRoute,
+  AdminLayoutDashboardViolationTopsViolationInClassRoute:
     AdminLayoutDashboardViolationTopsViolationInClassRoute,
+  AdminLayoutDashboardViolationTopsViolationInWeekRoute:
     AdminLayoutDashboardViolationTopsViolationInWeekRoute,
+  AdminLayoutDashboardViolationTopsViolationInYearRoute:
     AdminLayoutDashboardViolationTopsViolationInYearRoute,
+  AdminLayoutDashboardViolationTopsViolationTopClassRoute:
     AdminLayoutDashboardViolationTopsViolationTopClassRoute,
+  AdminLayoutDashboardViolationTopsViolationTopStudentRoute:
     AdminLayoutDashboardViolationTopsViolationTopStudentRoute,
+  AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute:
     AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute,
+  AdminLayoutDashboardViolationsCreateStudentRoute:
     AdminLayoutDashboardViolationsCreateStudentRoute,
+  AdminLayoutDashboardViolationsCreateSupervisorRoute:
     AdminLayoutDashboardViolationsCreateSupervisorRoute,
+  AdminLayoutDashboardClassGroupIndexRoute:
     AdminLayoutDashboardClassGroupIndexRoute,
-    AdminLayoutDashboardClassesIndexRoute,
+  AdminLayoutDashboardClassesIndexRoute: AdminLayoutDashboardClassesIndexRoute,
+  AdminLayoutDashboardDisciplinesIndexRoute:
     AdminLayoutDashboardDisciplinesIndexRoute,
+  AdminLayoutDashboardEvaluationDetailsIndexRoute:
     AdminLayoutDashboardEvaluationDetailsIndexRoute,
+  AdminLayoutDashboardEvaluationTopsIndexRoute:
     AdminLayoutDashboardEvaluationTopsIndexRoute,
+  AdminLayoutDashboardEvaluationsIndexRoute:
     AdminLayoutDashboardEvaluationsIndexRoute,
+  AdminLayoutDashboardHighSchoolIndexRoute:
     AdminLayoutDashboardHighSchoolIndexRoute,
-    AdminLayoutDashboardOrderIndexRoute,
+  AdminLayoutDashboardOrderIndexRoute: AdminLayoutDashboardOrderIndexRoute,
+  AdminLayoutDashboardPackagesIndexRoute:
     AdminLayoutDashboardPackagesIndexRoute,
+  AdminLayoutDashboardPatrolSchedulesIndexRoute:
     AdminLayoutDashboardPatrolSchedulesIndexRoute,
+  AdminLayoutDashboardPenaltiesIndexRoute:
     AdminLayoutDashboardPenaltiesIndexRoute,
+  AdminLayoutDashboardRegisteredSchoolsIndexRoute:
     AdminLayoutDashboardRegisteredSchoolsIndexRoute,
+  AdminLayoutDashboardSchoolAdminIndexRoute:
     AdminLayoutDashboardSchoolAdminIndexRoute,
+  AdminLayoutDashboardSchoolConfigsIndexRoute:
     AdminLayoutDashboardSchoolConfigsIndexRoute,
+  AdminLayoutDashboardSchoolYearIndexRoute:
     AdminLayoutDashboardSchoolYearIndexRoute,
+  AdminLayoutDashboardSemesterIndexRoute:
+    AdminLayoutDashboardSemesterIndexRoute,
+  AdminLayoutDashboardStudentInClassesIndexRoute:
     AdminLayoutDashboardStudentInClassesIndexRoute,
+  AdminLayoutDashboardStudentSupervisorsIndexRoute:
     AdminLayoutDashboardStudentSupervisorsIndexRoute,
+  AdminLayoutDashboardStudentsIndexRoute:
     AdminLayoutDashboardStudentsIndexRoute,
+  AdminLayoutDashboardTeachersIndexRoute:
     AdminLayoutDashboardTeachersIndexRoute,
-    AdminLayoutDashboardTimesIndexRoute,
-    AdminLayoutDashboardUserIndexRoute,
+  AdminLayoutDashboardTimesIndexRoute: AdminLayoutDashboardTimesIndexRoute,
+  AdminLayoutDashboardUserIndexRoute: AdminLayoutDashboardUserIndexRoute,
+  AdminLayoutDashboardViolationConfigsIndexRoute:
     AdminLayoutDashboardViolationConfigsIndexRoute,
+  AdminLayoutDashboardViolationGroupsIndexRoute:
     AdminLayoutDashboardViolationGroupsIndexRoute,
+  AdminLayoutDashboardViolationTypesIndexRoute:
     AdminLayoutDashboardViolationTypesIndexRoute,
+  AdminLayoutDashboardViolationsIndexRoute:
     AdminLayoutDashboardViolationsIndexRoute,
+  AdminLayoutDashboardYearPackagesIndexRoute:
     AdminLayoutDashboardYearPackagesIndexRoute,
+  AdminLayoutDashboardClassesIdHistoryRoute:
     AdminLayoutDashboardClassesIdHistoryRoute,
+  AdminLayoutDashboardDisciplinesIdHistoryRoute:
     AdminLayoutDashboardDisciplinesIdHistoryRoute,
+  AdminLayoutDashboardStudentInClassesIdHistoryRoute:
     AdminLayoutDashboardStudentInClassesIdHistoryRoute,
+  AdminLayoutDashboardViolationsIdEditRoute:
     AdminLayoutDashboardViolationsIdEditRoute,
+  AdminLayoutDashboardViolationsIdHistoryRoute:
     AdminLayoutDashboardViolationsIdHistoryRoute,
+  AdminLayoutDashboardClassesIdIndexRoute:
     AdminLayoutDashboardClassesIdIndexRoute,
+  AdminLayoutDashboardDisciplinesIdIndexRoute:
     AdminLayoutDashboardDisciplinesIdIndexRoute,
+  AdminLayoutDashboardViolationsIdIndexRoute:
     AdminLayoutDashboardViolationsIdIndexRoute,
-  }),
-  PaymentFailureRoute,
-  PaymentSuccessRoute,
-})
+}
+
+const AdminLayoutRouteWithChildren = AdminLayoutRoute._addFileChildren(
+  AdminLayoutRouteChildren,
+)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '': typeof AdminLayoutRouteWithChildren
+  '/payment/failure': typeof PaymentFailureRoute
+  '/payment/success': typeof PaymentSuccessRoute
+  '/dashboard/$id': typeof AdminLayoutDashboardIdRoute
+  '/dashboard/analytics': typeof AdminLayoutDashboardAnalyticsRoute
+  '/dashboard': typeof AdminLayoutDashboardIndexRoute
+  '/dashboard/auth/edit': typeof AdminLayoutDashboardAuthEditRoute
+  '/dashboard/auth/view': typeof AdminLayoutDashboardAuthViewRoute
+  '/dashboard/high-school/$id': typeof AdminLayoutDashboardHighSchoolIdRoute
+  '/dashboard/packages/buy-packages': typeof AdminLayoutDashboardPackagesBuyPackagesRoute
+  '/dashboard/violation-tops/violation-chart': typeof AdminLayoutDashboardViolationTopsViolationChartRoute
+  '/dashboard/violation-tops/violation-in-class': typeof AdminLayoutDashboardViolationTopsViolationInClassRoute
+  '/dashboard/violation-tops/violation-in-week': typeof AdminLayoutDashboardViolationTopsViolationInWeekRoute
+  '/dashboard/violation-tops/violation-in-year': typeof AdminLayoutDashboardViolationTopsViolationInYearRoute
+  '/dashboard/violation-tops/violation-top-class': typeof AdminLayoutDashboardViolationTopsViolationTopClassRoute
+  '/dashboard/violation-tops/violation-top-student': typeof AdminLayoutDashboardViolationTopsViolationTopStudentRoute
+  '/dashboard/violation-tops/violation-top-studentInClass': typeof AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute
+  '/dashboard/violations/create-student': typeof AdminLayoutDashboardViolationsCreateStudentRoute
+  '/dashboard/violations/create-supervisor': typeof AdminLayoutDashboardViolationsCreateSupervisorRoute
+  '/dashboard/class-group': typeof AdminLayoutDashboardClassGroupIndexRoute
+  '/dashboard/classes': typeof AdminLayoutDashboardClassesIndexRoute
+  '/dashboard/disciplines': typeof AdminLayoutDashboardDisciplinesIndexRoute
+  '/dashboard/evaluation-details': typeof AdminLayoutDashboardEvaluationDetailsIndexRoute
+  '/dashboard/evaluation-tops': typeof AdminLayoutDashboardEvaluationTopsIndexRoute
+  '/dashboard/evaluations': typeof AdminLayoutDashboardEvaluationsIndexRoute
+  '/dashboard/high-school': typeof AdminLayoutDashboardHighSchoolIndexRoute
+  '/dashboard/order': typeof AdminLayoutDashboardOrderIndexRoute
+  '/dashboard/packages': typeof AdminLayoutDashboardPackagesIndexRoute
+  '/dashboard/patrol-schedules': typeof AdminLayoutDashboardPatrolSchedulesIndexRoute
+  '/dashboard/penalties': typeof AdminLayoutDashboardPenaltiesIndexRoute
+  '/dashboard/registered-schools': typeof AdminLayoutDashboardRegisteredSchoolsIndexRoute
+  '/dashboard/school-admin': typeof AdminLayoutDashboardSchoolAdminIndexRoute
+  '/dashboard/school-configs': typeof AdminLayoutDashboardSchoolConfigsIndexRoute
+  '/dashboard/school-year': typeof AdminLayoutDashboardSchoolYearIndexRoute
+  '/dashboard/semester': typeof AdminLayoutDashboardSemesterIndexRoute
+  '/dashboard/student-in-classes': typeof AdminLayoutDashboardStudentInClassesIndexRoute
+  '/dashboard/student-supervisors': typeof AdminLayoutDashboardStudentSupervisorsIndexRoute
+  '/dashboard/students': typeof AdminLayoutDashboardStudentsIndexRoute
+  '/dashboard/teachers': typeof AdminLayoutDashboardTeachersIndexRoute
+  '/dashboard/times': typeof AdminLayoutDashboardTimesIndexRoute
+  '/dashboard/user': typeof AdminLayoutDashboardUserIndexRoute
+  '/dashboard/violation-configs': typeof AdminLayoutDashboardViolationConfigsIndexRoute
+  '/dashboard/violation-groups': typeof AdminLayoutDashboardViolationGroupsIndexRoute
+  '/dashboard/violation-types': typeof AdminLayoutDashboardViolationTypesIndexRoute
+  '/dashboard/violations': typeof AdminLayoutDashboardViolationsIndexRoute
+  '/dashboard/year-packages': typeof AdminLayoutDashboardYearPackagesIndexRoute
+  '/dashboard/classes/$id/history': typeof AdminLayoutDashboardClassesIdHistoryRoute
+  '/dashboard/disciplines/$id/history': typeof AdminLayoutDashboardDisciplinesIdHistoryRoute
+  '/dashboard/student-in-classes/$id/history': typeof AdminLayoutDashboardStudentInClassesIdHistoryRoute
+  '/dashboard/violations/$id/edit': typeof AdminLayoutDashboardViolationsIdEditRoute
+  '/dashboard/violations/$id/history': typeof AdminLayoutDashboardViolationsIdHistoryRoute
+  '/dashboard/classes/$id': typeof AdminLayoutDashboardClassesIdIndexRoute
+  '/dashboard/disciplines/$id': typeof AdminLayoutDashboardDisciplinesIdIndexRoute
+  '/dashboard/violations/$id': typeof AdminLayoutDashboardViolationsIdIndexRoute
+}
+
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '': typeof AdminLayoutRouteWithChildren
+  '/payment/failure': typeof PaymentFailureRoute
+  '/payment/success': typeof PaymentSuccessRoute
+  '/dashboard/$id': typeof AdminLayoutDashboardIdRoute
+  '/dashboard/analytics': typeof AdminLayoutDashboardAnalyticsRoute
+  '/dashboard': typeof AdminLayoutDashboardIndexRoute
+  '/dashboard/auth/edit': typeof AdminLayoutDashboardAuthEditRoute
+  '/dashboard/auth/view': typeof AdminLayoutDashboardAuthViewRoute
+  '/dashboard/high-school/$id': typeof AdminLayoutDashboardHighSchoolIdRoute
+  '/dashboard/packages/buy-packages': typeof AdminLayoutDashboardPackagesBuyPackagesRoute
+  '/dashboard/violation-tops/violation-chart': typeof AdminLayoutDashboardViolationTopsViolationChartRoute
+  '/dashboard/violation-tops/violation-in-class': typeof AdminLayoutDashboardViolationTopsViolationInClassRoute
+  '/dashboard/violation-tops/violation-in-week': typeof AdminLayoutDashboardViolationTopsViolationInWeekRoute
+  '/dashboard/violation-tops/violation-in-year': typeof AdminLayoutDashboardViolationTopsViolationInYearRoute
+  '/dashboard/violation-tops/violation-top-class': typeof AdminLayoutDashboardViolationTopsViolationTopClassRoute
+  '/dashboard/violation-tops/violation-top-student': typeof AdminLayoutDashboardViolationTopsViolationTopStudentRoute
+  '/dashboard/violation-tops/violation-top-studentInClass': typeof AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute
+  '/dashboard/violations/create-student': typeof AdminLayoutDashboardViolationsCreateStudentRoute
+  '/dashboard/violations/create-supervisor': typeof AdminLayoutDashboardViolationsCreateSupervisorRoute
+  '/dashboard/class-group': typeof AdminLayoutDashboardClassGroupIndexRoute
+  '/dashboard/classes': typeof AdminLayoutDashboardClassesIndexRoute
+  '/dashboard/disciplines': typeof AdminLayoutDashboardDisciplinesIndexRoute
+  '/dashboard/evaluation-details': typeof AdminLayoutDashboardEvaluationDetailsIndexRoute
+  '/dashboard/evaluation-tops': typeof AdminLayoutDashboardEvaluationTopsIndexRoute
+  '/dashboard/evaluations': typeof AdminLayoutDashboardEvaluationsIndexRoute
+  '/dashboard/high-school': typeof AdminLayoutDashboardHighSchoolIndexRoute
+  '/dashboard/order': typeof AdminLayoutDashboardOrderIndexRoute
+  '/dashboard/packages': typeof AdminLayoutDashboardPackagesIndexRoute
+  '/dashboard/patrol-schedules': typeof AdminLayoutDashboardPatrolSchedulesIndexRoute
+  '/dashboard/penalties': typeof AdminLayoutDashboardPenaltiesIndexRoute
+  '/dashboard/registered-schools': typeof AdminLayoutDashboardRegisteredSchoolsIndexRoute
+  '/dashboard/school-admin': typeof AdminLayoutDashboardSchoolAdminIndexRoute
+  '/dashboard/school-configs': typeof AdminLayoutDashboardSchoolConfigsIndexRoute
+  '/dashboard/school-year': typeof AdminLayoutDashboardSchoolYearIndexRoute
+  '/dashboard/semester': typeof AdminLayoutDashboardSemesterIndexRoute
+  '/dashboard/student-in-classes': typeof AdminLayoutDashboardStudentInClassesIndexRoute
+  '/dashboard/student-supervisors': typeof AdminLayoutDashboardStudentSupervisorsIndexRoute
+  '/dashboard/students': typeof AdminLayoutDashboardStudentsIndexRoute
+  '/dashboard/teachers': typeof AdminLayoutDashboardTeachersIndexRoute
+  '/dashboard/times': typeof AdminLayoutDashboardTimesIndexRoute
+  '/dashboard/user': typeof AdminLayoutDashboardUserIndexRoute
+  '/dashboard/violation-configs': typeof AdminLayoutDashboardViolationConfigsIndexRoute
+  '/dashboard/violation-groups': typeof AdminLayoutDashboardViolationGroupsIndexRoute
+  '/dashboard/violation-types': typeof AdminLayoutDashboardViolationTypesIndexRoute
+  '/dashboard/violations': typeof AdminLayoutDashboardViolationsIndexRoute
+  '/dashboard/year-packages': typeof AdminLayoutDashboardYearPackagesIndexRoute
+  '/dashboard/classes/$id/history': typeof AdminLayoutDashboardClassesIdHistoryRoute
+  '/dashboard/disciplines/$id/history': typeof AdminLayoutDashboardDisciplinesIdHistoryRoute
+  '/dashboard/student-in-classes/$id/history': typeof AdminLayoutDashboardStudentInClassesIdHistoryRoute
+  '/dashboard/violations/$id/edit': typeof AdminLayoutDashboardViolationsIdEditRoute
+  '/dashboard/violations/$id/history': typeof AdminLayoutDashboardViolationsIdHistoryRoute
+  '/dashboard/classes/$id': typeof AdminLayoutDashboardClassesIdIndexRoute
+  '/dashboard/disciplines/$id': typeof AdminLayoutDashboardDisciplinesIdIndexRoute
+  '/dashboard/violations/$id': typeof AdminLayoutDashboardViolationsIdIndexRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/_admin-layout': typeof AdminLayoutRouteWithChildren
+  '/payment/failure': typeof PaymentFailureRoute
+  '/payment/success': typeof PaymentSuccessRoute
+  '/_admin-layout/dashboard/$id': typeof AdminLayoutDashboardIdRoute
+  '/_admin-layout/dashboard/analytics': typeof AdminLayoutDashboardAnalyticsRoute
+  '/_admin-layout/dashboard/': typeof AdminLayoutDashboardIndexRoute
+  '/_admin-layout/dashboard/auth/edit': typeof AdminLayoutDashboardAuthEditRoute
+  '/_admin-layout/dashboard/auth/view': typeof AdminLayoutDashboardAuthViewRoute
+  '/_admin-layout/dashboard/high-school/$id': typeof AdminLayoutDashboardHighSchoolIdRoute
+  '/_admin-layout/dashboard/packages/buy-packages': typeof AdminLayoutDashboardPackagesBuyPackagesRoute
+  '/_admin-layout/dashboard/violation-tops/violation-chart': typeof AdminLayoutDashboardViolationTopsViolationChartRoute
+  '/_admin-layout/dashboard/violation-tops/violation-in-class': typeof AdminLayoutDashboardViolationTopsViolationInClassRoute
+  '/_admin-layout/dashboard/violation-tops/violation-in-week': typeof AdminLayoutDashboardViolationTopsViolationInWeekRoute
+  '/_admin-layout/dashboard/violation-tops/violation-in-year': typeof AdminLayoutDashboardViolationTopsViolationInYearRoute
+  '/_admin-layout/dashboard/violation-tops/violation-top-class': typeof AdminLayoutDashboardViolationTopsViolationTopClassRoute
+  '/_admin-layout/dashboard/violation-tops/violation-top-student': typeof AdminLayoutDashboardViolationTopsViolationTopStudentRoute
+  '/_admin-layout/dashboard/violation-tops/violation-top-studentInClass': typeof AdminLayoutDashboardViolationTopsViolationTopStudentInClassRoute
+  '/_admin-layout/dashboard/violations/create-student': typeof AdminLayoutDashboardViolationsCreateStudentRoute
+  '/_admin-layout/dashboard/violations/create-supervisor': typeof AdminLayoutDashboardViolationsCreateSupervisorRoute
+  '/_admin-layout/dashboard/class-group/': typeof AdminLayoutDashboardClassGroupIndexRoute
+  '/_admin-layout/dashboard/classes/': typeof AdminLayoutDashboardClassesIndexRoute
+  '/_admin-layout/dashboard/disciplines/': typeof AdminLayoutDashboardDisciplinesIndexRoute
+  '/_admin-layout/dashboard/evaluation-details/': typeof AdminLayoutDashboardEvaluationDetailsIndexRoute
+  '/_admin-layout/dashboard/evaluation-tops/': typeof AdminLayoutDashboardEvaluationTopsIndexRoute
+  '/_admin-layout/dashboard/evaluations/': typeof AdminLayoutDashboardEvaluationsIndexRoute
+  '/_admin-layout/dashboard/high-school/': typeof AdminLayoutDashboardHighSchoolIndexRoute
+  '/_admin-layout/dashboard/order/': typeof AdminLayoutDashboardOrderIndexRoute
+  '/_admin-layout/dashboard/packages/': typeof AdminLayoutDashboardPackagesIndexRoute
+  '/_admin-layout/dashboard/patrol-schedules/': typeof AdminLayoutDashboardPatrolSchedulesIndexRoute
+  '/_admin-layout/dashboard/penalties/': typeof AdminLayoutDashboardPenaltiesIndexRoute
+  '/_admin-layout/dashboard/registered-schools/': typeof AdminLayoutDashboardRegisteredSchoolsIndexRoute
+  '/_admin-layout/dashboard/school-admin/': typeof AdminLayoutDashboardSchoolAdminIndexRoute
+  '/_admin-layout/dashboard/school-configs/': typeof AdminLayoutDashboardSchoolConfigsIndexRoute
+  '/_admin-layout/dashboard/school-year/': typeof AdminLayoutDashboardSchoolYearIndexRoute
+  '/_admin-layout/dashboard/semester/': typeof AdminLayoutDashboardSemesterIndexRoute
+  '/_admin-layout/dashboard/student-in-classes/': typeof AdminLayoutDashboardStudentInClassesIndexRoute
+  '/_admin-layout/dashboard/student-supervisors/': typeof AdminLayoutDashboardStudentSupervisorsIndexRoute
+  '/_admin-layout/dashboard/students/': typeof AdminLayoutDashboardStudentsIndexRoute
+  '/_admin-layout/dashboard/teachers/': typeof AdminLayoutDashboardTeachersIndexRoute
+  '/_admin-layout/dashboard/times/': typeof AdminLayoutDashboardTimesIndexRoute
+  '/_admin-layout/dashboard/user/': typeof AdminLayoutDashboardUserIndexRoute
+  '/_admin-layout/dashboard/violation-configs/': typeof AdminLayoutDashboardViolationConfigsIndexRoute
+  '/_admin-layout/dashboard/violation-groups/': typeof AdminLayoutDashboardViolationGroupsIndexRoute
+  '/_admin-layout/dashboard/violation-types/': typeof AdminLayoutDashboardViolationTypesIndexRoute
+  '/_admin-layout/dashboard/violations/': typeof AdminLayoutDashboardViolationsIndexRoute
+  '/_admin-layout/dashboard/year-packages/': typeof AdminLayoutDashboardYearPackagesIndexRoute
+  '/_admin-layout/dashboard/classes/$id/history': typeof AdminLayoutDashboardClassesIdHistoryRoute
+  '/_admin-layout/dashboard/disciplines/$id/history': typeof AdminLayoutDashboardDisciplinesIdHistoryRoute
+  '/_admin-layout/dashboard/student-in-classes/$id/history': typeof AdminLayoutDashboardStudentInClassesIdHistoryRoute
+  '/_admin-layout/dashboard/violations/$id/edit': typeof AdminLayoutDashboardViolationsIdEditRoute
+  '/_admin-layout/dashboard/violations/$id/history': typeof AdminLayoutDashboardViolationsIdHistoryRoute
+  '/_admin-layout/dashboard/classes/$id/': typeof AdminLayoutDashboardClassesIdIndexRoute
+  '/_admin-layout/dashboard/disciplines/$id/': typeof AdminLayoutDashboardDisciplinesIdIndexRoute
+  '/_admin-layout/dashboard/violations/$id/': typeof AdminLayoutDashboardViolationsIdIndexRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | ''
+    | '/payment/failure'
+    | '/payment/success'
+    | '/dashboard/$id'
+    | '/dashboard/analytics'
+    | '/dashboard'
+    | '/dashboard/auth/edit'
+    | '/dashboard/auth/view'
+    | '/dashboard/high-school/$id'
+    | '/dashboard/packages/buy-packages'
+    | '/dashboard/violation-tops/violation-chart'
+    | '/dashboard/violation-tops/violation-in-class'
+    | '/dashboard/violation-tops/violation-in-week'
+    | '/dashboard/violation-tops/violation-in-year'
+    | '/dashboard/violation-tops/violation-top-class'
+    | '/dashboard/violation-tops/violation-top-student'
+    | '/dashboard/violation-tops/violation-top-studentInClass'
+    | '/dashboard/violations/create-student'
+    | '/dashboard/violations/create-supervisor'
+    | '/dashboard/class-group'
+    | '/dashboard/classes'
+    | '/dashboard/disciplines'
+    | '/dashboard/evaluation-details'
+    | '/dashboard/evaluation-tops'
+    | '/dashboard/evaluations'
+    | '/dashboard/high-school'
+    | '/dashboard/order'
+    | '/dashboard/packages'
+    | '/dashboard/patrol-schedules'
+    | '/dashboard/penalties'
+    | '/dashboard/registered-schools'
+    | '/dashboard/school-admin'
+    | '/dashboard/school-configs'
+    | '/dashboard/school-year'
+    | '/dashboard/semester'
+    | '/dashboard/student-in-classes'
+    | '/dashboard/student-supervisors'
+    | '/dashboard/students'
+    | '/dashboard/teachers'
+    | '/dashboard/times'
+    | '/dashboard/user'
+    | '/dashboard/violation-configs'
+    | '/dashboard/violation-groups'
+    | '/dashboard/violation-types'
+    | '/dashboard/violations'
+    | '/dashboard/year-packages'
+    | '/dashboard/classes/$id/history'
+    | '/dashboard/disciplines/$id/history'
+    | '/dashboard/student-in-classes/$id/history'
+    | '/dashboard/violations/$id/edit'
+    | '/dashboard/violations/$id/history'
+    | '/dashboard/classes/$id'
+    | '/dashboard/disciplines/$id'
+    | '/dashboard/violations/$id'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | ''
+    | '/payment/failure'
+    | '/payment/success'
+    | '/dashboard/$id'
+    | '/dashboard/analytics'
+    | '/dashboard'
+    | '/dashboard/auth/edit'
+    | '/dashboard/auth/view'
+    | '/dashboard/high-school/$id'
+    | '/dashboard/packages/buy-packages'
+    | '/dashboard/violation-tops/violation-chart'
+    | '/dashboard/violation-tops/violation-in-class'
+    | '/dashboard/violation-tops/violation-in-week'
+    | '/dashboard/violation-tops/violation-in-year'
+    | '/dashboard/violation-tops/violation-top-class'
+    | '/dashboard/violation-tops/violation-top-student'
+    | '/dashboard/violation-tops/violation-top-studentInClass'
+    | '/dashboard/violations/create-student'
+    | '/dashboard/violations/create-supervisor'
+    | '/dashboard/class-group'
+    | '/dashboard/classes'
+    | '/dashboard/disciplines'
+    | '/dashboard/evaluation-details'
+    | '/dashboard/evaluation-tops'
+    | '/dashboard/evaluations'
+    | '/dashboard/high-school'
+    | '/dashboard/order'
+    | '/dashboard/packages'
+    | '/dashboard/patrol-schedules'
+    | '/dashboard/penalties'
+    | '/dashboard/registered-schools'
+    | '/dashboard/school-admin'
+    | '/dashboard/school-configs'
+    | '/dashboard/school-year'
+    | '/dashboard/semester'
+    | '/dashboard/student-in-classes'
+    | '/dashboard/student-supervisors'
+    | '/dashboard/students'
+    | '/dashboard/teachers'
+    | '/dashboard/times'
+    | '/dashboard/user'
+    | '/dashboard/violation-configs'
+    | '/dashboard/violation-groups'
+    | '/dashboard/violation-types'
+    | '/dashboard/violations'
+    | '/dashboard/year-packages'
+    | '/dashboard/classes/$id/history'
+    | '/dashboard/disciplines/$id/history'
+    | '/dashboard/student-in-classes/$id/history'
+    | '/dashboard/violations/$id/edit'
+    | '/dashboard/violations/$id/history'
+    | '/dashboard/classes/$id'
+    | '/dashboard/disciplines/$id'
+    | '/dashboard/violations/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_admin-layout'
+    | '/payment/failure'
+    | '/payment/success'
+    | '/_admin-layout/dashboard/$id'
+    | '/_admin-layout/dashboard/analytics'
+    | '/_admin-layout/dashboard/'
+    | '/_admin-layout/dashboard/auth/edit'
+    | '/_admin-layout/dashboard/auth/view'
+    | '/_admin-layout/dashboard/high-school/$id'
+    | '/_admin-layout/dashboard/packages/buy-packages'
+    | '/_admin-layout/dashboard/violation-tops/violation-chart'
+    | '/_admin-layout/dashboard/violation-tops/violation-in-class'
+    | '/_admin-layout/dashboard/violation-tops/violation-in-week'
+    | '/_admin-layout/dashboard/violation-tops/violation-in-year'
+    | '/_admin-layout/dashboard/violation-tops/violation-top-class'
+    | '/_admin-layout/dashboard/violation-tops/violation-top-student'
+    | '/_admin-layout/dashboard/violation-tops/violation-top-studentInClass'
+    | '/_admin-layout/dashboard/violations/create-student'
+    | '/_admin-layout/dashboard/violations/create-supervisor'
+    | '/_admin-layout/dashboard/class-group/'
+    | '/_admin-layout/dashboard/classes/'
+    | '/_admin-layout/dashboard/disciplines/'
+    | '/_admin-layout/dashboard/evaluation-details/'
+    | '/_admin-layout/dashboard/evaluation-tops/'
+    | '/_admin-layout/dashboard/evaluations/'
+    | '/_admin-layout/dashboard/high-school/'
+    | '/_admin-layout/dashboard/order/'
+    | '/_admin-layout/dashboard/packages/'
+    | '/_admin-layout/dashboard/patrol-schedules/'
+    | '/_admin-layout/dashboard/penalties/'
+    | '/_admin-layout/dashboard/registered-schools/'
+    | '/_admin-layout/dashboard/school-admin/'
+    | '/_admin-layout/dashboard/school-configs/'
+    | '/_admin-layout/dashboard/school-year/'
+    | '/_admin-layout/dashboard/semester/'
+    | '/_admin-layout/dashboard/student-in-classes/'
+    | '/_admin-layout/dashboard/student-supervisors/'
+    | '/_admin-layout/dashboard/students/'
+    | '/_admin-layout/dashboard/teachers/'
+    | '/_admin-layout/dashboard/times/'
+    | '/_admin-layout/dashboard/user/'
+    | '/_admin-layout/dashboard/violation-configs/'
+    | '/_admin-layout/dashboard/violation-groups/'
+    | '/_admin-layout/dashboard/violation-types/'
+    | '/_admin-layout/dashboard/violations/'
+    | '/_admin-layout/dashboard/year-packages/'
+    | '/_admin-layout/dashboard/classes/$id/history'
+    | '/_admin-layout/dashboard/disciplines/$id/history'
+    | '/_admin-layout/dashboard/student-in-classes/$id/history'
+    | '/_admin-layout/dashboard/violations/$id/edit'
+    | '/_admin-layout/dashboard/violations/$id/history'
+    | '/_admin-layout/dashboard/classes/$id/'
+    | '/_admin-layout/dashboard/disciplines/$id/'
+    | '/_admin-layout/dashboard/violations/$id/'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AdminLayoutRoute: typeof AdminLayoutRouteWithChildren
+  PaymentFailureRoute: typeof PaymentFailureRoute
+  PaymentSuccessRoute: typeof PaymentSuccessRoute
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AdminLayoutRoute: AdminLayoutRouteWithChildren,
+  PaymentFailureRoute: PaymentFailureRoute,
+  PaymentSuccessRoute: PaymentSuccessRoute,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
@@ -882,6 +1359,7 @@ export const routeTree = rootRoute.addChildren({
         "/_admin-layout/dashboard/school-admin/",
         "/_admin-layout/dashboard/school-configs/",
         "/_admin-layout/dashboard/school-year/",
+        "/_admin-layout/dashboard/semester/",
         "/_admin-layout/dashboard/student-in-classes/",
         "/_admin-layout/dashboard/student-supervisors/",
         "/_admin-layout/dashboard/students/",
@@ -1031,6 +1509,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_admin-layout/dashboard/school-year/": {
       "filePath": "_admin-layout.dashboard/school-year/index.tsx",
+      "parent": "/_admin-layout"
+    },
+    "/_admin-layout/dashboard/semester/": {
+      "filePath": "_admin-layout.dashboard/semester/index.tsx",
       "parent": "/_admin-layout"
     },
     "/_admin-layout/dashboard/student-in-classes/": {

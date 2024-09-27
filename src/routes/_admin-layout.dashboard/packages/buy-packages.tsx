@@ -10,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import Joi from "joi";
 import { useRef, useState } from "react";
-import { toast } from "react-toastify";
 
 const Page = () => {
     const [packageId, setPackageId] = useState(1);

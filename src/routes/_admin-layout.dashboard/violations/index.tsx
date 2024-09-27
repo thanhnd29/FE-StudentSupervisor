@@ -21,6 +21,11 @@ import { RootState } from '@/core/store';
 import { useSelector } from 'react-redux';
 import { UserState } from '@/core/store/user';
 import { ViolationStatus } from '@/core/models/violation';
+import FormBuilder from '@/core/components/form/FormBuilder';
+import { useEffect, useState } from 'react';
+import Joi from 'joi';
+import { MonthList, SemesterList, WeekList } from '@/core/models/date';
+import { schoolYearApi } from '@/core/api/school-years.api';
 
 interface PageProps { }
 
@@ -32,18 +37,31 @@ const Page: React.FunctionComponent<PageProps> = () => {
         (state: RootState) => state.user,
     );
 
+    const today = new Date()
+
+    const [year, setYear] = useState<number>(Number(today.getFullYear()))
+    const [month, setMonth] = useState<number>(0)
+    const [semesterName, setSemesterName] = useState<string>("")
+    const [week, setWeek] = useState<number>(0)
+
     const getByRole = () => {
         if (schoolId) {
             if (isTeacher) {
-                return violationsApi.getByTeacher(userId);
+                return violationsApi.getByTeacher(userId, year, semesterName, month, week);
             }
             if (isSupervisor) {
-                return violationsApi.getBySupervisor(userId);
+                return violationsApi.getBySupervisor(userId, year, semesterName, month, week);
             }
-            return violationsApi.getBySchool(schoolId)
+            return violationsApi.getBySchool(schoolId, year, semesterName, month, week)
         }
         return violationsApi.getAll()
     };
+
+    useEffect(() => {
+        queryClient.invalidateQueries({
+            queryKey: ['violations'],
+        });
+    }, [year, month, week, semesterName, queryClient]);
 
     useDocumentTitle('Danh sách Vi phạm');
 
@@ -87,7 +105,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
                             key: 'violationGroupName',
                             title: 'Nhóm vi phạm',
                             type: FieldType.TEXT,
-                        },                        {
+                        }, {
                             key: 'date',
                             title: 'Vi phạm ngày',
                             type: FieldType.TIME_DATE,
@@ -112,8 +130,6 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         //     },
                         // },
                     ]}
-                    isSelectYear={true}
-                    schoolId={schoolId}
                     queryApi={getByRole}
                     actionColumns={(record) => (
                         <div className="grid grid-cols-2 gap-2">
@@ -256,29 +272,85 @@ const Page: React.FunctionComponent<PageProps> = () => {
                         }] : []),
                     ]}
                     extraButtons={
-                        <div className="flex items-center gap-3">
-                            {/* {isSupervisor && (
-                                <Button
-                                    type="primary"
-                                    icon={<PlusOutlined />}
-                                    onClick={() => {
-                                        router.push(NKRouter.violations.createForStudent());
-                                    }}
-                                >
-                                    Create Violation Student
-                                </Button>
-                            )} */}
-                            {/* {isSupervisor && (
-                                <Button
-                                    type="primary"
-                                    icon={<PlusOutlined />}
-                                    onClick={() => {
-                                        router.push(NKRouter.violations.createForSupervisor());
-                                    }}
-                                >
-                                    Create Violation Supervisor
-                                </Button>
-                            )} */}
+                        <div className="flex flex-row items-center w-full">
+                            <FormBuilder
+                                title=""
+                                apiAction={() => { }}
+                                defaultValues={{
+                                    year: year,
+                                    month: month,
+                                    weekNumber: week ?? 0,
+                                    semesterName: "Học kỳ 1",
+                                    school: schoolId
+                                }}
+                                schema={{
+                                    year: Joi.number(),
+                                    month: Joi.number(),
+                                    weekNumber: Joi.number(),
+                                    semesterName: Joi.string(),
+                                    school: Joi.number()
+                                }}
+                                isButton={false}
+                                className="flex items-center w-[40rem] !bg-transparent"
+                                fields={[
+                                    {
+                                        name: 'year',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: (value) => (
+                                                schoolYearApi.getEnumSelectYear({ search: value, highSchoolId: schoolId })
+                                            )
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setYear(Number(value))
+                                        }
+                                    },
+                                    {
+                                        name: 'semesterName',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await SemesterList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            ),
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setSemesterName(value)
+                                        }
+                                    },
+                                    {
+                                        name: 'month',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await MonthList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            )
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setMonth(Number(value))
+                                        }
+                                    },
+                                    {
+                                        name: 'weekNumber',
+                                        label: '',
+                                        type: NKFormType.SELECT_API_OPTION,
+                                        fieldProps: {
+                                            apiAction: async (value) => (
+                                                await WeekList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                                            ),
+                                        },
+                                        span: 1,
+                                        onChangeExtra: (value) => {
+                                            setWeek(Number(value))
+                                        }
+                                    },
+                                ]}
+                            />
                         </div>
                     }
                 />

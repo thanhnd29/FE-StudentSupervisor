@@ -6,7 +6,7 @@ import FormBuilder from '@/core/components/form/FormBuilder';
 import { NKFormType } from '@/core/components/form/NKForm';
 import TableBuilder from '@/core/components/table/TableBuilder';
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle';
-import { MonthList, WeekList } from '@/core/models/date';
+import { MonthList, SemesterList, WeekList } from '@/core/models/date';
 import { useNKRouter } from '@/core/routing/hooks/NKRouter';
 import { RootState } from '@/core/store';
 import { UserState } from '@/core/store/user';
@@ -26,6 +26,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
 
   const [year, setYear] = useState<number>(Number(today.getFullYear()))
   const [month, setMonth] = useState<number>(0)
+  const [semesterName, setSemesterName] = useState<string>("")
   const [week, setWeek] = useState<number>(0)
 
   const { isAdmin, isPrincipal, isSchoolAdmin, isSupervisor, isStudentSupervisor, isTeacher, schoolId, userId } = useSelector<RootState, UserState>(
@@ -36,7 +37,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
     queryClient.invalidateQueries({
       queryKey: ['evaluation-tops'],
     });
-  }, [year, month, week, queryClient]);
+  }, [year, month, week, semesterName, queryClient]);
 
   useDocumentTitle('Xếp hạng thi đua');
 
@@ -67,7 +68,7 @@ const Page: React.FunctionComponent<PageProps> = () => {
             type: FieldType.TEXT,
           },
         ]}
-        queryApi={() => evaluationApi.getRank(schoolId, year, month, week)}
+        queryApi={() => evaluationApi.getRank(schoolId, year, semesterName, month, week)}
         extraButtons={
           <div className="flex flex-row items-center w-full">
             <FormBuilder
@@ -77,29 +78,19 @@ const Page: React.FunctionComponent<PageProps> = () => {
                 year: year,
                 month: month,
                 weekNumber: week ?? 0,
+                semesterName: "Học kỳ 1",
                 school: schoolId
               }}
               schema={{
                 year: Joi.number(),
                 month: Joi.number(),
                 weekNumber: Joi.number(),
+                semesterName: Joi.string(),
                 school: Joi.number()
               }}
               isButton={false}
               className="flex items-center w-[40rem] !bg-transparent"
               fields={[
-                {
-                  name: 'school',
-                  label: '',
-                  type: NKFormType.SELECT_API_OPTION,
-                  fieldProps: {
-                    apiAction: (value) => (
-                      highSchoolApi.getEnumSelectOptions(value)
-                    ),
-                    disabled: true,
-                  },
-                  span: 1,
-                },
                 {
                   name: 'year',
                   label: '',
@@ -112,6 +103,20 @@ const Page: React.FunctionComponent<PageProps> = () => {
                   span: 1,
                   onChangeExtra: (value) => {
                     setYear(Number(value))
+                  }
+                },
+                {
+                  name: 'semesterName',
+                  label: '',
+                  type: NKFormType.SELECT_API_OPTION,
+                  fieldProps: {
+                    apiAction: async (value) => (
+                      await SemesterList.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+                    ),
+                  },
+                  span: 1,
+                  onChangeExtra: (value) => {
+                    setSemesterName(value)
                   }
                 },
                 {

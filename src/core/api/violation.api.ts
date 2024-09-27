@@ -2,6 +2,7 @@ import { BaseResponse, EnumListItem, ResponseList } from '../models/common';
 import { Violation, ViolationStatus } from '../models/violation';
 import { getColorWithId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
+import { validNumber } from './dashboard.api';
 import http from './http';
 
 export interface ICreateViolationStudentDto {
@@ -108,24 +109,40 @@ export const violationsApi = {
 
         return data.data;
     },
-    getBySchool: async (id: number) => {
-        const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/school/${id}`);
-
-        return data.data;
-    },
-    getByTeacher: async (id: number) => {
-        const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/user/${id}/teachers`, {
+    getBySchool: async (id: number, year: number, semesterName: string, month: number, weekNumber: number) => {
+        const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/school/${id}`, {
             params: {
                 sortOrder: 'desc',
+                year: year,
+                semesterName: semesterName,
+                month: validNumber(month),
+                weekNumber: validNumber(weekNumber)
             },
         });
 
         return data.data;
     },
-    getBySupervisor: async (id: number) => {
+    getByTeacher: async (id: number, year: number, semesterName: string, month: number, weekNumber: number) => {
+        const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/user/${id}/teachers`, {
+            params: {
+                sortOrder: 'desc',
+                year: year,
+                semesterName: semesterName,
+                month: validNumber(month),
+                weekNumber: validNumber(weekNumber)
+            },
+        });
+
+        return data.data;
+    },
+    getBySupervisor: async (id: number, year: number, semesterName: string, month: number, weekNumber: number) => {
         const { data } = await http.get<ResponseList<Violation>>(`${baseUrl}/supervisor/${id}`, {
             params: {
                 sortOrder: 'desc',
+                year: year,
+                semesterName: semesterName,
+                month: validNumber(month),
+                weekNumber: validNumber(weekNumber)
             },
         });
 

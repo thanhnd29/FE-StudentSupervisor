@@ -4,7 +4,7 @@ import { getColorWithUuId } from '../utils/api.helper';
 import { Colors } from '../utils/colors.helper';
 import http from './http';
 
-export interface ICreateSchoolYearDto extends Pick<SchoolYear, 'schoolId' | 'year' | 'startDate' | 'endDate'> { }
+export interface ICreateSchoolYearDto extends Omit<SchoolYear, 'schoolName' | 'schoolYearId' | 'status'> { }
 
 export interface IUpdateSchoolYearDto extends Pick<SchoolYear, 'schoolId' | 'year' | 'startDate' | 'endDate'> { }
 

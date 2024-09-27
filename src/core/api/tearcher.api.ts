@@ -14,9 +14,18 @@ export const teacherApi = {
         const { data } = await http.post<BaseResponse<Teacher>>(baseUrl, dto);
 
         console.log(data.data);
-        
+
 
         return data.data;
+    },
+    import: async (file: File | any) => {
+        const { data } = await http.post<Teacher>(`${baseUrl}/import-teachers`, file, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        return data;
     },
     createSupervisors: async (dto: ICreateTeacherDto) => {
         const { data } = await http.post<BaseResponse<Teacher>>(`${baseUrl}/supervisors`, dto);
@@ -62,8 +71,8 @@ export const teacherApi = {
 
         return data;
     },
-    getEnumSelectOptions: async ({search, schoolId, supervisorId, teacherByYear} : {search?: string, schoolId?: number, supervisorId?: number, teacherByYear?: number}) => {
-        const teachers = schoolId ? await teacherApi.getTeacherBySchool(schoolId) : supervisorId ? await teacherApi.getSupervisorBySchool(supervisorId) : teacherByYear ?  await teacherApi.getTeacherByYear(teacherByYear) : await teacherApi.getAll();
+    getEnumSelectOptions: async ({ search, schoolId, supervisorId, teacherByYear }: { search?: string, schoolId?: number, supervisorId?: number, teacherByYear?: number }) => {
+        const teachers = schoolId ? await teacherApi.getTeacherBySchool(schoolId) : supervisorId ? await teacherApi.getSupervisorBySchool(supervisorId) : teacherByYear ? await teacherApi.getTeacherByYear(teacherByYear) : await teacherApi.getAll();
 
         const list: EnumListItem[] = teachers.map((item) => ({
             id: item.teacherId,

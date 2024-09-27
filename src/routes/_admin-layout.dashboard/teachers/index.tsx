@@ -143,6 +143,47 @@ const Page: React.FunctionComponent<PageProps> = () => {
                     extraButtons={
                         <>
                             <ModalBuilder
+                                btnLabel="Thêm hàng loạt"
+                                btnProps={{
+                                    type: 'primary',
+                                    icon: <PlusOutlined />,
+                                }}
+                                title="Thêm hàng loạt"
+                            >
+                                {(close) => {
+                                    return (
+                                        <FormBuilder
+                                            className="!p-0"
+                                            title=""
+                                            apiAction={teacherApi.import}
+                                            defaultValues={{
+                                                file: null
+                                            }}
+                                            schema={{
+                                                file: Joi.any().optional().messages(NKConstant.MESSAGE_FORMAT),
+                                            }}
+                                            fields={[
+                                                {
+                                                    name: 'file',
+                                                    label: 'Chọn file excel',
+                                                    type: NKFormType.UPLOAD_FILE_DIRECT,
+                                                },
+                                            ]}
+                                            onExtraSuccessAction={(data) => {
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['teacher-list'],
+                                                });
+
+                                                close();
+
+                                                toast.success(data.message || 'Successful');
+                                            }}
+                                            onExtraErrorAction={toastError}
+                                        />
+                                    );
+                                }}
+                            </ModalBuilder>
+                            <ModalBuilder
                                 btnLabel="Thêm giáo viên"
                                 btnProps={{
                                     type: 'primary',

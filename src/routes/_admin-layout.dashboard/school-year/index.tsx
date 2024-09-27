@@ -197,40 +197,77 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                     <FormBuilder
                                         className="!p-0"
                                         title=""
-                                        apiAction={({ endDate, schoolId, startDate, year }) => {
+                                        apiAction={({ endDate, schoolId, startDate, year, semester1StartDate, semester1EndDate, semester2StartDate, semester2EndDate }) => {
                                             if (moment(startDate).isAfter(endDate)) {
-                                                toast.error('Start Date must be before end date');
+                                                toast.error('Ngày bắt đầu phải trước ngày kết thúc');
+                                                return;
+                                            }
+
+                                            if (moment(semester1StartDate).isAfter(semester1EndDate)) {
+                                                toast.error('Ngày bắt đầu phải trước ngày kết thúc (học kỳ 1)');
+                                                return;
+                                            }
+
+                                            if (moment(semester2StartDate).isAfter(semester2EndDate)) {
+                                                toast.error('Ngày bắt đầu phải trước ngày kết thúc (học kỳ 2)');
+                                                return;
+                                            }
+
+                                            if (!moment(startDate).isSame(semester1StartDate)) {
+                                                toast.error('Ngày bắt đầu phải trùng với ngày bắt đầu học kỳ 1');
+                                                return;
+                                            }
+                                        
+                                            if (!moment(endDate).isSame(semester2EndDate)) {
+                                                toast.error('Ngày kết thúc phải trùng với ngày kết thúc học kỳ 2');
+                                                return;
+                                            }
+                                        
+                                            if (!moment(semester2StartDate).isAfter(semester1EndDate)) {
+                                                toast.error('Ngày bắt đầu học kỳ 2 phải sau ngày kết thúc học kỳ 1');
                                                 return;
                                             }
 
                                             return schoolYearApi.create({
-                                                endDate: moment(endDate).toISOString(),
-                                                schoolId,
                                                 startDate: moment(startDate).toISOString(),
+                                                endDate: moment(endDate).toISOString(),
+                                                semester1StartDate: moment(semester1StartDate).toISOString(),
+                                                semester1EndDate: moment(semester1EndDate).toISOString(),
+                                                semester2StartDate: moment(semester2StartDate).toISOString(),
+                                                semester2EndDate: moment(semester2EndDate).toISOString(),
+                                                schoolId,
                                                 year: moment(year).year(),
                                             });
                                         }}
                                         defaultValues={{
-                                            endDate: new Date(),
                                             startDate: new Date(),
+                                            endDate: new Date(),
+                                            semester1StartDate: new Date(),
+                                            semester1EndDate: new Date(),
+                                            semester2StartDate: new Date(),
+                                            semester2EndDate: new Date(),
                                             schoolId: schoolId || 0,
                                             year: new Date(),
                                         }}
                                         schema={{
-                                            endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                             startDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            endDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            semester1StartDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            semester1EndDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            semester2StartDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
+                                            semester2EndDate: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                             schoolId: Joi.number().required().messages(NKConstant.MESSAGE_FORMAT),
                                             year: Joi.date().required().messages(NKConstant.MESSAGE_FORMAT),
                                         }}
                                         fields={[
                                             {
-                                                name: 'endDate',
-                                                label: 'Ngày kết thúc',
+                                                name: 'startDate',
+                                                label: 'Ngày bắt đầu',
                                                 type: NKFormType.DATE,
                                             },
                                             {
-                                                name: 'startDate',
-                                                label: 'Ngày bắt đầu',
+                                                name: 'endDate',
+                                                label: 'Ngày kết thúc',
                                                 type: NKFormType.DATE,
                                             },
                                             {
@@ -249,6 +286,26 @@ const Page: React.FunctionComponent<PageProps> = () => {
                                                 fieldProps: {
                                                     format: 'YYYY',
                                                 },
+                                            },
+                                            {
+                                                name: 'semester1StartDate',
+                                                label: 'Ngày bắt đầu (Học kỳ 1)',
+                                                type: NKFormType.DATE,
+                                            },
+                                            {
+                                                name: 'semester1EndDate',
+                                                label: 'Ngày kết thúc (Học kỳ 1)',
+                                                type: NKFormType.DATE,
+                                            },
+                                            {
+                                                name: 'semester2StartDate',
+                                                label: 'Ngày bắt đầu (Học kỳ 2)',
+                                                type: NKFormType.DATE,
+                                            },
+                                            {
+                                                name: 'semester2EndDate',
+                                                label: 'Ngày kết thúc (Học kỳ 2)',
+                                                type: NKFormType.DATE,
                                             },
                                         ]}
                                         onExtraSuccessAction={(data) => {
